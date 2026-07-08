@@ -18,5 +18,6 @@
     "market-sizing",
     "strategy",
     "diligence"
-  ]
+  ],
+  "commands": "./commands/"
 }

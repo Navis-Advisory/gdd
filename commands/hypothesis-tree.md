@@ -2,6 +2,7 @@
 name: hypothesis-tree
 description: Decompose the investment thesis into a MECE hypothesis tree and per-module briefs
 argument-hint: "[thesis angle to prioritize, optional]"
+arguments: [angle]
 allowed-tools: Read, Write, Edit, Agent, AskUserQuestion
 ---
 

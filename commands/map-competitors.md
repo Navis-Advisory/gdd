@@ -2,6 +2,7 @@
 name: map-competitors
 description: Build the competitive map — set, positioning, and share estimates with citations
 argument-hint: "[segment or competitor to focus on]"
+arguments: [focus]
 allowed-tools: Read, Write, Edit, Agent, WebSearch, WebFetch
 ---
 

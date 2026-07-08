@@ -2,6 +2,7 @@
 name: scope-deal
 description: Interview the user to scope a new diligence engagement, then write the engagement brief and lock the deal taxonomy
 argument-hint: "[target company or deal codename]"
+arguments: [target]
 allowed-tools: Read, Write, Glob, AskUserQuestion, Agent, WebSearch, WebFetch
 ---
 

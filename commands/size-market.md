@@ -2,6 +2,7 @@
 name: size-market
 description: Size the target market with independent top-down and bottom-up estimates, then reconcile them
 argument-hint: "[segment name, defaults to the primary market]"
+arguments: [segment]
 allowed-tools: Read, Write, Edit, Agent, WebSearch, WebFetch, AskUserQuestion
 ---
 

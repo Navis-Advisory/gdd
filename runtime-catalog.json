@@ -1,0 +1,84 @@
+{
+  "catalog_version": 1,
+  "runtimes": [
+    {
+      "runtime_name": "claude-code",
+      "display_name": "Claude Code",
+      "enabled": true,
+      "priority": 10,
+      "config_dir_name": ".claude",
+      "install_flags": ["--claude", "--claude-code"],
+      "launch_command": "claude",
+      "command_prefix": "/gdd:",
+      "command_layout": "nested",
+      "global_config": {
+        "strategy": "env_or_home",
+        "env_var": "CLAUDE_CONFIG_DIR",
+        "home_subpath": ".claude"
+      }
+    },
+    {
+      "runtime_name": "codex",
+      "display_name": "Codex",
+      "enabled": false,
+      "priority": 20,
+      "config_dir_name": ".codex",
+      "install_flags": ["--codex"],
+      "launch_command": "codex",
+      "command_prefix": "$gdd-",
+      "command_layout": "flat",
+      "global_config": {
+        "strategy": "env_or_home",
+        "env_var": "CODEX_HOME",
+        "home_subpath": ".codex"
+      }
+    },
+    {
+      "runtime_name": "gemini",
+      "display_name": "Gemini CLI",
+      "enabled": false,
+      "priority": 30,
+      "config_dir_name": ".gemini",
+      "install_flags": ["--gemini", "--gemini-cli"],
+      "launch_command": "gemini",
+      "command_prefix": "/gdd:",
+      "command_layout": "nested",
+      "global_config": {
+        "strategy": "env_or_home",
+        "env_var": "GEMINI_CONFIG_DIR",
+        "home_subpath": ".gemini"
+      }
+    },
+    {
+      "runtime_name": "opencode",
+      "display_name": "OpenCode",
+      "enabled": false,
+      "priority": 40,
+      "config_dir_name": ".opencode",
+      "install_flags": ["--opencode"],
+      "launch_command": "opencode",
+      "command_prefix": "/gdd-",
+      "command_layout": "flat",
+      "global_config": {
+        "strategy": "xdg",
+        "env_var": "XDG_CONFIG_HOME",
+        "home_subpath": ".config/opencode"
+      }
+    },
+    {
+      "runtime_name": "copilot-cli",
+      "display_name": "GitHub Copilot CLI",
+      "enabled": false,
+      "priority": 50,
+      "config_dir_name": ".github",
+      "install_flags": ["--copilot"],
+      "launch_command": "gh copilot",
+      "command_prefix": "/gdd-",
+      "command_layout": "flat",
+      "global_config": {
+        "strategy": "home",
+        "home_subpath": ".copilot"
+      }
+    }
+  ]
+}

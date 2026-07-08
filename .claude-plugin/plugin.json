@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "gdd",
+  "displayName": "GDD — Get Diligence Done",
+  "version": "0.1.0",
+  "description": "Run a commercial due-diligence engagement as an agentic workflow: scope the deal, lock the taxonomy, size the market with independent top-down and bottom-up legs, map competitors, triangulate for consistency and traceability, red-team, and tell the story. The verifier's promise is consistency and traceability, not truth.",
+  "author": {
+    "name": "Navis Advisory",
+    "url": "https://github.com/Navis-Advisory/gdd"
+  },
+  "homepage": "https://github.com/Navis-Advisory/gdd",
+  "repository": "https://github.com/Navis-Advisory/gdd",
+  "license": "Apache-2.0",
+  "keywords": [
+    "due-diligence",
+    "commercial-due-diligence",
+    "consulting",
+    "market-sizing",
+    "strategy",
+    "diligence"
+  ]
+}

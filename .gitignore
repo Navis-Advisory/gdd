@@ -1,0 +1,6 @@
+# User engagement state never belongs in the tool repo (GPD's
+# block-gpd-commit rule, enforced the simple way).
+.diligence/
+
+node_modules/
+*.log

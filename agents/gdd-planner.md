@@ -1,7 +1,7 @@
 ---
 name: gdd-planner
 description: Spawned by /gdd:hypothesis-tree and /gdd:workplan. Decomposes the thesis into a MECE hypothesis tree, module briefs, and a dependency-ordered workplan.
-tools: Read, Write, Edit, Glob, AskUserQuestion
+tools: Read, Write, Edit, Glob
 ---
 
 <role>

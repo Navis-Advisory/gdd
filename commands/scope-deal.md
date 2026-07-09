@@ -30,9 +30,12 @@ engagement per folder.
 </context>
 
 <process>
-1. Spawn `gdd-scoper` per the workflow to run the scoping interview.
-2. Scoper drafts `ENGAGEMENT.md` and `TAXONOMY.md` from the templates and
-   writes the machine lock into `.diligence/state.json`.
+1. Interview the user directly (AskUserQuestion, four batches) per the
+   workflow — target/client, thesis/questions, deliverable/constraints,
+   taxonomy.
+2. Spawn `gdd-scoper` with the collected answers to draft `ENGAGEMENT.md`
+   and `TAXONOMY.md` from the templates and write the machine lock into
+   `.diligence/state.json`.
 3. Review both artifacts with the user before declaring the engagement
    scoped; unresolved taxonomy fields are flagged OPEN, never silently
    defaulted.

@@ -22,10 +22,11 @@ may request an alternative framing ("build it around the risk case").
 </context>
 
 <process>
-1. Spawn `gdd-storyliner` with LEDGER.md, the hypothesis tree, and both
-   reports.
-2. Draft the pyramid; check with the user on the governing thought before
-   expanding — the answer is the client's decision support, not a surprise.
-3. Write .diligence/reports/STORYLINE.md with the finding-ID trace map; update
-   STATE.md.
+1. Spawn `gdd-storyliner` in draft mode (LEDGER.md, the hypothesis tree,
+   both reports) to propose only the governing thought.
+2. Check the governing thought with the user directly before expanding —
+   the answer is the client's decision support, not a surprise.
+3. On approval, spawn `gdd-storyliner` in build mode with the approved
+   governing thought to write .diligence/reports/STORYLINE.md with the
+   finding-ID trace map; update STATE.md.
 </process>

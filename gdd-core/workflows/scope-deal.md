@@ -3,12 +3,12 @@
 Preconditions: `.diligence/` must not exist (one engagement per folder);
 refuse with a pointer to /gdd:resume-work otherwise.
 
-1. Spawn `gdd-scoper` with: the target from $ARGUMENTS, paths to the
-   engagement/taxonomy/state templates and the state-json schema, and the
-   source-hierarchy reference.
-2. Scoper interviews in four batches, then drafts and writes. Interview
-   script (AskUserQuestion, one batch per call; multiple-choice options
-   proposed from light desk research, "Other" always available):
+1. Orchestrator reads the target from $ARGUMENTS and the source-hierarchy
+   reference (`${CLAUDE_PLUGIN_ROOT}/gdd-core/references/source-hierarchy.md`,
+   Batch D depends on it).
+2. Orchestrator interviews the user directly in four batches (AskUserQuestion,
+   one batch per call; multiple-choice options proposed from light desk
+   research via WebSearch, "Other" always available):
 
    **Batch A — target & client.** What does the target sell, to whom,
    where (propose a one-line answer from desk research for confirmation)?
@@ -34,11 +34,15 @@ refuse with a pointer to /gdd:resume-work otherwise.
    settle them.
 
    **Document intake.** If the folder contains deal documents (CIM,
-   teaser, spreadsheets), list them, confirm each is in scope as input,
-   and register them in SOURCES.md at their tier (a CIM is tier 4 —
-   company self-disclosure via bankers — note the incentive).
+   teaser, spreadsheets), list them and confirm each is in scope as
+   input (plain conversation, not a form).
 
-   Then write:
+3. Spawn `gdd-scoper` with: the target, the full set of batch A–D answers
+   collected above (including open_fields), the document-intake list,
+   paths to the engagement/taxonomy/state templates and the state-json
+   schema, and the source-hierarchy reference. The scoper does not ask
+   the user anything — it writes from what it is given.
+4. Scoper drafts and writes:
    - `.diligence/ENGAGEMENT.md`, `.diligence/TAXONOMY.md`
    - `.diligence/state.json` (schema v1, `taxonomy_lock` populated,
      unknowns in `open_fields`)
@@ -47,9 +51,13 @@ refuse with a pointer to /gdd:resume-work otherwise.
      `${CLAUDE_PLUGIN_ROOT}/gdd-core/templates/sources.md`, and
      `${CLAUDE_PLUGIN_ROOT}/gdd-core/templates/state.md`
    - `.diligence/config.json` from the template
-3. Orchestrator presents both artifacts section-by-section for user
-   sign-off; edits loop back through the scoper.
-4. On sign-off the orchestrator (not the scoper) writes STATE.md's
+   - registers intake documents in SOURCES.md at their tier (a CIM is
+     tier 4 — company self-disclosure via bankers — note the incentive)
+5. Orchestrator presents both artifacts section-by-section for user
+   sign-off; edits loop back through the scoper (plain conversation —
+   no re-interview needed, the scoper just rewrites the affected
+   section from the corrected input).
+6. On sign-off the orchestrator (not the scoper) writes STATE.md's
    first entries: position = "scoped", and the opening Session log line
    (date · "engagement scoped"). Suggest `/gdd:hypothesis-tree`.
 

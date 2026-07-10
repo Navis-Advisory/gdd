@@ -6,9 +6,9 @@
  *
  * Projects the GDD command/agent surface plus the gdd-core payload
  * (workflows, templates, references) into an AI-agent runtime's config
- * directory. Runtimes are data-defined in runtime-catalog.json; Claude
- * Code is the supported runtime for the MVP, the rest are catalogued but
- * gated until their converters exist.
+ * directory. Runtimes are data-defined in runtime-catalog.json. Claude
+ * Code, Codex, and Antigravity CLI are supported; OpenCode and Copilot
+ * CLI are catalogued but gated until their converters exist.
  *
  * Pattern follows the GSD / GPD installers (single self-contained Node
  * script, no dependencies, JSON runtime catalog).
@@ -29,8 +29,125 @@ const MANIFEST_NAME = 'gdd-file-manifest.json';
 // converter: rewrite the variable to the absolute config dir we copy into.
 const PLUGIN_ROOT_TOKEN = '${CLAUDE_PLUGIN_ROOT}';
 
+// Commands are authored once against Claude Code's own conventions: an
+// `<execution_context>@${CLAUDE_PLUGIN_ROOT}/gdd-core/workflows/x.md</execution_context>`
+// block that Claude Code auto-inlines, and `/gdd:x` literals in prose. Runtimes
+// without native @-include support (codex, antigravity) need that block
+// resolved to real content at install time, or the installed skill is a
+// dangling reference to nothing.
+const INCLUDE_RE = /<execution_context>\s*@\$\{CLAUDE_PLUGIN_ROOT\}\/gdd-core\/([^\s<]+)\s*<\/execution_context>/;
+
+// Claude → Gemini-family tool name mapping, reused by Antigravity (shares
+// Gemini CLI's tool vocabulary). Source: GSD's claudeToGeminiTools table.
+const CLAUDE_TO_GEMINI_TOOLS = {
+  Read: 'read_file',
+  Write: 'write_file',
+  Edit: 'replace',
+  Bash: 'run_shell_command',
+  Glob: 'glob',
+  Grep: 'search_file_content',
+  WebSearch: 'google_web_search',
+  WebFetch: 'web_fetch',
+  TodoWrite: 'write_todos',
+};
+
 function readJson(p) {
   return JSON.parse(fs.readFileSync(p, 'utf8'));
+}
+
+function extractFrontmatterAndBody(content) {
+  if (!content.startsWith('---')) return { frontmatter: null, body: content };
+  const end = content.indexOf('---', 3);
+  if (end === -1) return { frontmatter: null, body: content };
+  return { frontmatter: content.slice(3, end).trim(), body: content.slice(end + 3) };
+}
+
+function extractFrontmatterField(frontmatter, field) {
+  const m = frontmatter.match(new RegExp(`^${field}:\\s*(.+)$`, 'm'));
+  if (!m) return null;
+  return m[1].trim().replace(/^['"]|['"]$/g, '');
+}
+
+function resolveIncludes(content, srcCore) {
+  return content.replace(INCLUDE_RE, (_, relPath) => {
+    const includeContent = fs.readFileSync(path.join(srcCore, relPath), 'utf8');
+    return `<execution_context>\n${includeContent.trim()}\n</execution_context>`;
+  });
+}
+
+function rewriteCommandPrefix(content, runtime) {
+  return runtime.command_prefix === '/gdd:' ? content : content.split('/gdd:').join(runtime.command_prefix);
+}
+
+function mapGeminiToolName(tool) {
+  if (tool.startsWith('mcp__') || tool === 'Task' || tool === 'Agent' || tool === 'AskUserQuestion') return null;
+  return CLAUDE_TO_GEMINI_TOOLS[tool] || tool.toLowerCase();
+}
+
+// Codex skill: ~/.codex/skills/<name>/SKILL.md, frontmatter trimmed to the
+// two fields Codex's skill spec recognizes (name, description).
+// Antigravity skill: same shape (confirmed against GSD's shipped
+// convertClaudeCommandToAntigravitySkill converter).
+function convertCommandToSkill(resolvedContent, skillName) {
+  const { frontmatter, body } = extractFrontmatterAndBody(resolvedContent);
+  const description = frontmatter ? extractFrontmatterField(frontmatter, 'description') || '' : '';
+  const fm = `---\nname: ${skillName}\ndescription: ${JSON.stringify(description)}\n---`;
+  return `${fm}\n${body}`;
+}
+
+// Antigravity custom agent: flat markdown, name/description/tools(mapped)/
+// color frontmatter, body passthrough. Confirmed against GSD's shipped
+// convertClaudeAgentToAntigravityAgent converter — Antigravity does read
+// static agent files (unlike some blog claims of a dynamic-only model).
+function convertAgentToAntigravity(content) {
+  const { frontmatter, body } = extractFrontmatterAndBody(content);
+  if (!frontmatter) return content;
+  const name = extractFrontmatterField(frontmatter, 'name') || 'unknown';
+  const description = extractFrontmatterField(frontmatter, 'description') || '';
+  const color = extractFrontmatterField(frontmatter, 'color');
+  const toolsRaw = extractFrontmatterField(frontmatter, 'tools') || '';
+  const tools = toolsRaw
+    .split(',')
+    .map((t) => t.trim())
+    .filter(Boolean)
+    .map(mapGeminiToolName)
+    .filter(Boolean);
+  let fm = `---\nname: ${name}\ndescription: ${JSON.stringify(description)}\ntools: ${tools.join(', ')}\n`;
+  if (color) fm += `color: ${color}\n`;
+  fm += '---';
+  return `${fm}\n${body}`;
+}
+
+// Codex custom agent: standalone TOML under ~/.codex/agents/<name>.toml.
+// Per developers.openai.com/codex/subagents, `developer_instructions` is an
+// inline TOML multi-line string — no external file reference is supported,
+// so the agent's full body is embedded directly.
+function convertAgentToCodexToml(content) {
+  const { frontmatter, body } = extractFrontmatterAndBody(content);
+  const name = frontmatter ? extractFrontmatterField(frontmatter, 'name') || 'unknown' : 'unknown';
+  const description = frontmatter ? extractFrontmatterField(frontmatter, 'description') || '' : '';
+  const instructions = body.trim();
+  if (instructions.includes('"""')) {
+    fail(
+      `Codex TOML conversion: agent "${name}" body contains a literal """ sequence, ` +
+        'which would break the TOML multi-line string. Rewrite the agent content to avoid it.'
+    );
+  }
+  return (
+    `name = ${JSON.stringify(name)}\n` +
+    `description = ${JSON.stringify(description)}\n` +
+    `developer_instructions = """\n${instructions}\n"""\n`
+  );
+}
+
+function writeContent(content, destPath, dryRun, written) {
+  if (dryRun) {
+    process.stdout.write(`  would write ${destPath}\n`);
+  } else {
+    fs.mkdirSync(path.dirname(destPath), { recursive: true });
+    fs.writeFileSync(destPath, content);
+  }
+  written.push(destPath);
 }
 
 function usage() {
@@ -115,20 +232,18 @@ function listFilesRecursive(dir) {
   return out;
 }
 
-function projectFile(srcPath, destPath, configDir, dryRun, written) {
+function projectFile(srcPath, destPath, configDir, dryRun, written, runtime) {
   // The plugin variable is `${CLAUDE_PLUGIN_ROOT}` and content references
   // `${CLAUDE_PLUGIN_ROOT}/gdd-core/...`; installing copies gdd-core under
   // configDir, so rewriting the variable to configDir resolves the includes.
-  const rewritten = /\.(md|json)$/.test(srcPath)
-    ? fs.readFileSync(srcPath, 'utf8').split(PLUGIN_ROOT_TOKEN).join(configDir)
-    : fs.readFileSync(srcPath);
-  if (dryRun) {
-    process.stdout.write(`  would write ${destPath}\n`);
-  } else {
-    fs.mkdirSync(path.dirname(destPath), { recursive: true });
-    fs.writeFileSync(destPath, rewritten);
+  const isText = /\.(md|json)$/.test(srcPath);
+  if (!isText) {
+    writeContent(fs.readFileSync(srcPath), destPath, dryRun, written);
+    return;
   }
-  written.push(destPath);
+  let content = fs.readFileSync(srcPath, 'utf8').split(PLUGIN_ROOT_TOKEN).join(configDir);
+  if (runtime && /\.md$/.test(srcPath)) content = rewriteCommandPrefix(content, runtime);
+  writeContent(content, destPath, dryRun, written);
 }
 
 function install(runtime, configDir, dryRun) {
@@ -141,26 +256,52 @@ function install(runtime, configDir, dryRun) {
   const installDir = path.join(configDir, 'gdd-core');
   const written = [];
 
-  // Command surface. Nested layout gives /gdd:<name> on Claude Code.
+  // Command surface. Nested layout gives /gdd:<name> on Claude Code; "skills"
+  // (codex, antigravity) converts each command into a SKILL.md directory with
+  // its @-include resolved to real content, since neither runtime auto-inlines
+  // ${CLAUDE_PLUGIN_ROOT} references the way Claude Code does.
   for (const f of listFilesRecursive(srcCommands)) {
     const rel = path.relative(srcCommands, f);
+    if (runtime.command_layout === 'skills') {
+      const skillName = `gdd-${rel.replace(/\.md$/, '')}`;
+      const raw = fs.readFileSync(f, 'utf8');
+      const resolved = runtime.native_include_support === false ? resolveIncludes(raw, srcCore) : raw;
+      const prefixed = rewriteCommandPrefix(resolved, runtime);
+      const skillContent = convertCommandToSkill(prefixed, skillName);
+      writeContent(skillContent, path.join(configDir, 'skills', skillName, 'SKILL.md'), dryRun, written);
+      continue;
+    }
     const dest =
       runtime.command_layout === 'nested'
         ? path.join(configDir, 'commands', 'gdd', rel)
         : path.join(configDir, 'commands', `gdd-${rel}`);
-    projectFile(f, dest, configDir, dryRun, written);
+    projectFile(f, dest, configDir, dryRun, written, runtime);
   }
 
-  // Agents.
+  // Agents. codex-toml and antigravity-markdown convert to each runtime's
+  // native custom-agent format; anything else is a passthrough copy.
   for (const f of listFilesRecursive(srcAgents)) {
     const rel = path.relative(srcAgents, f);
-    projectFile(f, path.join(configDir, 'agents', rel), configDir, dryRun, written);
+    if (runtime.agent_layout === 'codex-toml' || runtime.agent_layout === 'antigravity-markdown') {
+      const raw = fs.readFileSync(f, 'utf8');
+      const rewritten = rewriteCommandPrefix(raw.split(PLUGIN_ROOT_TOKEN).join(configDir), runtime);
+      if (runtime.agent_layout === 'codex-toml') {
+        const base = path.basename(rel, '.md');
+        writeContent(convertAgentToCodexToml(rewritten), path.join(configDir, 'agents', `${base}.toml`), dryRun, written);
+      } else {
+        writeContent(convertAgentToAntigravity(rewritten), path.join(configDir, 'agents', rel), dryRun, written);
+      }
+      continue;
+    }
+    projectFile(f, path.join(configDir, 'agents', rel), configDir, dryRun, written, runtime);
   }
 
-  // Payload: workflows, templates, references.
+  // Payload: workflows, templates, references. Still installed for every
+  // runtime (agents Read these directly at runtime) even though skills-layout
+  // runtimes also get the workflow content inlined into each SKILL.md.
   for (const f of listFilesRecursive(srcCore)) {
     const rel = path.relative(srcCore, f);
-    projectFile(f, path.join(installDir, rel), configDir, dryRun, written);
+    projectFile(f, path.join(installDir, rel), configDir, dryRun, written, runtime);
   }
 
   if (!dryRun) {
@@ -197,12 +338,23 @@ function uninstall(runtime, configDir, dryRun) {
     else fs.rmSync(p);
   }
   if (!dryRun) {
-    // Prune now-empty directories we own.
+    // Prune now-empty directories we own outright.
     for (const dir of [
       path.join(configDir, 'gdd-core'),
       path.join(configDir, 'commands', 'gdd'),
     ]) {
       fs.rmSync(dir, { recursive: true, force: true });
+    }
+    // Prune per-skill directories (skills/gdd-<name>/) left empty after
+    // their SKILL.md was removed. Never touch skills/ itself — it may hold
+    // skills installed by something other than GDD.
+    const skillsDir = path.join(configDir, 'skills');
+    if (fs.existsSync(skillsDir)) {
+      for (const entry of fs.readdirSync(skillsDir, { withFileTypes: true })) {
+        if (!entry.isDirectory() || !entry.name.startsWith('gdd-')) continue;
+        const dir = path.join(skillsDir, entry.name);
+        if (fs.readdirSync(dir).length === 0) fs.rmdirSync(dir);
+      }
     }
   }
   process.stdout.write(`${dryRun ? '[dry-run] ' : ''}GDD removed from ${configDir}.\n`);
@@ -216,9 +368,10 @@ function main() {
   }
   const runtime = opts.runtime || CATALOG.runtimes.find((r) => r.runtime_name === 'claude-code');
   if (!runtime.enabled) {
+    const supported = CATALOG.runtimes.filter((r) => r.enabled).map((r) => r.install_flags[0]);
     fail(
       `${runtime.display_name} support is catalogued but not yet implemented. ` +
-        'Claude Code (--claude) is the supported runtime for the MVP.'
+        `Supported runtimes: ${supported.join(', ')}.`
     );
   }
   const configDir = resolveConfigDir(runtime, opts.scope, opts.configDir);

@@ -5,6 +5,30 @@ Version corresponds to `"version"` in `.claude-plugin/plugin.json`.
 
 ## [Unreleased]
 
+## [0.1.3] - 2026-07-09
+
+### Added
+
+- CLI install support for Codex and Antigravity CLI (replaces the disabled
+  `gemini` catalog stub — Google sunset Gemini CLI on 2026-06-18 in favor of
+  Antigravity). Both runtimes previously had `"enabled": false` entries in
+  `runtime-catalog.json` with no working converter.
+  - Commands install as `SKILL.md` directories (`skills/gdd-<name>/`) for
+    both runtimes, with each command's `<execution_context>@...</execution_context>`
+    include resolved and inlined — neither runtime auto-inlines
+    `${CLAUDE_PLUGIN_ROOT}` references the way Claude Code does, so a
+    straight copy would have installed a dangling reference.
+  - Agents install as standalone TOML (`agents/gdd-<name>.toml`,
+    `developer_instructions` inline) for Codex, matching its native
+    custom-agent format, and as flat markdown with Claude tool names mapped
+    to the Gemini/Antigravity vocabulary (`Read`→`read_file`, etc.) for
+    Antigravity.
+  - `/gdd:` prefixes in prose are rewritten to each runtime's actual
+    invocation syntax (`$gdd-` / `/gdd-`) so cross-references between
+    commands and agents read correctly post-install.
+  - `tests/smoke-install-codex.mjs` and `tests/smoke-install-antigravity.mjs`
+    added, wired into `npm test`.
+
 ## [0.1.2] - 2026-07-09
 
 ### Fixed

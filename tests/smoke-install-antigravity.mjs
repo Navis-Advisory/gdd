@@ -33,7 +33,19 @@ try {
 
   const skillMd = fs.readFileSync(path.join(configDir, 'skills', 'gdd-help', 'SKILL.md'), 'utf8');
   check('skill frontmatter has name', /^name: gdd-help$/m.test(skillMd));
-  check('skill body has no unresolved ${CLAUDE_PLUGIN_ROOT} include', !skillMd.includes('@${CLAUDE_PLUGIN_ROOT}'));
+  // Scan every skill, not just gdd-help: the bug that motivated this only
+  // surfaced in skills whose inlined workflow references gdd-core paths
+  // (scope-deal, size-market), so a single-skill check would miss it.
+  const skillsWithToken = fs
+    .readdirSync(path.join(configDir, 'skills'))
+    .filter((s) => {
+      const p = path.join(configDir, 'skills', s, 'SKILL.md');
+      return fs.existsSync(p) && fs.readFileSync(p, 'utf8').includes('${CLAUDE_PLUGIN_ROOT}');
+    });
+  check(
+    'no skill body has an unresolved ${CLAUDE_PLUGIN_ROOT} token [' + skillsWithToken.join(', ') + ']',
+    skillsWithToken.length === 0
+  );
   check('skill body inlines the workflow content', skillMd.includes('Startup ladder: help'));
   check('no stale /gdd: prefix in skill body', !skillMd.includes('/gdd:'));
   check('rewritten to /gdd- prefix', skillMd.includes('/gdd-start'));

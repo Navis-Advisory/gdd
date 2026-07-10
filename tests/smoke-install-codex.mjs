@@ -38,8 +38,20 @@ try {
   check('skill frontmatter has description', /^description: /m.test(skillMd));
   check('skill frontmatter has no allowed-tools (not part of Codex skill spec)', !/^allowed-tools:/m.test(skillMd));
 
-  // @-include resolved to real content, not a dangling reference.
-  check('skill body has no unresolved ${CLAUDE_PLUGIN_ROOT} include', !skillMd.includes('@${CLAUDE_PLUGIN_ROOT}'));
+  // @-include resolved to real content, not a dangling reference. Scan every
+  // skill: bare ${CLAUDE_PLUGIN_ROOT} refs only appear in skills whose inlined
+  // workflow points at gdd-core paths (scope-deal, size-market), so checking
+  // gdd-help alone would miss them.
+  const skillsWithToken = fs
+    .readdirSync(path.join(configDir, 'skills'))
+    .filter((s) => {
+      const p = path.join(configDir, 'skills', s, 'SKILL.md');
+      return fs.existsSync(p) && fs.readFileSync(p, 'utf8').includes('${CLAUDE_PLUGIN_ROOT}');
+    });
+  check(
+    'no skill body has an unresolved ${CLAUDE_PLUGIN_ROOT} token [' + skillsWithToken.join(', ') + ']',
+    skillsWithToken.length === 0
+  );
   check('skill body inlines the workflow content', skillMd.includes('Startup ladder: help'));
 
   // Command prefix rewritten from /gdd: to $gdd- throughout.

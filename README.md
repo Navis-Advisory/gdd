@@ -8,8 +8,8 @@ open-ended analytical leaves, persistent state in markdown + a machine
 lock, and a verification gate whose honest claim is **consistency and
 traceability, not truth**.
 
-Claude Code is the supported runtime; codex / gemini / opencode / copilot are
-catalogued but gated. See [`docs/design.md`](docs/design.md) for the full
+Claude Code, Codex, and Antigravity CLI are supported runtimes; opencode /
+copilot are catalogued but gated. See [`docs/design.md`](docs/design.md) for the full
 design, [`docs/install.md`](docs/install.md) for every install path, and
 [`examples/kestrel-sound/`](examples/) for a complete engagement run.
 
@@ -50,7 +50,7 @@ claims the market is *actually* $X.
 | Path | What |
 |---|---|
 | `.claude-plugin/` | Plugin manifest (`plugin.json`) and private marketplace (`marketplace.json`) — the no-terminal install surface |
-| `bin/install.js` | Single-file CLI installer; runtimes data-defined in `runtime-catalog.json` (Claude Code enabled; codex/gemini/opencode/copilot catalogued, gated) |
+| `bin/install.js` | Single-file CLI installer; runtimes data-defined in `runtime-catalog.json` (Claude Code, Codex, Antigravity CLI enabled; opencode/copilot catalogued, gated) |
 | `commands/` | The 13 slash commands — flat `.md` files (plugin skills → `/gdd:*`), thin wrappers that delegate to workflows |
 | `agents/` | The 10 subagents (scoper, planner, researcher, independent sizers, analyst, verifier, red-teamer, storyliner, librarian) |
 | `gdd-core/workflows/` | The real mechanics each command routes into |

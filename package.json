@@ -18,7 +18,7 @@
     "node": ">=20.0.0"
   },
   "scripts": {
-    "test": "node tests/smoke-install.mjs && node tests/check-references.mjs"
+    "test": "node tests/smoke-install.mjs && node tests/smoke-install-codex.mjs && node tests/smoke-install-antigravity.mjs && node tests/check-references.mjs"
   },
   "license": "Apache-2.0"
 }

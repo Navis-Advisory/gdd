@@ -266,7 +266,12 @@ function install(runtime, configDir, dryRun) {
       const skillName = `gdd-${rel.replace(/\.md$/, '')}`;
       const raw = fs.readFileSync(f, 'utf8');
       const resolved = runtime.native_include_support === false ? resolveIncludes(raw, srcCore) : raw;
-      const prefixed = rewriteCommandPrefix(resolved, runtime);
+      // Rewrite ${CLAUDE_PLUGIN_ROOT} to the install dir like projectFile and the
+      // agent converter do. Skills-layout runtimes don't expand the variable, so
+      // bare references in the command body or its inlined workflow (e.g. to
+      // gdd-core/templates/*) would otherwise point at an undefined path.
+      const rooted = resolved.split(PLUGIN_ROOT_TOKEN).join(configDir);
+      const prefixed = rewriteCommandPrefix(rooted, runtime);
       const skillContent = convertCommandToSkill(prefixed, skillName);
       writeContent(skillContent, path.join(configDir, 'skills', skillName, 'SKILL.md'), dryRun, written);
       continue;

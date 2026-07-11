@@ -3,7 +3,7 @@
 An agentic workflow system for commercial due diligence: scope the deal,
 lock the taxonomy, run the modules in fresh-context agents, triangulate,
 red-team, tell the story. Built on the process-encoding pattern proven by
-GSD (software) and GPD (physics): a deterministic engagement spine with
+GSD in software development: a deterministic engagement spine with
 open-ended analytical leaves, persistent state in markdown + a machine
 lock, and a verification gate whose honest claim is **consistency and
 traceability, not truth**.
@@ -35,7 +35,7 @@ in [`docs/install.md`](docs/install.md).
 
 ```
 scope-deal → hypothesis-tree → workplan
-  → size-market / map-competitors (modules, fresh-context, independent)
+  → size-market / map-competitors / probe-customers / assess-moat / scan-risks (modules, fresh-context, independent)
   → triangulate (verification gate) → red-team → storyline
 ```
 
@@ -51,7 +51,7 @@ claims the market is *actually* $X.
 |---|---|
 | `.claude-plugin/` | Plugin manifest (`plugin.json`) and private marketplace (`marketplace.json`) — the no-terminal install surface |
 | `bin/install.js` | Single-file CLI installer; runtimes data-defined in `runtime-catalog.json` (Claude Code, Codex, Antigravity CLI enabled; opencode/copilot catalogued, gated) |
-| `commands/` | The 13 slash commands — flat `.md` files (plugin skills → `/gdd:*`), thin wrappers that delegate to workflows |
+| `commands/` | The 16 slash commands — flat `.md` files (plugin skills → `/gdd:*`), thin wrappers that delegate to workflows |
 | `agents/` | The 10 subagents (scoper, planner, researcher, independent sizers, analyst, verifier, red-teamer, storyliner, librarian) |
 | `gdd-core/workflows/` | The real mechanics each command routes into |
 | `gdd-core/templates/` | Engagement state artifacts (brief, taxonomy, ledger, reports…) |
@@ -67,11 +67,9 @@ in this repo — gitignored): `ENGAGEMENT.md`, `TAXONOMY.md` +
 ## Inspiration
 
 GDD takes its name and skeleton in analogy with
-[GSD](https://github.com/open-gsd/get-shit-done-redux) (MIT) and follows
-the domain-fork playbook of
-[GPD](https://github.com/psi-oss/get-physics-done) (Apache-2.0), which
-showed how the command-workflow idea transfers out of software
-development. Machinery here is written fresh against those patterns.
+[GSD](https://github.com/open-gsd/get-shit-done-redux) (MIT), whose
+command-workflow idea transfers cleanly beyond software development.
+Machinery here is written fresh against that pattern.
 
 ## License
 

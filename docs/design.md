@@ -5,8 +5,7 @@ agentic workflow: the hierarchy, the persistent state artifacts, the command
 surface, the agents, and — most importantly — the verification semantics.
 
 GDD follows the process-encoding pattern proven by
-[GSD](https://github.com/open-gsd/get-shit-done-redux) (software) and
-[GPD](https://github.com/psi-oss/get-physics-done) (physics): a deterministic
+[GSD](https://github.com/open-gsd/get-shit-done-redux): a deterministic
 engagement spine with open-ended analytical leaves, persistent state in
 markdown plus a machine lock, and a verification gate run by a fresh-context
 agent. Naming and installer conventions follow that precedent; the domain
@@ -61,6 +60,9 @@ installer per `runtime-catalog.json`. The MVP path is in **bold**.
 | **`/gdd:workplan`** | lay modules across the timeline → `WORKPLAN.md` |
 | **`/gdd:size-market`** | flagship module: top-down AND bottom-up sizing in fresh, independent subagents, then reconcile |
 | **`/gdd:map-competitors`** | competitive set, positioning, share estimates with citations |
+| `/gdd:probe-customers` | customer evidence up the evidence ladders — retention, satisfaction, KPCs |
+| `/gdd:assess-moat` | test moat claims mechanism by mechanism, kill-tests run at build time |
+| `/gdd:scan-risks` | standing risk screens — trip conditions, bounded deep dives, evidence-of-search |
 | **`/gdd:triangulate`** | run verifier agents → `reports/TRIANGULATION.md`; the consistency gate |
 | **`/gdd:red-team`** | adversarial pass on thesis + ledger → `reports/REDTEAM.md` |
 | **`/gdd:storyline`** | pyramid-principle synthesis from surviving findings |

@@ -5,6 +5,35 @@ Version corresponds to `"version"` in `.claude-plugin/plugin.json`.
 
 ## [Unreleased]
 
+### Added
+
+- Three new module commands completing CDD's five-module set:
+  `/gdd:probe-customers` (customer evidence up the evidence ladders —
+  retention, satisfaction, KPCs), `/gdd:assess-moat` (moat claims tested
+  mechanism by mechanism, with kill-tests run at build time), and
+  `/gdd:scan-risks` (the standing risk screens — trip conditions, bounded
+  deep dives, evidence-of-search for the rest). All three spawn
+  `gdd-analyst` with `gdd-researcher` delegation, same pattern as the
+  existing modules.
+- Four new method references backing the modules above:
+  `customer-evidence.md` (evidence ladders, KPC elicitation,
+  review-mining discipline), `moat-evidence.md` (mechanism taxonomy, the
+  one-release-cycle test, the circularity rule), `risk-screens.md` (the
+  six standing screens, trip conditions, the evidence-of-search
+  standard), and `research-recipes.md` (question-shape → recipe → tier
+  index).
+- Deal-objective quad in `/gdd:scope-deal`'s Batch B interview: strategic
+  intent, key concerns, value-creation levers, and deal breakers,
+  captured verbatim into `ENGAGEMENT.md`; deal breakers seed
+  `/gdd:scan-risks`'s screens and the red team's mandatory attack list.
+- `gdd-researcher` now matches each research question to an instrument
+  in `research-recipes.md` before falling back to generic search,
+  recording the recipe used in `SOURCES.md`'s reliability notes.
+- Red-team attack-pattern library extended with risk-screen and
+  deal-breaker patterns: re-run an untripped screen's cheap test with
+  hostile search terms; every deal breaker in the deal objective gets an
+  explicit attack attempt.
+
 ## [0.1.3] - 2026-07-09
 
 ### Added
@@ -37,7 +66,7 @@ Version corresponds to `"version"` in `.claude-plugin/plugin.json`.
   (`gdd-scoper`, `gdd-storyliner`) never rendered as native forms to the
   user — a subagent's interactive tool calls are headless, the form
   channel belongs only to the top-level command turn. Matches the
-  pattern GSD/GPD already use: orchestrators ask, agents write.
+  pattern GSD already uses: orchestrators ask, agents write.
   - `/gdd:scope-deal` now runs the four-batch interview directly in the
     command; `gdd-scoper` is spawned afterward as a headless writer with
     the collected answers (tool grant narrowed accordingly).

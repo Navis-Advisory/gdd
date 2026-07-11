@@ -49,7 +49,7 @@ try {
 
   const commandCount = fs.readdirSync(path.join(configDir, 'commands', 'gdd')).length;
   const agentCount = fs.readdirSync(path.join(configDir, 'agents')).length;
-  check(`13 commands (found ${commandCount})`, commandCount === 13);
+  check(`16 commands (found ${commandCount})`, commandCount === 16);
   check(`10 agents (found ${agentCount})`, agentCount === 10);
 
   // Token rewrite and fork cleanliness across every installed text file.

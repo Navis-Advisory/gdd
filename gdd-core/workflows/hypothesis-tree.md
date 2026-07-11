@@ -9,6 +9,11 @@ Preconditions: scoped engagement (ENGAGEMENT.md exists and signed off).
   pricing" decomposes into exactly those three multiplicative claims,
   plus the implicit ones every thesis carries (customers stay; the
   moat that enables share gain exists; nothing structural kills it).
+- The deal objective in ENGAGEMENT.md seeds the tree: value-creation
+  levers are candidate first-order conditions (the thesis usually
+  compounds through them), and every deal breaker must land as a risk
+  leaf or a GATE-OWNED condition — a breaker the tree ignores is a
+  decomposition defect.
 - A good leaf passes three tests: falsifiable (names the evidence that
   kills it), decidable this engagement (within access constraints from
   ENGAGEMENT.md), and owned (exactly one module).

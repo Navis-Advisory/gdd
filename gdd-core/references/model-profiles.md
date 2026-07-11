@@ -1,6 +1,6 @@
 # Model profiles
 
-<!-- TODO(post-MVP): tiered model routing per agent (GSD/GPD pattern:
+<!-- TODO(post-MVP): tiered model routing per agent (GSD pattern:
 profile → agent → model tier → runtime-native id, stored in
 .diligence/config.json). For the MVP every agent inherits the session
 model; commands omit the model parameter. This file exists so the

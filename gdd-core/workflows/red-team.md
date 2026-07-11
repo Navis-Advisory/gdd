@@ -14,7 +14,11 @@ Preconditions: ledger non-empty; best after triangulate.
    rows for the risk-leaf verdicts (module=risks) — the one sanctioned
    exception to its status-only ledger remit — so refuted or supported
    risk hypotheses live in the evidence spine, not only in the report.
-   The report gets a "Risk-leaf verdicts" section in that case.
+   The report gets a "Risk-leaf verdicts" section in that case. When
+   `/gdd:scan-risks` has already produced
+   `.diligence/modules/risks/FINDINGS.md`, this exception does not
+   apply — attack the screens like any other module, starting with the
+   evidence-of-search lines on untripped screens.
 4. Orchestrator updates `state.json.gates.red_team` (status values:
    not-run | run — red team informs, it does not pass/fail) and
    STATE.md; summarizes the counter-thesis and kill list to the user.
@@ -36,6 +40,12 @@ Preconditions: ledger non-empty; best after triangulate.
 - **Customer findings**: testimony selection (who volunteered?);
   retention claims from management without cohort data; NPS-style
   numbers with no base.
+- **Risk screens**: an untripped screen died of not looking — re-run
+  its cheap test with hostile search terms; a recorded trip nobody
+  chased must surface in the storyline's risks, check it does.
+- **Deal breakers**: every deal breaker in ENGAGEMENT.md's deal
+  objective gets an explicit attack attempt; "not observed" with no
+  search trail is not an answer (negative-existence pattern applies).
 - **Moat claims**: the one-release-cycle test (what stops a funded
   incumbent from shipping this feature?); switching-cost claims tested
   against observed switching in the evidence; regulatory moats checked

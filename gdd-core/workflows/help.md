@@ -17,6 +17,12 @@ Canonical command index. Print grouped; keep it compact.
 - `/gdd:size-market [segment]` — independent top-down + bottom-up sizing,
   reconciled
 - `/gdd:map-competitors [focus]` — competitive set, positioning, shares
+- `/gdd:probe-customers [focus]` — customer evidence up the evidence
+  ladders: retention, satisfaction, purchase criteria
+- `/gdd:assess-moat [mechanism]` — moat claims tested mechanism by
+  mechanism, kill-tests run at build time
+- `/gdd:scan-risks [screen]` — standing risk screens: trip conditions,
+  bounded deep dives, evidence-of-search
 
 ## Gates (before synthesis)
 - `/gdd:triangulate` — D1–D8 consistency & traceability checks →

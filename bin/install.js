@@ -10,7 +10,7 @@
  * Code, Codex, and Antigravity CLI are supported; OpenCode and Copilot
  * CLI are catalogued but gated until their converters exist.
  *
- * Pattern follows the GSD / GPD installers (single self-contained Node
+ * Pattern follows the GSD installer (single self-contained Node
  * script, no dependencies, JSON runtime catalog).
  */
 

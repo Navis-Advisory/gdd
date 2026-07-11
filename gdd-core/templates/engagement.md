@@ -43,11 +43,28 @@ e.g.: "Pest-control FSM is a growing niche where KestrelSoft can double
 ARR in 5 years via market growth, share gain from generic FSM tools, and
 pricing; competitive moat is vertical-specific compliance workflow." -->
 
+## Deal objective
+
+<!-- The quad from the scoping interview, client's words verbatim:
+- Strategic intent: why this target, for this buyer, now.
+- Key concerns: what already worries the client — each must map to a
+  KQ below (scope-deal enforces at sign-off).
+- Value-creation levers: where the return comes from; the hypothesis
+  tree treats these as candidate first-order conditions.
+- Deal breakers: what kills the deal regardless of everything else;
+  each seeds a risk screen (references/risk-screens.md) and the red
+  team's mandatory attack list.
+e.g.: "Intent: platform for a pest-vertical roll-up. Concerns: churn
+opacity; horizontal FSM moving down-market. Levers: pricing headroom,
+M&A pipeline. Breakers: any single customer >15% of ARR; compliance
+moat proves cosmetic." -->
+
 ## Key questions
 
 <!-- The 3–6 questions the deliverable must answer, numbered KQ1…, each
 answerable with evidence within the timeline. Every module brief traces
-to at least one KQ; a KQ no module addresses is a scoping defect.
+to at least one KQ; a KQ no module addresses is a scoping defect, and
+so is a key concern (Deal objective) with no covering KQ.
 e.g.:
 KQ1. Is the addressable market big and growing enough to support the
      growth plan? (market)

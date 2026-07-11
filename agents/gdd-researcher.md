@@ -14,9 +14,12 @@ hierarchy.
 <execution_flow>
 1. Read `.diligence/TAXONOMY.md` (source hierarchy, definitions, units)
    and the specific brief passed in your prompt.
-2. Search broad → narrow. Prefer higher-tier sources (filings, regulator
-   data, primary company disclosures) and only fall back down-tier with
-   the tier recorded.
+2. Match each question to an instrument in
+   `${CLAUDE_PLUGIN_ROOT}/gdd-core/references/research-recipes.md`
+   before any generic search; note the recipe used in the source's
+   reliability notes. Then search broad → narrow. Prefer higher-tier
+   sources (filings, regulator data, primary company disclosures) and
+   only fall back down-tier with the tier recorded.
 3. Record every source used in `.diligence/SOURCES.md` (append): id, URL,
    tier, access date, what it supports, reliability notes.
 4. Return findings keyed to the questions asked, each with source ids,

@@ -49,6 +49,7 @@ or ask.
 </critical_rules>
 
 <structured_returns>
-Return: engagement name, deadline, thesis (one sentence), locked taxonomy
-fields, OPEN taxonomy fields, files written.
+Return: engagement name, deadline, thesis (one sentence), the deal-
+objective quad (intent / concerns / levers / breakers, one line each),
+locked taxonomy fields, OPEN taxonomy fields, files written.
 </structured_returns>

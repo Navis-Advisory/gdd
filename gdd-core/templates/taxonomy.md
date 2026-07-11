@@ -13,7 +13,7 @@ never edits in place.
 Why this file exists: every diligence blow-up traceable to process is a
 definition drift — "the market" quietly changing size mid-engagement
 because two analyses used two segment boundaries. Locking definitions
-BEFORE analysis is GDD's equivalent of GPD pinning metric signatures.
+BEFORE analysis is what keeps every later number comparable.
 
 Worked-example lines are Project Kestrel (see engagement template). -->
 
@@ -27,8 +27,7 @@ needs it (the sizers refuse OPEN segments). -->
 
 <!-- Each segment: name, definition tight enough to classify boundary
 cases, the boundary cases actually decided, and a test value — a
-concrete classification the verifier can re-run (GPD's convention test
-values, transplanted).
+concrete classification the verifier can re-run mechanically.
 
 e.g.:
 **Primary market** — software spend by NA pest-control operators on

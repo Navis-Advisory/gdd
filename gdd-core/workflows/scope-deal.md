@@ -15,10 +15,18 @@ refuse with a pointer to /gdd:resume-work otherwise.
    Who is the client and what transaction? What has the client already
    seen (CIM, management calls, prior DD)?
 
-   **Batch B — thesis & questions.** The thesis in the client's words
-   (capture verbatim — do not improve it). Then propose 4–6 key
-   questions derived from the thesis and let the user edit; each KQ must
-   be evidence-answerable within the timeline.
+   **Batch B — thesis, objective & questions.** The thesis in the
+   client's words (capture verbatim — do not improve it). Then the
+   deal-objective quad, also verbatim: strategic intent (why this
+   target, for this buyer, now), key concerns (what already worries the
+   client), value-creation levers (where the return is supposed to come
+   from), deal breakers (what kills it regardless of everything else).
+   Then propose 4–6 key questions derived from thesis + quad and let
+   the user edit; each KQ must be evidence-answerable within the
+   timeline, and every key concern must map to a KQ — an unmapped
+   concern is a scoping defect to fix before sign-off. Deal breakers
+   seed the risks screens and the red team's mandatory attack list
+   downstream.
 
    **Batch C — deliverable & constraints.** Format, audience, deadline,
    interim checkpoints. Data access: which paid databases exist, is

@@ -15,21 +15,22 @@ design, [`docs/install.md`](docs/install.md) for every install path, and
 
 ## Install
 
-**Claude Code (Desktop, web, or CLI).** Add this repository as a plugin
-marketplace and install, then run `/gdd:tour`:
+**CLI install (recommended).** `node bin/install.js --claude --global`
+projects GDD into `~/.claude`, so `/gdd:` works from any deal folder — the
+tool's normal per-engagement usage pattern. The same installer targets
+Codex and Antigravity CLI. `npm test` verifies the install round-trip and
+reference integrity. Full details in [`docs/install.md`](docs/install.md).
 
-```
-/plugin marketplace add Navis-Advisory/gdd
-/plugin install gdd@gdd
-```
+**Claude Code plugin (secondary).** `/plugin marketplace add
+Navis-Advisory/gdd` then `/plugin install gdd@gdd` works, but registers at
+local scope pinned to the project you ran it in — `/gdd:` won't follow you
+into other deal folders, and it can't reach Antigravity CLI. Use the CLI
+install above unless you're staying in one project folder for the whole
+engagement.
 
 **Claude Cowork.** Install **GDD — Get Diligence Done** from the plugin
-browser. The intake commands render as fill-in-the-blank forms.
-
-**Local / other runtimes.** `node bin/install.js --claude --local` projects
-the same content into a deal folder's `./.claude`. `npm test` verifies the
-install round-trip, reference integrity, and the plugin layout. Full details
-in [`docs/install.md`](docs/install.md).
+browser once it's listed in the community catalog. The intake commands
+render as fill-in-the-blank forms.
 
 ## The loop
 

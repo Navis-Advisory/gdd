@@ -30,7 +30,7 @@ in scope; capital structure, QoE, and legal DD are not.
 | Network effects | value metric that rises with the network's size, cross-side pull evidenced (e.g. counterparties join because customers are there) | flat per-user value; "network" is actually a customer list |
 | Scale economies | unit-cost or coverage advantage a sub-scale entrant measurably can't match (density of routes, data coverage, support hours) | competitors at a fraction of the scale matching price and SLA |
 | Brand / category ownership | sustained price premium vs functional comparables; unprompted first-mention in practitioner forums | premium explained by lock-in, not preference; brand absent from buyer language in KPC evidence |
-| Regulatory / licensing | the license or certification is required, scarce, and **actually enforced** (enforcement actions on record) | requirement on paper, enforcement absent; competitors operating fine without it |
+| Regulatory / licensing | the license or certification is required, scarce, and **actually enforced** (enforcement actions on record) — **against the vendor**: ask enforced-against-whom first; if the license attaches to the customer (usual for B2B compliance software), the claim belongs in the data/workflow-depth row, not here | requirement on paper, enforcement absent; competitors operating fine without it; no vendor-side license exists at all |
 | IP | patents that map to the revenue-carrying feature (claims read against the product, not just counted); litigation record of defending them | patent thicket orthogonal to what customers buy; feature shipped by others un-sued |
 | Data / workflow depth | the workflow is the system of record and export is lossy (test: what leaves in a CSV?); proprietary data no competitor can assemble | full-fidelity export exists; the "proprietary" data is licensable or public |
 
@@ -43,7 +43,11 @@ incumbent's public roadmap/changelog, an architectural reason with a
 third-party basis — or the claim's confidence caps at L. "They haven't
 yet" is not an answer; check whether they already announced it
 (the red-team library's horizontal-dismissal attack, run on yourself
-first).
+first). When the target itself is unreachable and a peer proxies the
+test, the proxy must match the target's ownership and depth class —
+a depth test passed by the segment's deepest player proves nothing
+about an independent mid-depth target; name the mismatch if no true
+comparable exists.
 
 ## Strategy consistency (stated vs revealed)
 
@@ -72,8 +76,10 @@ determinable outside-in") rather than defaulting to the target's favor.
 ## Pricing power
 
 Ladder: realized-price history (data room) → list-price history
-(archived pricing pages, dated) + discount testimony → renewal
-repricing stories in reviews (both directions: successful raises =
+(archived pricing pages, dated; if archives are unreachable, dated
+current pricing plus in-page change signals and repricing testimony,
+confidence capped one level, vintage limitation recorded) + discount
+testimony → renewal repricing stories in reviews (both directions: successful raises =
 power; "repriced me so I left" = monetizing inertia, which is
 switching-cost erosion, not brand). Distinguish the mechanisms: a
 premium that survives a competitor's discounting is power; a premium

@@ -37,7 +37,11 @@ Market module only — mandatory structure:
 (full units × penetration × price build, range)
 ### Reconciliation
 (gap vs tolerance, reconciled figure + basis, residual-gap driver —
-this section is what F-ids cite) -->
+this section is what F-ids cite)
+### Market risk register
+(structural risks rated better-than-remote: saturation, substitution,
+technology shift, demand-driver decay — the risks module's
+market-structure screen cites this section) -->
 
 ## Unprompted observations
 

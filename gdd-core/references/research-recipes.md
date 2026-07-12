@@ -64,6 +64,7 @@ Full method discipline in references/customer-evidence.md; the recipes:
 | Universe counts | business census codes, license registries, association memberships (with coverage rate), review-platform listing counts (dedup basis stated) | 2–4 | multi-state double counting; NAICS/SIC boundary vs the lock |
 | Trade flows, supply chokepoints | import/export records (bill-of-lading databases) by shipper/consignee | 2 | HS-code mapping to the lock's segment |
 | Government demand | contract-award databases (SAM/TED/provincial portals): awards by vendor, values, dates | 2 | award ≠ recognized revenue timing |
+| Filing/regulation text when the official host is blocked | company investor-relations mirrors serve filings verbatim (tier stays 1); gov mirror hosts (e.g. govinfo) for regulation text | 1–2 | verify the mirror is verbatim/complete; record both locators |
 | Local color, formation rates | chamber-of-commerce and economic-development data; trade-association stats | 4–5 | boosterism in the denominator |
 
 ## Rules of use

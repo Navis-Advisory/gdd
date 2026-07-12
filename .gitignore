@@ -1,5 +1,7 @@
-# User engagement state never belongs in the tool repo.
+# User engagement state never belongs in the tool repo —
+# except the worked example, which is the point of examples/.
 .diligence/
+!examples/**/.diligence/
 
 node_modules/
 *.log

@@ -7,6 +7,20 @@ Version corresponds to `"version"` in `.claude-plugin/plugin.json`.
 
 ### Added
 
+- Dogfood fold-backs from the kestrel-sound five-module run: D4
+  platform-metadata and citation-chain clauses, D6 staleness rule
+  (waiver, not reclassification), D8 stale-trace fragility note, and a
+  grown-ledger re-run rule in the check registry; `unreachable`
+  screen-verdict state and citation-record promotion rule in
+  risk-screens; enforced-against-whom test, proxy reference-class rule,
+  and archived-pricing fallback in moat-evidence; platform-pool
+  independence check in customer-evidence; filing-mirror recipe in
+  research-recipes; market-risk-register anchor in the module-findings
+  template; citation-chain and structural-defect-propagation red-team
+  patterns; parallel-researcher source-registration protocol
+  (researcher + analyst specs) and the report-filename write-guardrail
+  fallback note.
+
 - Three new module commands completing CDD's five-module set:
   `/gdd:probe-customers` (customer evidence up the evidence ladders —
   retention, satisfaction, KPCs), `/gdd:assess-moat` (moat claims tested

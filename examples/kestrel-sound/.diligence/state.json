@@ -1,0 +1,130 @@
+{
+  "gdd_state_version": 1,
+  "engagement": {
+    "name": "Kestrel Sound",
+    "deadline": "2026-07-28",
+    "thesis": "Pest-control FSM is a growing niche where KestrelSoft can double ARR in 5 years via market growth, share gain from generic FSM tools, and pricing; the moat is vertical-specific compliance workflow."
+  },
+  "taxonomy_lock": {
+    "taxonomy_version": 1,
+    "segments": [
+      {
+        "name": "Primary market \u2014 NA pest-control FSM software spend",
+        "definition": "Software spend by US + Canada pest-control operators on field-service-management software (scheduling, routing, billing, chemical-compliance logging). Excludes generic horizontal FSM revenue from other trades (competitive displacement pool, not the market), hardware, and pest-control services revenue.",
+        "boundary_cases": [
+          "Lawn-care / wildlife-control operators: OUT unless pest control is >=50% of operator revenue",
+          "Consumer/residential DIY apps: OUT (consumer, not operator spend)"
+        ],
+        "test_value": "A 20-truck termite specialist using ServiceTitan -> IN market, competitor-supplied"
+      }
+    ],
+    "geography": [
+      "US",
+      "Canada"
+    ],
+    "currency": {
+      "reporting": "USD",
+      "fx": [
+        {
+          "pair": "CADUSD",
+          "rate": 0.7025,
+          "as_of": "2026-07-06",
+          "source": "S1"
+        }
+      ],
+      "units": "$M, 3 s.f."
+    },
+    "time_basis": {
+      "kind": "CY",
+      "base_year": 2025,
+      "end_year": 2030
+    },
+    "source_hierarchy_overrides": [],
+    "reconciliation_tolerance_pct": 30,
+    "defined_terms": {},
+    "open_fields": [
+      {
+        "field": "defined_terms",
+        "note": "ARR vs revenue, 'operator', unit of account (location vs truck), churn (gross logo vs net revenue) not settled at scoping. Would settle: CIM/management definitions plus user confirmation. Blocks analyses that lean on these terms."
+      }
+    ],
+    "supersessions": []
+  },
+  "gates": {
+    "triangulation": {
+      "status": "pass",
+      "as_of": "2026-07-11",
+      "waiver": "LAPSED (discharged) 2026-07-11: the 2026-07-11 waiver\u2019s expiry condition (\"D6 and D8 re-run mandatory immediately post-storyline; the waiver lapses at that re-run.\") is this run. Both mandates verified met, not merely asserted \u2014 see .diligence/reports/TRIANGULATION.md#post-storyline-scoped-re-run-2026-07-11-d6-d8-d5-ripple--waiver-lapse. Original waiver text preserved for audit trail: \"Waive D6 for the storyline-v2 build only: the FAIL is staleness of the superseded v1 storyline, and storyline v2's mandated deliverables (v2 sensitivity table, v2 GATE-OWNED answers, CONTESTED declarations for F22/F35) are the remediation itself. D6 and D8 re-run mandatory immediately post-storyline; the waiver lapses at that re-run.\" \u2014 scripted waiver, synthetic validation engagement, orchestrator for the maintainer, 2026-07-11",
+      "note": "post-storyline scoped re-run 2026-07-11 (D6, D8, D5 ripple): D6 PASS (real run \u2014 v2 sensitivity table 11 rows verified, >=2 load-bearing flexes independently recomputed [S-1 F1-span share 31%/65%, S-8 F22-concentration 451/225 locations], no flip confirmed by recomputation across S-1/S-2/S-5-GateOwned/S-8/S-10/S-11, GATE-OWNED sufficiency answered explicitly under v2 \"net of evidenced retention direction\" wording with executed arithmetic); D8 PASS (fresh, kill list {F7,F12,F22,F35} exact match, all four have disposition/standing-dispute declared with status label in STORYLINE v2 Risks section, zero CONTESTED id in key-line trace, F7 arguendo-in-GATE-OWNED ruled consistent with the previously-accepted pattern under the registry as amended 2026-07-11 \u2014 not a FAIL; prior run\u2019s flagged staleness-fragility now discharged since storyline v2 postdates and explicitly declares F22/F35); D5 ripple PASS (11 headline quantities + F36 corrected-bound usage all consistent; one new advisory A14 \u2014 storyline\u2019s F7-arguendo \"capture needed\" figure (~190%) diverges from the 2026-07-08 TRIANGULATION/STATE figure (~95-100%) for a claimed-\"unchanged\" scenario, non-gating, does not touch any key-line claim or flip verdict). D1-D4/D7 carried forward dated. Two new advisories: A14 (capture-needed reframing mislabeled \"unchanged from v1\") and A15 (TREE.md\u2019s formal GATE-OWNED block still reads stale v1 wording; only its v2-changes narrative note has the current text) \u2014 both non-gating. GATE MOVES WAIVED -> PASS: waiver discharged (mandates verified met, not just asserted), no FAIL found. Certifies D1-D8 PASS over F1-F37 + STORYLINE.md v2 as of 2026-07-11; does not certify thesis truth or that CONTESTED findings are wrongly killed. Report at .diligence/reports/TRIANGULATION.md#post-storyline-scoped-re-run-2026-07-11-d6-d8-d5-ripple--waiver-lapse"
+    },
+    "red_team": {
+      "status": "run",
+      "as_of": "2026-07-11",
+      "note": "v2 sweep over F18-F37 + six standing risk screens + two ad-hoc breaker rows + all three ENGAGEMENT.md deal breakers (mandatory attack list); scan-risks already ran this engagement so the risk-leaf-verdict ledger exception did not apply - screens attacked as ordinary findings. 2 new ledger kills marked CONTESTED (F22 customer-concentration estimate - PE roll-up-platform channel unexamined; F35 breaker-2 disposition - citation chain never tested against the target's independent-ownership reference class). F7/F12 (v1 CONTESTED) revisited per brief: both STAND, not edited (F7 unrevived; F12 sharpened toward but not at revival via tier-4 S82/S83 revealed-preference evidence) - rulings recorded in REDTEAM.md and STATE.md only, ledger rows untouched per remit. All three deal breakers explicitly attacked. 11 findings attacked and held as survivors (F19/F20/F23/F24/F26/F27/F30/F31/F32/F33/F21). Counter-thesis strengthened, not merely carried forward. 2 new unresolvable disputes added. Dogfood-friction notes on hedge-clause, moat one-release-cycle, and citation-chain-scope-mismatch attack patterns. Ledger CONTESTED set now {F7, F12, F22, F35} - D8 re-run mandatory at next triangulate. Carries forward v1 (2026-07-08, full sweep incl. risks module H-risk-1..4, H-risk-1 trend clause refuted, S45-S50 registered). Fresh counter-research this sweep cited inline in REDTEAM.md, not registered in SOURCES.md (narrower write scope than v1 - flagged for librarian). Report at .diligence/reports/REDTEAM.md#v2-sweep-2026-07-11-f18f37--screens--breakers"
+    }
+  },
+  "modules": {
+    "market": {
+      "status": "done",
+      "brief": ".diligence/modules/market/BRIEF.md",
+      "hypotheses": [
+        "H-mkt-1",
+        "H-mkt-2",
+        "H-mkt-3",
+        "H-mkt-4"
+      ],
+      "findings": ".diligence/modules/market/FINDINGS.md"
+    },
+    "competition": {
+      "status": "done",
+      "brief": ".diligence/modules/competition/BRIEF.md",
+      "hypotheses": [
+        "H-comp-1",
+        "H-comp-2",
+        "H-comp-3",
+        "H-comp-4",
+        "H-comp-5"
+      ],
+      "findings": ".diligence/modules/competition/FINDINGS.md",
+      "note": "executed 2026-07-08 under fidelity deviation D-4 (researcher unspawnable; inline WebSearch-snippet research); verdicts: H-comp-4 confirmed (native-core) w/ kill-clause contradiction F11; H-comp-1/3 directionally supported unresolved; H-comp-2/5 unresolved (F8 joint contradiction, F13 headroom tension); F6-F13 promoted"
+    },
+    "risks": {
+      "status": "done",
+      "brief": ".diligence/modules/risks/BRIEF.md",
+      "findings": ".diligence/modules/risks/FINDINGS.md",
+      "hypotheses": [
+        "H-risk-1",
+        "H-risk-2",
+        "H-risk-3",
+        "H-risk-4"
+      ],
+      "note": "v1 executed as red-team sweep 2026-07-08 (leaf verdicts F14-F17, recorded in .diligence/reports/REDTEAM.md); v2 standing screens run 2026-07-11 via /gdd:scan-risks (F29-F36, S90-S117): supplier/input, platform, regulatory/licensing CLEAR with evidence-of-search lines; customer-concentration (breaker 1) and key-person trips UNCHASEABLE outside-in, recorded open per pre-authorized chase-vs-record gate; market-structure intake tripped-already-escalated; breaker 2 NOT triggered (F35 citing F23/F27/F28); breaker 3 cannot-clear (F36, F8-trilemma leg + 22-29% comparable non-subscription bound); seeding audit clean, no scoping defect; deviations D-5/D-6 recurred, D-7 new (async researcher false-completion signals -> partial inline duplication, no data divergence)"
+    },
+    "customers": {
+      "status": "done",
+      "brief": ".diligence/modules/customers/BRIEF.md",
+      "hypotheses": [
+        "H-cust-1",
+        "H-cust-2",
+        "H-cust-3"
+      ],
+      "findings": ".diligence/modules/customers/FINDINGS.md",
+      "note": "executed 2026-07-11 via two parallel gdd-researcher spawns (16 new sources S51-S66); verdicts: H-cust-1 unresolved (tenure n=13 \u2248 churn n=11, PestPac contract-lock-in cluster), H-cust-2 refuted on frequency (compliance ranks #4, not top-3 \u2014 C2 axes re-check flagged), H-cust-3 confirmed (3 vendors, expandable pricing + modules); F18-F22 promoted; customer-concentration ESTIMATE (F22) for risks screen; fidelity deviations D-5 (parallel-researcher SOURCES.md consolidation), D-6 (Write-tool guardrail blocked FINDINGS.md, worked around via Bash)"
+    },
+    "company": {
+      "status": "done",
+      "brief": ".diligence/modules/company/BRIEF.md",
+      "hypotheses": [
+        "H-co-1",
+        "H-co-2",
+        "H-co-3"
+      ],
+      "findings": ".diligence/modules/company/FINDINGS.md",
+      "note": "executed 2026-07-11 via three parallel gdd-researcher spawns (23 new sources S67-S89); verdicts: H-co-1 confirmed (switching costs, deep-compliance tier, stratified; contractual-annuity caveat per F19), H-co-2 confirmed decay-gated (one-release-cycle answer NO on cadence evidence; mechanism reclassified data/workflow depth F24; F14 engaged as decay vector F28), H-co-3 refuted on reachable rungs (annuity not power; archived vintages blocked); mechanism table all 7 taxonomy rows (4 not-claimed); F23-F28 promoted; deal-breaker 'moat cosmetic/one-release-cycle' NOT triggered on segment evidence, conditional on target depth class (UNREACHABLE outside-in); fidelity deviations D-5/D-6 recurred, no new numbers"
+    }
+  },
+  "continuation": {
+    "handoff": null,
+    "next_step": "final readout (validation pipeline complete); F22/F35 dispositions + data-room items carry to any post-LOI phase"
+  }
+}

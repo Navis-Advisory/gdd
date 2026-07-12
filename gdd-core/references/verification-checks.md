@@ -69,6 +69,12 @@ tier-6 material is the *object* of the claim rather than its authority
 (e.g. "review testimony runs 3:1 in direction X"): there a
 direction-only claim with the channel bias flagged passes; any
 magnitude claim on the same evidence fails.
+The same object-of-claim logic covers platform-reported metadata
+(review counts, listing tallies): usable as corpus description or
+methodology basis, never as the sole support of a market magnitude.
+Citation-record findings (rows whose evidence is other findings, e.g.
+a breaker disposition) trace THROUGH the cited finding ids to their
+sources — D4 follows the chain and applies tier adequacy at its end.
 
 ## D5 — Cross-artifact consistency
 
@@ -98,6 +104,10 @@ N-A ("no storyline yet"), recorded with a mandatory post-storyline
 re-run — the pipeline order (triangulate gates storyline; the storyline
 holds the sensitivity table) makes a first-sweep FAIL a deadlock, which
 is never the intended reading.
+Staleness is not absence: a storyline that predates a scope extension
+or a superseded tree makes D6 FAIL (remediation: rebuild), and the
+sanctioned unblock is a recorded user waiver scoped to the rebuild —
+verifier reclassification to N-A is not.
 
 ## D7 — Plausibility and base rates
 
@@ -121,6 +131,9 @@ Run: diff the red-team kill list against ledger statuses and the
 storyline trace map.
 FAIL if: a kill has no disposition, or a CONTESTED id appears in the
 key-line trace.
+Kills that postdate the current storyline cannot appear in its trace
+by construction — that clean trace is fragile, not safe: PASS only
+with the mandatory declaration recorded for the next storyline build.
 
 ## Report rules
 
@@ -128,3 +141,7 @@ key-line trace.
 - At least one executed code block with real output per report — the
   external-oracle rule; asserted arithmetic is not verification.
 - One FAIL fails the gate. Waivers are the user's, quoted verbatim.
+- When the ledger has grown materially since the last full sweep
+  (guideline: >50% new rows), D1 and D4 walk every NEW row fully and
+  spot-check the carried rows; a carry-forward without that walk is
+  not a PASS.

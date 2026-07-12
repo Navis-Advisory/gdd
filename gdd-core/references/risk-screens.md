@@ -24,6 +24,12 @@ condition, and the deep dive it escalates to. Trip conditions are
 falsifiable on the cheap test's output — a screen whose trip condition
 can't be evaluated from its own test is misdesigned; fix the test.
 
+Verdict vocabulary: `tripped` · `clear` · `unreachable — recorded
+open` (the cheap test cannot be evaluated against the target at the
+engagement's access level; record the trip evidence that IS visible
+plus what access would settle it — semantically a trip you cannot
+chase; the access-honesty discipline of customer-evidence.md applies).
+
 | Screen | Cheap test | Trips when | Deep dive (if tripped) |
 |---|---|---|---|
 | Customer concentration | top-10 share from the customers module (cite its F-id; don't re-derive) | top customer >10% of revenue, or top-10 >40%, or any customer is also a competitor/platform | contract terms and renewal dates for the concentrated logos (data room), dependency direction, pricing history on those accounts |
@@ -68,8 +74,12 @@ The screens are seeded from, in order:
 
 ## Promotion rules
 
-- One screen verdict per finding: `screen · tripped/clear · basis`,
-  with the search trail or deep-dive F-ids as evidence.
+- One screen verdict per finding: `screen · tripped/clear/unreachable ·
+  basis`, with the search trail or deep-dive F-ids as evidence.
+- A breaker disposition that only cites other modules' findings
+  promotes as a citation-record row: its evidence IS the cited F-ids
+  (D4 follows the chain); this is the sanctioned exception to
+  evidence-pointer-into-own-module.
 - Tripped-and-unchased items promote at confidence L with the open
   question cross-referenced.
 - The storyline's risks section consumes this module's findings plus

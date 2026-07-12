@@ -82,6 +82,10 @@ poison a module. Mandatory hygiene, every time:
   over-sample current, engaged users. Direction-only, always.
 - Competitor reviews get identical treatment or the comparison is
   garbage — same platforms, same window, same dedup.
+- Platform independence is verified, not assumed: review platforms
+  share pools under common ownership (check identical counts/ratings
+  across pairs before treating them as separate corpora; record the
+  ownership check). Never sum across platforms you haven't cleared.
 
 Worked sketch (illustrative "Project Marlin", US car-wash software —
 deliberately not your deal; placeholder ids): `G2+Capterra, 2024-26

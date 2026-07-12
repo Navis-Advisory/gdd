@@ -26,6 +26,12 @@ context), run the analyses, and write the module's findings.
 </execution_flow>
 
 <critical_rules>
+- Runtime note: some harnesses refuse subagent Write calls on
+  report-like filenames (FINDINGS.md). Fall back to a shell heredoc and
+  note it — never rename the artifact to dodge the guardrail.
+- When you spawn researchers in parallel, they return proposed source
+  rows; you register them in SOURCES.md sequentially (see the
+  researcher spec) — id collisions are yours to prevent.
 - Findings answer hypotheses; interesting-but-unasked facts go to an
   "unprompted observations" section, clearly separated.
 - Cross-module consistency: use ledger numbers where they exist (e.g. the

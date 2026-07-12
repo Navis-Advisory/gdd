@@ -46,6 +46,14 @@ Preconditions: ledger non-empty; best after triangulate.
 - **Deal breakers**: every deal breaker in ENGAGEMENT.md's deal
   objective gets an explicit attack attempt; "not observed" with no
   search trail is not an answer (negative-existence pattern applies).
+- **Citation-record rows**: a disposition that only cites other
+  findings is attacked at the chain's reference class — does the cited
+  evidence's object actually match the disposed claim's object (right
+  comparable, right ownership/depth class, right universe)?
+- **Structural-defect propagation**: when an attack uncovers a
+  structural defect in an instrument (a shared review pool, a
+  double-counted registry), sweep sibling findings built on the same
+  instrument before closing the attack.
 - **Moat claims**: the one-release-cycle test (what stops a funded
   incumbent from shipping this feature?); switching-cost claims tested
   against observed switching in the evidence; regulatory moats checked

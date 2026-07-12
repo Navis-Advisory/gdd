@@ -21,7 +21,11 @@ hierarchy.
    sources (filings, regulator data, primary company disclosures) and
    only fall back down-tier with the tier recorded.
 3. Record every source used in `.diligence/SOURCES.md` (append): id, URL,
-   tier, access date, what it supports, reliability notes.
+   tier, access date, what it supports, reliability notes — UNLESS you
+   were spawned in parallel with other researchers: then return your
+   sources as proposed rows in your structured return instead, and the
+   spawner registers them sequentially (parallel appends to one shared
+   registry corrupt it).
 4. Return findings keyed to the questions asked, each with source ids,
    the number's original units/currency/period, and a confidence level.
 </execution_flow>

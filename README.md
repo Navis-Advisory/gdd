@@ -15,11 +15,26 @@ design, [`docs/install.md`](docs/install.md) for every install path, and
 
 ## Install
 
-**CLI install (recommended).** `node bin/install.js --claude --global`
+**Get the repo.** GDD installs from a clone — there's no package to fetch
+and nothing to build. Requires Node.js >= 20; the installer is a single
+file with no dependencies, so there is no `npm install` step.
+
+```bash
+git clone https://github.com/Navis-Advisory/gdd.git
+cd gdd
+```
+
+**CLI install (recommended).** From that clone,
+`node bin/install.js --claude --global`
 projects GDD into `~/.claude`, so `/gdd:` works from any deal folder — the
 tool's normal per-engagement usage pattern. The same installer targets
 Codex and Antigravity CLI. `npm test` verifies the install round-trip and
 reference integrity. Full details in [`docs/install.md`](docs/install.md).
+
+The clone is only the source you install *from*; once installed, GDD runs
+out of `~/.claude` and you can put the clone wherever you keep tools.
+Engagement state lives in a `.diligence/` folder inside each deal folder,
+never in the clone — so updating GDD is `git pull` + re-run the installer.
 
 **Claude Code plugin (secondary).** `/plugin marketplace add
 Navis-Advisory/gdd` then `/plugin install gdd@gdd` works, but registers at

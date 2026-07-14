@@ -11,6 +11,23 @@ from, so it's a secondary option until that's addressed upstream.
 Engagement state is written to a `.diligence/` folder inside whatever
 deal folder you run in — it never touches this repo.
 
+## Get the repo
+
+Every path below runs from a clone. There's no published package and
+nothing to build — the installer is a single dependency-free file, so
+there is no `npm install` step. Node.js >= 20 is the only prerequisite.
+
+```bash
+git clone https://github.com/Navis-Advisory/gdd.git
+cd gdd
+```
+
+Keep the clone wherever you keep tools; it's only the source you install
+*from*. Updating GDD is `git pull` followed by re-running the installer
+for each runtime you use — the installer overwrites its previous output,
+and a stale install is the usual reason a newly added command doesn't
+appear.
+
 ## CLI install (recommended)
 
 ```bash

@@ -2,7 +2,6 @@
   "name": "get-diligence-done",
   "version": "0.1.0",
   "description": "GDD — Get Diligence Done. An agentic workflow system for commercial due diligence: scope the deal, lock the taxonomy, run the modules, triangulate, tell the story.",
-  "private": true,
   "bin": {
     "gdd": "bin/install.js"
   },

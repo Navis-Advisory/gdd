@@ -1,7 +1,6 @@
 ---
-name: resume-work
 description: Reload engagement state and continue where the last session stopped
-allowed-tools: Read, Glob
+allowed-tools: Read, Glob, Edit
 ---
 
 <objective>

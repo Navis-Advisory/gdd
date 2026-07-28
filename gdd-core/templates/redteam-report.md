@@ -1,9 +1,17 @@
 ---
 template: redteam-report
-template_version: 2
+template_version: 3
 ---
 
 # Red-team report — {DEAL_NAME} · {DATE}
+
+engagement_root: {ABSOLUTE_PATH_TO}/.diligence
+written_by: gdd-red-teamer / {DATE}
+
+<!-- Provenance stamp (mandatory): engagement_root is the absolute path
+of the engagement this report belongs to — the root passed in the
+red-teamer's prompt. A report whose stamp does not match the root it
+sits under is a foreign artifact; D5 fails it. -->
 
 <!-- Written by gdd-red-teamer. Refutation, not balance: this report is
 the strongest case AGAINST, built from the engagement's own evidence

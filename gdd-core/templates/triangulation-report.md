@@ -1,9 +1,17 @@
 ---
 template: triangulation-report
-template_version: 2
+template_version: 3
 ---
 
 # Triangulation report — {DEAL_NAME} · {DATE}
+
+engagement_root: {ABSOLUTE_PATH_TO}/.diligence
+written_by: gdd-verifier / {DATE}
+
+<!-- Provenance stamp (mandatory): engagement_root is the absolute path
+of the engagement this report belongs to — the root passed in the
+verifier's prompt. A report whose stamp does not match the root it sits
+under is a foreign artifact; D5 fails it. -->
 
 > These checks establish internal consistency and traceability of the
 > work product. They do not establish that the estimates are true.
@@ -26,7 +34,7 @@ Report discipline:
 <!-- PASS / FAIL (list failing check ids) / WAIVED.
 Waiver format: user's words verbatim, quoted, dated. e.g.:
 WAIVED — "Accept D2 gap at 38%, both legs weak on penetration, flagged
-in risks" — Ben, 2026-07-21. -->
+in risks" — EM, 2026-07-21. -->
 
 ## Checks
 

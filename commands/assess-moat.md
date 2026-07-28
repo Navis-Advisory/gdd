@@ -1,5 +1,4 @@
 ---
-name: assess-moat
 description: Test the target's moat claims — mechanism by mechanism, with kill-tests run at build time
 argument-hint: "[mechanism to focus on, e.g. switching-costs]"
 arguments: [mechanism]
@@ -32,9 +31,10 @@ re-check in STATE.md.
 </context>
 
 <process>
-1. Spawn `gdd-analyst` with the module brief; heavy evidence gathering
-   delegates to `gdd-researcher` in fresh context, one researcher per
-   mechanism, parallel where independent.
+1. Spawn `gdd-analyst` with the engagement root (absolute path of
+   `<CWD>/.diligence`) and the module brief; heavy evidence gathering
+   delegates to `gdd-researcher` in fresh context (root passed along),
+   one researcher per mechanism, parallel where independent.
 2. Every moat claim names its mechanism, carries confirming AND killing
    evidence, and — for product-feature moats — the one-release-cycle
    answer; target-sourced evidence alone caps confidence at M.

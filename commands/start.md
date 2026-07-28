@@ -1,5 +1,4 @@
 ---
-name: start
 description: Choose the right first GDD action for this folder (new deal vs resume vs tour)
 allowed-tools: Read, Glob
 ---

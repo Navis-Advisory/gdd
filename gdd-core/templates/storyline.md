@@ -1,9 +1,17 @@
 ---
 template: storyline
-template_version: 2
+template_version: 3
 ---
 
 # Storyline — {DEAL_NAME} · {DATE}
+
+engagement_root: {ABSOLUTE_PATH_TO}/.diligence
+written_by: gdd-storyliner / {DATE}
+
+<!-- Provenance stamp (mandatory): engagement_root is the absolute path
+of the engagement this storyline belongs to — the root passed in the
+storyliner's prompt. A report whose stamp does not match the root it
+sits under is a foreign artifact; D5 fails it. -->
 
 <!-- Written by gdd-storyliner after the gates (triangulation PASS or
 WAIVED). Pyramid principle per references/pyramid-principle.md.
@@ -49,7 +57,7 @@ Mandatory whenever TREE.md carries GATE-OWNED entries. -->
 <!-- Mandatory contents:
 - flip points from D6 (which plausible assumption ranges flip which
   key-line claims)
-- CONTESTED findings used anywhere, labeled, with disposition status
+- every CONTESTED ledger row, labeled, with disposition status
 - every unresolvable dispute from REDTEAM.md (the storyliner checks
   that list; omitting one is a defect) -->
 

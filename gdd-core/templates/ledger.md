@@ -9,7 +9,9 @@ template_version: 2
 becomes citable by everything downstream (storyline claims trace to
 finding ids, finding ids trace to source ids). Module agents append;
 gdd-librarian keeps hygiene; gdd-red-teamer may change ONLY the status
-field.
+field — except when it runs as the risks module (no separate risks
+analyst), where it also appends risk-leaf verdict rows (module=risks),
+the one sanctioned exception.
 
 Rules:
 - Append-only. Text of a finding never changes after it lands;

@@ -1,5 +1,10 @@
 # Workflow: workplan
 
+Engagement root: `<CWD>/.diligence` — it exists at exactly that path or
+the engagement does not exist here. Never search parent or sibling
+directories for `.diligence/`; never read or write another folder's
+engagement. Full contract: references/engagement-root.md.
+
 Preconditions: module briefs exist.
 
 ## Timeline-fitting heuristics
@@ -22,7 +27,8 @@ Preconditions: module briefs exist.
 - Long-lead items start earliest regardless of logical order: anything
   involving other humans (expert calls, data-room requests).
 
-1. Spawn `gdd-planner` (workplan mode) with ENGAGEMENT.md (deadline),
+1. Spawn `gdd-planner` (workplan mode) with the engagement root
+   (absolute path), ENGAGEMENT.md (deadline),
    all module briefs, STATE.md, and the workplan template path.
 2. Order modules by hard dependencies (market sizing before share math;
    customer evidence before moat conclusions where briefs say so), then
@@ -30,8 +36,8 @@ Preconditions: module briefs exist.
    final readout) counting back from the deadline.
 3. Anything that does not fit is listed under Capacity notes for the
    user to cut or extend — never silently thinned.
-4. Write WORKPLAN.md; update STATE.md module statuses to pending.
+4. Write `.diligence/WORKPLAN.md`; update STATE.md module statuses to pending.
 5. $ARGUMENTS adjustments ("compress to 2 weeks") re-run step 2 with the
    constraint and show the diff before writing.
 
-Artifacts: WORKPLAN.md, STATE.md update.
+Artifacts: .diligence/WORKPLAN.md, STATE.md update.

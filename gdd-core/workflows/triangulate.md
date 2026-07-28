@@ -1,8 +1,14 @@
 # Workflow: triangulate
 
+Engagement root: `<CWD>/.diligence` — it exists at exactly that path or
+the engagement does not exist here. Never search parent or sibling
+directories for `.diligence/`; never read or write another folder's
+engagement. Full contract: references/engagement-root.md.
+
 Preconditions: at least one module has findings; ledger non-empty.
 
-1. Spawn `gdd-verifier` fresh-context with: all of `.diligence/`,
+1. Spawn `gdd-verifier` fresh-context with: the engagement root
+   (absolute path), all of `.diligence/`,
    references/verification-checks.md, and the triangulation-report
    template. $ARGUMENTS may scope to one module or one check id.
 2. Verifier runs D1–D8 per the registry. Non-negotiables:
@@ -22,16 +28,29 @@ Preconditions: at least one module has findings; ledger non-empty.
 
 ## Execution notes (for the verifier prompt)
 
-- Run order: D1 → D5 first (cheap, mechanical, and their failures
+- Run order: D1 and D5 first (cheap, mechanical, and their failures
   invalidate later checks), then D3/D4, then D2/D6/D7 (computational),
   D8 last (needs the red-team report; N-A before the first red-team
-  run is expected and fine).
+  run OR before the first storyline is expected and fine — dispositions
+  live in the storyline, so a post-red-team pre-storyline sweep records
+  D8 N-A "awaiting storyline dispositions", never FAIL, and needs no
+  waiver).
 - D4 sampling: spot-check max(3, 20% of findings), selected by weight —
-  every key-line-load-bearing finding is always in the sample.
+  every load-bearing key-line finding is always in the sample.
 - Partial sweeps ($ARGUMENTS scoped): the report says exactly what was
   and wasn't checked; a scoped PASS never updates the gate to PASS —
   gate status changes only on full sweeps.
 - Re-runs after remediation: re-run failed checks plus D5 (fixes
   ripple); carry forward prior PASSes with their dates noted.
+
+## Completion gate
+
+The command is not complete until the postconditions hold on disk:
+`.diligence/reports/TRIANGULATION.md` exists non-empty and
+`state.json.gates.triangulation` + STATE.md's gate line reflect this
+sweep's result. Verify before yielding the turn. Never yield with a
+promise to "report back": the verifier call is synchronous — if it has
+not returned, wait for it; if it failed, re-run it once or run the
+checks inline and say so in the session log.
 
 Artifacts: .diligence/reports/TRIANGULATION.md, state.json gates, STATE.md update.

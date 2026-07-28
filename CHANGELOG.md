@@ -5,8 +5,86 @@ Version corresponds to `"version"` in `.claude-plugin/plugin.json`.
 
 ## [Unreleased]
 
+## [0.2.1] - 2026-07-22
+
+### Fixed
+
+- **Vestigial `name:` command frontmatter:** removed the `name:` key from
+  all 17 `commands/*.md` templates. Nothing downstream read it — the Claude
+  Code (nested) layout copies command files through verbatim, so the field
+  only landed in the installed copy and tripped Claude Code's autocomplete;
+  the skills layout (Codex/Antigravity) already synthesizes its own
+  `gdd-<name>` and ignored the source field. A pure subtraction, no logic
+  change. `/gdd:update` users should re-pull. `tests/check-references.mjs`
+  now fails if any shipped command reintroduces a `name:` key.
+
+## [0.2.0] - 2026-07-20
+
+Feature-and-fix release. It completes the five-module CDD set (three new
+commands), adds the `/gdd:update` maintenance path plus a batch of installer
+hardening, and folds in the WS1-WS5 fixes from the v0.1.0 autonomous
+end-to-end test. Feature requests from that test are deferred (see
+[`ROADMAP.md`](ROADMAP.md)). Ids like `GDD-BUG-N` and `WS-N` below are
+internal test-log references, kept as a traceable paper trail.
+
+### Changed
+
+- Installer: `gdd --version`/`-v`; `files` whitelist narrowed so the npm
+  tarball no longer ships publishing tooling; uninstall is contained to the
+  config dir; install provenance recorded in the manifest; clearer messages
+  on corrupt/partial installs and first-install collisions.
+
+### Fixed
+
+- **Engagement isolation (GDD-BUG-2, P1):** the engagement root is
+  `<CWD>/.diligence` — at exactly that path or not at all. New
+  `references/engagement-root.md` contract, a preamble in all 16
+  workflows, an ISOLATION rule in all 10 agents, the root passed as an
+  absolute path in every spawn prompt, provenance stamps
+  (`engagement_root` + `written_by`) on STATE.md and the three report
+  templates, and a D5 "foreign artifact" FAIL on stamp mismatch. Fleet-
+  verified: all 16 commands refuse/route in an empty folder beside a
+  full sibling engagement, zero sibling reads, sibling byte-identical.
+- **Subagent dispatch (GDD-BUG-1, P1):** dispatch/return contracts in
+  the agent specs (synchronous spawns only, postconditions verified on
+  disk before returning) and completion gates in the five module
+  workflows + triangulate + red-team — a command is not complete until
+  its artifacts exist on disk; no "report back later" turns.
+- **Machine state integrity (GDD-BUG-3/4/6/11, P2/P3):**
+  hypothesis-tree registers every briefed module in
+  `state.json.modules`; module workflows drive the
+  pending→in-progress→done/blocked lifecycle; STATE.md's status column
+  is constrained to the schema enum; gdd-scoper maps every interview
+  boundary rule and test value into the machine lock; fx conversions
+  must be registered in `taxonomy_lock.currency.fx`; D1/D3/D5 enforce
+  all of the above.
+- **Workflow logic (GDD-BUG-5/8/9/14, P2/P3):** D8 is N-A (not FAIL)
+  before the first storyline, killing the built-in waiver deadlock;
+  scope-deal runs a KQ feasibility check against the recorded
+  constraints (unanswerable KQs are reframed or DEGRADED, never signed
+  clean) with a KQ × instrument table in ENGAGEMENT.md; the storyliner
+  may not mint unledgered numbers (needs-promotion round-trip through
+  gdd-librarian) and must enumerate every CONTESTED row; artifacts are
+  client-facing (no interview residue; amendment impact claims need a
+  cited basis).
+- **Hygiene (GDD-BUG-7/10/12/13/15/16, P2/P3):** the installer no
+  longer silently clobbers locally modified files (sha256 manifest
+  baseline, warn + skip, `--force` to overwrite) and the manifest lists
+  itself; scope-deal's edit loop spec matches behavior (orchestrator
+  applies section edits, scoper re-spawned for structural changes);
+  codename discipline records its scope with an all-artifacts
+  IDENTITY.md mode; one tier per SOURCES.md row with central banks
+  pinned to tier 2; locators required (`UNVERIFIED (snippet)` for
+  snippet-only access, counted by D4); rejected sources cited as
+  `(audit: S#)` only; ledger table integrity; start's summary cap
+  raised honestly to ≤8 sentences.
+
 ### Added
 
+- **`/gdd:update`** — update an install to the latest published version.
+  Checks the installed version against npm, shows the changelog delta,
+  confirms, then reinstalls in place. Locally modified files are backed up
+  to `gdd-patches/` and merged back; files a new version drops are pruned.
 - Dogfood fold-backs from the kestrel-sound five-module run: D4
   platform-metadata and citation-chain clauses, D6 staleness rule
   (waiver, not reclassification), D8 stale-trace fragility note, and a
@@ -53,8 +131,8 @@ Version corresponds to `"version"` in `.claude-plugin/plugin.json`.
 ### Added
 
 - CLI install support for Codex and Antigravity CLI (replaces the disabled
-  `gemini` catalog stub — Google sunset Gemini CLI on 2026-06-18 in favor of
-  Antigravity). Both runtimes previously had `"enabled": false` entries in
+  `gemini` catalog stub — GDD targets Antigravity CLI as its Gemini-family
+  runtime). Both runtimes previously had `"enabled": false` entries in
   `runtime-catalog.json` with no working converter.
   - Commands install as `SKILL.md` directories (`skills/gdd-<name>/`) for
     both runtimes, with each command's `<execution_context>@...</execution_context>`

@@ -1,7 +1,8 @@
 ---
-name: triangulate
+argument-hint: "[module or check ID to scope to, defaults to the full sweep]"
+arguments: [scope]
 description: Run the verification gate — consistency and traceability checks across all findings
-allowed-tools: Read, Write, Agent, Bash
+allowed-tools: Read, Write, Edit, Agent, Bash
 ---
 
 <objective>
@@ -25,8 +26,9 @@ $ARGUMENTS may scope to one module or one check ID. Default: full sweep.
 </context>
 
 <process>
-1. Spawn `gdd-verifier` in fresh context with read access to all of
-   `.diligence/` and the check registry reference.
+1. Spawn `gdd-verifier` in fresh context with the engagement root
+   (absolute path of `<CWD>/.diligence`), read access to all of
+   `.diligence/`, and the check registry reference.
 2. Verifier runs each applicable check, showing its work — arithmetic
    re-done in an executed code block, not asserted (the external-oracle
    rule: at least one executed computation per report).

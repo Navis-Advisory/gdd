@@ -1,5 +1,4 @@
 ---
-name: help
 description: Show the GDD command index and where each command fits in a diligence engagement
 argument-hint: "[command name for detail]"
 arguments: [command]

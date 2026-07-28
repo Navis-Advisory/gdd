@@ -1,9 +1,18 @@
 ---
 template: state
-template_version: 2
+template_version: 3
 ---
 
 # Deal state — {DEAL_NAME}
+
+engagement_root: {ABSOLUTE_PATH_TO}/.diligence
+written_by: {AGENT_OR_COMMAND} / {DATE}
+
+<!-- Provenance stamp: engagement_root is the absolute path of THIS
+engagement's .diligence/ folder, set at first write; written_by is
+updated by whichever agent/command last rewrote the file. A stamp that
+does not match the folder the file sits in marks a foreign artifact —
+D5 fails it (see references/engagement-root.md). -->
 
 <!-- The session-continuity artifact: what a fresh session must know to
 continue without re-deriving anything. Lossy human projection of
@@ -24,9 +33,13 @@ pending); triangulation not yet run. 9 days to interim readout." -->
 
 ## Module status
 
-<!-- One row per module. Status ∈ pending / in-progress / done /
-blocked. Note = one line max, what a colleague needs ("blocked: churn
-data needs data-room access"). -->
+<!-- One row per module, a projection of state.json.modules. Status is
+EXACTLY one of the schema enum tokens: pending | in-progress | done |
+blocked — never "briefed", never "done (after two failed dispatches)",
+no parentheticals, no per-hypothesis breakdowns in this column. All
+color goes in Note, one line max, what a colleague needs ("blocked:
+churn data needs data-room access"). D5 fails a status outside the
+enum or a table that disagrees with state.json.modules. -->
 
 | Module | Status | Note |
 |--------|--------|------|
@@ -35,7 +48,7 @@ data needs data-room access"). -->
 
 <!-- Mirror of state.json.gates — human-readable.
 Triangulation: not-run / PASS / FAIL (n checks) / WAIVED · date
-Red team: not-run / done (n kills, m dispositions open) · date -->
+Red team: not-run / run (n kills, m dispositions open) · date -->
 
 ## Open questions
 

@@ -39,10 +39,10 @@ e.g. (3-week engagement):
 ## Checkpoints
 
 <!-- Date · checkpoint · content commitment, e.g.:
-- {date} · interim readout · market size + competitive set, findings to
+- {DATE} · interim readout · market size + competitive set, findings to
   date, open risks
-- {date} · IC pre-read · full storyline draft, gates passed
-- {date} · final readout -->
+- {DATE} · IC pre-read · full storyline draft, gates passed
+- {DATE} · final readout -->
 
 ## Capacity notes
 

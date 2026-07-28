@@ -1,8 +1,14 @@
 # Workflow: red-team
 
+Engagement root: `<CWD>/.diligence` — it exists at exactly that path or
+the engagement does not exist here. Never search parent or sibling
+directories for `.diligence/`; never read or write another folder's
+engagement. Full contract: references/engagement-root.md.
+
 Preconditions: ledger non-empty; best after triangulate.
 
-1. Spawn `gdd-red-teamer` fresh-context with: `.diligence/TREE.md`,
+1. Spawn `gdd-red-teamer` fresh-context with: the engagement root
+   (absolute path), `.diligence/TREE.md`,
    LEDGER.md, module findings, both reports if present, and the
    redteam-report template. $ARGUMENTS may target one branch.
 2. Red-teamer attacks evidence / logic / thesis (per its agent
@@ -70,6 +76,16 @@ Preconditions: ledger non-empty; best after triangulate.
   its headline — exclusion clauses ("the kill condition is excluded in
   every construction") often rest on the finding's single weakest
   input and die before the headline does.
+
+## Completion gate
+
+The command is not complete until the postconditions hold on disk:
+`.diligence/reports/REDTEAM.md` exists non-empty, every kill is marked
+CONTESTED in LEDGER.md, and `state.json.gates.red_team` + STATE.md
+reflect the run. Verify before yielding the turn. Never yield with a
+promise to "report back": the red-teamer call is synchronous — if it
+has not returned, wait for it; if it failed, re-run it once or execute
+the work inline and say so in the session log.
 
 Artifacts: .diligence/reports/REDTEAM.md, LEDGER.md status changes, state.json,
 STATE.md update.

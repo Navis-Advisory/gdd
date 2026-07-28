@@ -1,6 +1,6 @@
 ---
 template: sources
-template_version: 2
+template_version: 3
 ---
 
 # Source registry — {DEAL_NAME}
@@ -19,6 +19,13 @@ Rules:
   the librarian flags.
 - Locator must let a colleague find the exact figure: URL + section/
   page/exhibit, or data-room path. "Company website" is not a locator.
+  The Locator cell is REQUIRED on every row: when the source was only
+  reachable as a search snippet (document not retrievable), write
+  `UNVERIFIED (snippet)` — never leave it blank. D4 counts tier-1/2
+  claims resting on UNVERIFIED locators.
+- One tier per row: a bundled source (report + press coverage) gets
+  one row per underlying source, each at its own tier — split tiers
+  ("4/5") are illegal.
 - Accessed date matters: web sources drift; a dead link at verification
   time downgrades D4.
 - Reliability notes capture the caveat you'd say out loud: vintage,

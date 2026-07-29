@@ -1,6 +1,7 @@
 # Get Diligence Done
 
 [![npm](https://img.shields.io/npm/v/get-diligence-done)](https://www.npmjs.com/package/get-diligence-done)
+[![tests](https://img.shields.io/github/actions/workflow/status/Navis-Advisory/gdd/ci.yml?branch=main&label=tests)](https://github.com/Navis-Advisory/gdd/actions/workflows/ci.yml)
 
 **Get Diligence Done (GDD)** is the open-source agentic copilot for
 commercial due diligence: scope the deal,

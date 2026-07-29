@@ -1,5 +1,10 @@
 # Workflow: tour
 
+Engagement root: `<CWD>/.diligence` — it exists at exactly that path or
+the engagement does not exist here. Never search parent or sibling
+directories for `.diligence/`; never read or write another folder's
+engagement. Full contract: references/engagement-root.md.
+
 Read-only. Open with exactly: "This is a read-only tour of the main GDD
 commands. It will not change your files."
 
@@ -18,7 +23,7 @@ consistent):
    `/gdd:probe-customers`, `/gdd:assess-moat`, `/gdd:scan-risks`) —
    explain the two-independent-legs rule and why the sizers never see
    each other's work; show a toy reconciliation (e.g. TD $1.2B vs BU
-   $0.9B → within ±30%, gap driver named). Then a 2-line sketch per
+   $1.0B → 20%, within ±30%, gap driver named). Then a 2-line sketch per
    remaining module, Kestrel-consistent: probe-customers — a KPC table
    row plus a direction-only review finding (e.g. "24/7 emergency
    dispatch" ranked #1 win-driver; review testimony runs 3:1 against

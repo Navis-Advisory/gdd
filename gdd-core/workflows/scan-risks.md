@@ -1,5 +1,10 @@
 # Workflow: scan-risks
 
+Engagement root: `<CWD>/.diligence` — it exists at exactly that path or
+the engagement does not exist here. Never search parent or sibling
+directories for `.diligence/`; never read or write another folder's
+engagement. Full contract: references/engagement-root.md.
+
 Preconditions: taxonomy lock. Runs best after size-market and the
 customers module: customer concentration cites the customers module's
 top-10 share by F-id, market-structure intake cites the market module's
@@ -18,7 +23,8 @@ risk register by F-id. If either is absent, that screen runs degraded
 
 ## Flow
 
-1. Spawn `gdd-analyst` with `.diligence/modules/risks/BRIEF.md` (or, if
+1. Spawn `gdd-analyst` with the engagement root (absolute path) and
+   `.diligence/modules/risks/BRIEF.md` (or, if
    the tree produced none, the default brief = the six standing
    screens — note the default in STATE.md) plus
    references/risk-screens.md.
@@ -43,7 +49,7 @@ risk register by F-id. If either is absent, that screen runs degraded
    attached — surfacing it is the deliverable, burying it is a defect.
 5. Write `.diligence/modules/risks/FINDINGS.md`; promote per the
    reference's promotion rules — one screen verdict per finding
-   (`screen · tripped/clear · basis`), tripped-and-unchased items at
+   (`screen · tripped/clear/unreachable · basis`), tripped-and-unchased items at
    confidence L with the open question cross-referenced; update
    STATE.md (module row, Position, session-log line).
 
@@ -59,5 +65,18 @@ evidence-of-search lines on untripped screens as its primary target
 scan-risks findings normally, whether or not it also served as the
 sweep on an earlier pass.
 
+## Completion gate
+
+The command is not complete until the module postconditions hold on
+disk: `.diligence/modules/risks/FINDINGS.md` exists non-empty, the
+promoted LEDGER.md rows exist, STATE.md carries the module row, and
+`state.json.modules.risks` is written. Lifecycle: set
+`status: "in-progress"` when the module starts, `"done"` on completion
+or `"blocked"` with the reason (statuses are the schema enum, nothing
+else). Verify each before yielding the turn. Never yield with a promise to "report back": subagent calls are
+synchronous — if one has not returned, wait for it; if it failed,
+re-run it once or execute the work inline and say so in the session
+log.
+
 Artifacts: .diligence/modules/risks/FINDINGS.md, LEDGER.md entries,
-SOURCES.md entries, STATE.md update.
+SOURCES.md entries, STATE.md + state.json.modules.risks update.

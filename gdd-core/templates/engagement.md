@@ -1,6 +1,6 @@
 ---
 template: engagement
-template_version: 2
+template_version: 3
 ---
 
 # Engagement brief — {DEAL_NAME}
@@ -9,6 +9,11 @@ template_version: 2
 only via dated notes in the Amendments section. This document is the
 drift fence for the whole engagement: if an analysis doesn't serve a Key
 Question inside Scope, it doesn't get done.
+
+Voice: this artifact is client-facing. No interview mechanics ("user
+confirmed X in Batch B"), no drafting metadata ("merged from 6
+candidate questions"), no meta-commentary about the tool or the
+session. Process history lives in STATE.md's session log only.
 
 Quality bar per section is in the guidance comments. Example lines are
 from "Project Kestrel", a synthetic deal: PE client evaluating
@@ -73,6 +78,22 @@ KQ3. Do customers renew and expand, and why? (customers)
 KQ4. Is the compliance moat real and durable? (company/moat)
 KQ5. What kills this deal? (risks) -->
 
+### KQ feasibility
+
+<!-- One row per KQ: the evidence instrument that will answer it under
+the recorded Constraints (data-room contents, contact rules, paid
+databases). A KQ with no available instrument may not be signed clean —
+it is reframed, marked DEGRADED with the missing instrument named, or
+moved to another workstream (scope-deal enforces at sign-off).
+e.g.:
+| KQ | Instrument under constraints | Status |
+|----|------------------------------|--------|
+| KQ3 | Cohort revenue data — data room has one KPI tab, no cohort detail | DEGRADED: needs data-room cohort export |
+-->
+
+| KQ | Instrument under constraints | Status |
+|----|------------------------------|--------|
+
 ## Deliverable & deadline
 
 <!-- Format (readout deck / memo / red-flag report), audience (IC,
@@ -100,4 +121,7 @@ no direct-to-target outreach); budget/hours if relevant. -->
 ## Amendments
 
 <!-- Dated notes only; never edit the sections above in place.
-Format: YYYY-MM-DD · what changed · why · who approved. -->
+Format: YYYY-MM-DD · what changed · why · who approved.
+State what changed and why. Downstream IMPACT claims ("investment
+thesis is unaffected") may only be asserted with a cited basis (name
+the analysis or finding); otherwise write "impact to be assessed". -->

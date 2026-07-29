@@ -1,7 +1,8 @@
 ---
-name: storyline
+argument-hint: "[alternative framing, e.g. 'build it around the risk case']"
+arguments: [framing]
 description: Synthesize surviving findings into a pyramid-principle storyline
-allowed-tools: Read, Write, Agent, AskUserQuestion
+allowed-tools: Read, Write, Edit, Grep, Agent, AskUserQuestion
 ---
 
 <objective>
@@ -22,8 +23,9 @@ may request an alternative framing ("build it around the risk case").
 </context>
 
 <process>
-1. Spawn `gdd-storyliner` in draft mode (LEDGER.md, the hypothesis tree,
-   both reports) to propose only the governing thought.
+1. Spawn `gdd-storyliner` in draft mode (the engagement root — absolute
+   path of `<CWD>/.diligence` — LEDGER.md, the hypothesis tree, both
+   reports) to propose only the governing thought.
 2. Check the governing thought with the user directly before expanding —
    the answer is the client's decision support, not a surprise.
 3. On approval, spawn `gdd-storyliner` in build mode with the approved

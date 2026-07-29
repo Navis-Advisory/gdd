@@ -1,9 +1,8 @@
 ---
-name: size-market
 description: Size the target market with independent top-down and bottom-up estimates, then reconcile them
 argument-hint: "[segment name, defaults to the primary market]"
 arguments: [segment]
-allowed-tools: Read, Write, Edit, Agent, WebSearch, WebFetch, AskUserQuestion
+allowed-tools: Read, Write, Edit, Agent, Bash, WebSearch, WebFetch, AskUserQuestion
 ---
 
 <objective>
@@ -30,10 +29,14 @@ segment; route to /gdd:scope-deal to lock definitions first.
 
 <process>
 1. Spawn `gdd-sizer-topdown` and `gdd-sizer-bottomup` in parallel, each
-   with only ENGAGEMENT.md, TAXONOMY.md, and its own method reference —
-   never the other's output or prior sizing work.
+   with only the engagement root (absolute path of `<CWD>/.diligence`),
+   ENGAGEMENT.md, TAXONOMY.md, and its own method reference — never the
+   other's output or prior sizing work.
 2. Each sizer returns an estimate with explicit assumptions, units per the
-   taxonomy lock, and citations registered in SOURCES.md.
+   taxonomy lock, and citations registered in its own per-leg scratch
+   registry — never shared SOURCES.md (the orchestrator merges both
+   registries into SOURCES.md at reconciliation, per the independence
+   protocol).
 3. Reconcile per the workflow: within tolerance → record both, the
    reconciled figure, and the driver of the residual gap; outside
    tolerance → do NOT average — identify the divergent assumption and

@@ -1,5 +1,10 @@
 # Workflow: pause-work
 
+Engagement root: `<CWD>/.diligence` — it exists at exactly that path or
+the engagement does not exist here. Never search parent or sibling
+directories for `.diligence/`; never read or write another folder's
+engagement. Full contract: references/engagement-root.md.
+
 1. From the current conversation and any artifacts modified this
    session, draft the handoff:
    - position: module/analysis in flight and its exact stopping point

@@ -1,7 +1,8 @@
 ---
-name: red-team
+argument-hint: "[hypothesis branch to attack, defaults to the whole thesis]"
+arguments: [branch]
 description: Build the strongest case against the thesis and stress-test the findings ledger
-allowed-tools: Read, Write, Agent
+allowed-tools: Read, Write, Edit, Agent
 ---
 
 <objective>
@@ -23,8 +24,9 @@ $ARGUMENTS may target a single hypothesis branch. Runs best after
 </context>
 
 <process>
-1. Spawn `gdd-red-teamer` with the ledger, module findings, and
-   hypothesis tree — instructed to refute, not to balance.
+1. Spawn `gdd-red-teamer` with the engagement root (absolute path of
+   `<CWD>/.diligence`), the ledger, module findings, and hypothesis
+   tree — instructed to refute, not to balance.
 2. Findings it kills are marked CONTESTED in LEDGER.md (never silently
    deleted); the storyline may not rest a key-line claim on a CONTESTED
    finding.

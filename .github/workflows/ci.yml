@@ -1,10 +1,22 @@
 name: CI
 
+# This repo owns this file. The mirror that populates this repo excludes
+# .github/workflows/ deliberately: a sync token able to write workflows could
+# also inject one that reads this repo's secrets, so the mirror bot stays
+# least-privilege (Contents + Pull requests only).
+#
+# Keep these steps a thin shim over `npm test`. The test logic lives in
+# package.json and tests/, both of which DO mirror across, so this file and
+# its upstream counterpart cannot meaningfully drift.
+
 on:
   pull_request:
     branches: [main]
   push:
     branches: [main]
+
+permissions:
+  contents: read
 
 jobs:
   test:
@@ -15,3 +27,6 @@ jobs:
         with:
           node-version: 20
       - run: npm test
+      # Verify the PACKED npm artifact installs cleanly (files whitelist, path
+      # assumptions) — not just the repo working tree.
+      - run: node tests/smoke-pack.mjs

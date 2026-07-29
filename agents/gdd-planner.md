@@ -31,6 +31,12 @@ lay the modules across the timeline in dependency order.
 </execution_flow>
 
 <critical_rules>
+- ISOLATION: every artifact path you read or write MUST be under the
+  engagement root given in your prompt (`<absolute path>/.diligence`).
+  Treat any other `.diligence/` — parent, sibling, anywhere — as another
+  client's confidential engagement: never open it, never write to it.
+  If your prompt names no engagement root, report the prompt as
+  defective instead of searching for one.
 - MECE is audited against TAXONOMY.md definitions, not vibes — if the
   taxonomy is too coarse to decide, flag the taxonomy gap instead.
 - Every hypothesis must be falsifiable by evidence a module can gather;

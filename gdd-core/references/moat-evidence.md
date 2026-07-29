@@ -42,7 +42,7 @@ answer must cite evidence — release-velocity comparison, the
 incumbent's public roadmap/changelog, an architectural reason with a
 third-party basis — or the claim's confidence caps at L. "They haven't
 yet" is not an answer; check whether they already announced it
-(the red-team library's horizontal-dismissal attack, run on yourself
+(the red-team library's horizontal-player dismissal attack, run on yourself
 first). When the target itself is unreachable and a peer proxies the
 test, the proxy must match the target's ownership and depth class —
 a depth test passed by the segment's deepest player proves nothing

@@ -27,7 +27,14 @@ or ask.
 2. Write `.diligence/ENGAGEMENT.md` and `.diligence/TAXONOMY.md` from the
    templates, populated from the answers you were given; write the
    machine lock into `.diligence/state.json` (`taxonomy_lock` per the
-   schema); initialize empty `LEDGER.md`, `SOURCES.md`, and `STATE.md`
+   schema). For each segment, populate `segments[].boundary_cases`
+   (every IN/OUT rule from Batch D, verbatim) and `segments[].test_value`
+   (the test value the user confirmed). Market-boundary exclusions
+   (e.g. "pure accounting software OUT") are boundary_cases on the
+   affected segments, not prose-only: any boundary rule written into
+   TAXONOMY.md prose MUST also appear in the machine lock. An empty
+   boundary_cases array for a segment the user discussed boundaries
+   for is a defect — re-check your input before writing. Initialize empty `LEDGER.md`, `SOURCES.md`, and `STATE.md`
    from their templates; copy `config.json` from its template. Register
    any intake documents in SOURCES.md at their tier (a CIM is tier 4 —
    company self-disclosure via bankers — note the incentive). When
@@ -40,12 +47,32 @@ or ask.
 </execution_flow>
 
 <critical_rules>
+- ISOLATION: every artifact path you read or write MUST be under the
+  engagement root given in your prompt (`<absolute path>/.diligence`).
+  Treat any other `.diligence/` — parent, sibling, anywhere — as another
+  client's confidential engagement: never open it, never write to it.
+  If your prompt names no engagement root, report the prompt as
+  defective instead of searching for one.
 - Taxonomy fields the user could not answer are recorded as OPEN with a
   note on what would settle them — never silently defaulted or
   guessed on your own initiative.
 - One engagement per folder: if `.diligence/` exists, stop and report.
 - The taxonomy lock is append-only after this point; changes later go
   through an explicit supersession note, not edits in place.
+- Artifacts are client-facing: no interview mechanics, no drafting
+  metadata ("merged from 6 candidate questions"), no meta-commentary
+  about the tool or the session. Process history belongs in STATE.md's
+  session log only.
+- Codename discipline: honor the recorded codename scope from Batch C.
+  Scope "all artifacts" means the real name appears ONLY in
+  `.diligence/IDENTITY.md` (recommend gitignoring it) and every other
+  artifact — including the thesis line — uses the codename. Writing
+  the real name into artifacts despite an all-artifacts rule is a
+  defect; if the rule is unworkable, report the tension in your
+  return, don't silently ignore it.
+- Amendments state what changed and why; downstream IMPACT claims
+  (e.g. "thesis unaffected") may only be asserted with a cited basis —
+  otherwise write "impact to be assessed".
 </critical_rules>
 
 <structured_returns>

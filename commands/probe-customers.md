@@ -1,5 +1,4 @@
 ---
-name: probe-customers
 description: Gather customer evidence — retention, satisfaction, purchase criteria — up the evidence ladders
 argument-hint: "[claim type to focus on, e.g. retention]"
 arguments: [focus]
@@ -29,9 +28,10 @@ undefined basis blocks that claim type and routes back to scoping.
 </context>
 
 <process>
-1. Spawn `gdd-analyst` with the module brief; heavy evidence gathering
-   delegates to `gdd-researcher` in fresh context, parallel per claim
-   type where independent.
+1. Spawn `gdd-analyst` with the engagement root (absolute path of
+   `<CWD>/.diligence`) and the module brief; heavy evidence gathering
+   delegates to `gdd-researcher` in fresh context (root passed along),
+   parallel per claim type where independent.
 2. Every testimony unit records who / channel / selection mechanism;
    tier-6 testimony carries direction only (D4 tally rule); ladder
    rungs unreachable at the engagement's access level are reported as

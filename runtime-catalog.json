@@ -4,7 +4,6 @@
     {
       "runtime_name": "claude-code",
       "display_name": "Claude Code",
-      "enabled": true,
       "priority": 10,
       "config_dir_name": ".claude",
       "install_flags": ["--claude", "--claude-code"],
@@ -20,7 +19,6 @@
     {
       "runtime_name": "codex",
       "display_name": "Codex",
-      "enabled": true,
       "priority": 20,
       "config_dir_name": ".codex",
       "install_flags": ["--codex"],
@@ -38,7 +36,6 @@
     {
       "runtime_name": "antigravity",
       "display_name": "Antigravity CLI",
-      "enabled": true,
       "priority": 30,
       "config_dir_name": ".agents",
       "install_flags": ["--antigravity", "--antigravity-cli"],
@@ -51,37 +48,6 @@
         "strategy": "env_or_home",
         "env_var": "ANTIGRAVITY_CONFIG_DIR",
         "home_subpath": ".gemini/antigravity"
-      }
-    },
-    {
-      "runtime_name": "opencode",
-      "display_name": "OpenCode",
-      "enabled": false,
-      "priority": 40,
-      "config_dir_name": ".opencode",
-      "install_flags": ["--opencode"],
-      "launch_command": "opencode",
-      "command_prefix": "/gdd-",
-      "command_layout": "flat",
-      "global_config": {
-        "strategy": "xdg",
-        "env_var": "XDG_CONFIG_HOME",
-        "home_subpath": ".config/opencode"
-      }
-    },
-    {
-      "runtime_name": "copilot-cli",
-      "display_name": "GitHub Copilot CLI",
-      "enabled": false,
-      "priority": 50,
-      "config_dir_name": ".github",
-      "install_flags": ["--copilot"],
-      "launch_command": "gh copilot",
-      "command_prefix": "/gdd-",
-      "command_layout": "flat",
-      "global_config": {
-        "strategy": "home",
-        "home_subpath": ".copilot"
       }
     }
   ]

@@ -1,9 +1,8 @@
 ---
-name: scope-deal
 description: Interview the user to scope a new diligence engagement, then write the engagement brief and lock the deal taxonomy
 argument-hint: "[target company or deal codename]"
 arguments: [target]
-allowed-tools: Read, Write, Glob, AskUserQuestion, Agent, WebSearch, WebFetch
+allowed-tools: Read, Write, Edit, Glob, AskUserQuestion, Agent, WebSearch, WebFetch
 ---
 
 <objective>
@@ -33,9 +32,10 @@ engagement per folder.
 1. Interview the user directly (AskUserQuestion, four batches) per the
    workflow — target/client, thesis/questions, deliverable/constraints,
    taxonomy.
-2. Spawn `gdd-scoper` with the collected answers to draft `ENGAGEMENT.md`
-   and `TAXONOMY.md` from the templates and write the machine lock into
-   `.diligence/state.json`.
+2. Spawn `gdd-scoper` with the engagement root (absolute path of
+   `<CWD>/.diligence` — the folder it must create) and the collected
+   answers to draft `ENGAGEMENT.md` and `TAXONOMY.md` from the
+   templates and write the machine lock into `.diligence/state.json`.
 3. Review both artifacts with the user before declaring the engagement
    scoped; unresolved taxonomy fields are flagged OPEN, never silently
    defaulted.

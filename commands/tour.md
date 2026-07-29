@@ -1,5 +1,4 @@
 ---
-name: tour
 description: Read-only guided walkthrough of the GDD workflow and its artifacts
 allowed-tools: Read
 ---

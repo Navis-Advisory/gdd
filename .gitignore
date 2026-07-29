@@ -1,7 +1,11 @@
-# User engagement state never belongs in the tool repo —
-# except the worked example, which is the point of examples/.
+# User engagement state never belongs in the tool repo — except the worked
+# example (the point of examples/) and bench runs, whose committed engagement
+# is the sealed answer PROTOCOL.md grades against. Neither reaches the public
+# surface: package.json `files` is an allowlist that omits bench/, and
+# sync-public.sh excludes it and then asserts it absent.
 .diligence/
 !examples/**/.diligence/
+!bench/deals/**/.diligence/
 
 node_modules/
 *.log

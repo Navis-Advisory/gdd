@@ -3,36 +3,45 @@
 GDD's primary distribution is a single-file installer (`bin/install.js`)
 that projects the same command/agent content into whichever AI coding
 runtime you use. Claude Code, Codex, and Antigravity CLI are supported;
-OpenCode and Copilot CLI are catalogued in `runtime-catalog.json` but
-gated until their converters exist. A Claude Code plugin/marketplace path
+other runtimes are community ports on demand. A Claude Code plugin/marketplace path
 also exists (below) but is scoped to the project folder you install it
 from, so it's a secondary option until that's addressed upstream.
 
 Engagement state is written to a `.diligence/` folder inside whatever
 deal folder you run in — it never touches this repo.
 
-## Get the repo
+## Install in one command
 
-Every path below runs from a clone. There's no published package and
-nothing to build — the installer is a single dependency-free file, so
-there is no `npm install` step. Node.js >= 20 is the only prerequisite.
+```bash
+npx get-diligence-done --claude --global   # → ~/.claude; /gdd: from any deal folder
+claude                                       # then: /gdd:help → /gdd:tour
+```
+
+Node.js >= 20 is the only prerequisite; the installer is a single
+dependency-free file, so there's nothing to build. Swap `--claude` for
+`--codex` or `--antigravity` to target those runtimes. To update, re-run
+with `get-diligence-done@latest`, or `/gdd:update` from inside the runtime.
+To remove: `npx get-diligence-done --claude --uninstall --global`.
+
+## From source
+
+Prefer to read the code first, or to hack on it? Every command below also
+runs from a clone:
 
 ```bash
 git clone https://github.com/Navis-Advisory/gdd.git
 cd gdd
+node bin/install.js --claude --global
 ```
 
 Keep the clone wherever you keep tools; it's only the source you install
-*from*. Updating GDD is `git pull` followed by re-running the installer
-for each runtime you use — the installer overwrites its previous output,
-and a stale install is the usual reason a newly added command doesn't
-appear.
+*from*. A stale install is the usual reason a newly added command doesn't
+appear — re-run the installer.
 
-## CLI install (recommended)
+## Scope: --global vs --local
 
 ```bash
 node bin/install.js --claude --global   # → ~/.claude; /gdd: from any deal folder
-claude                                   # then: /gdd:help → /gdd:tour
 node bin/install.js --claude --uninstall --global   # remove
 ```
 
@@ -54,6 +63,16 @@ The commands are authored once, flat under `commands/`, against the
 neutral `${CLAUDE_PLUGIN_ROOT}` variable; the installer rewrites it to
 the absolute config dir at install time. Same content projects cleanly
 to every supported runtime — no vendor strings in the workflow layer.
+
+Command frontmatter must **not** carry a `name:` key. Nothing downstream
+reads it: the Claude Code (nested) layout copies command files through
+verbatim, so a source `name:` only lands in the installed copy — where it
+has tripped Claude Code's autocomplete — and the skills layout
+(Codex/Antigravity) synthesizes its own `gdd-<name>` and ignores the source
+field entirely. The command's name comes from its filename (and the `gdd`
+plugin namespace), never from frontmatter. When adding a new command, copy
+`description`/`argument-hint`/`allowed-tools` from an existing file but leave
+`name:` out; `npm test` (via `tests/check-references.mjs`) enforces this.
 
 ### Codex
 
@@ -95,8 +114,8 @@ directly into the generated `SKILL.md`. It also rewrites `/gdd:` prefixes in
 prose to each runtime's actual invocation syntax (`$gdd-` for Codex, `/gdd-`
 for Antigravity) so cross-references between commands read correctly.
 
-Gemini CLI itself has no entry in the catalog: Google sunset it on
-2026-06-18 in favor of Antigravity CLI, which is what GDD targets instead.
+Gemini CLI itself has no entry in the catalog; GDD targets Antigravity
+CLI, Google's Gemini-family agent runtime, instead.
 
 ## Claude Code plugin / marketplace (secondary — known limitation)
 

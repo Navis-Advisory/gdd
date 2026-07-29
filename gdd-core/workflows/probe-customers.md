@@ -1,12 +1,19 @@
 # Workflow: probe-customers
 
+Engagement root: `<CWD>/.diligence` — it exists at exactly that path or
+the engagement does not exist here. Never search parent or sibling
+directories for `.diligence/`; never read or write another folder's
+engagement. Full contract: references/engagement-root.md.
+
 Preconditions: taxonomy lock. Retention/churn claims require the churn
 basis in defined_terms (gross logo vs net revenue); if undefined, that
-claim type is blocked — report it, route to scoping for a supersession,
-run the other claim types meanwhile. Check
+claim type is blocked — report it, request a taxonomy-lock supersession
+from gdd-librarian to define the churn basis (`/gdd:scope-deal` refuses
+once a lock exists), and run the other claim types meanwhile. Check
 `state.json.taxonomy_lock.defined_terms` first.
 
-1. Spawn `gdd-analyst` with `.diligence/modules/customers/BRIEF.md` (or
+1. Spawn `gdd-analyst` with the engagement root (absolute path) and
+   `.diligence/modules/customers/BRIEF.md` (or
    a default brief if the tree didn't produce one — note that in
    STATE.md) plus references/customer-evidence.md.
 2. Analyst works the claim types in the brief up their evidence ladders
@@ -54,5 +61,18 @@ run the other claim types meanwhile. Check
 - B2C engagements follow the reference's B2C branch (repeat-purchase
   cohort logic, panel data where tier-3 access exists).
 
+## Completion gate
+
+The command is not complete until the module postconditions hold on
+disk: `.diligence/modules/customers/FINDINGS.md` exists non-empty, the
+promoted LEDGER.md rows exist, STATE.md carries the module row, and
+`state.json.modules.customers` is written. Lifecycle: set
+`status: "in-progress"` when the module starts, `"done"` on completion
+or `"blocked"` with the reason (statuses are the schema enum, nothing
+else). Verify each before yielding the turn. Never yield with a promise to "report back": subagent calls
+are synchronous — if one has not returned, wait for it; if it failed,
+re-run it once or execute the work inline and say so in the session
+log.
+
 Artifacts: .diligence/modules/customers/FINDINGS.md, LEDGER.md entries,
-SOURCES.md entries, STATE.md update.
+SOURCES.md entries, STATE.md + state.json.modules.customers update.

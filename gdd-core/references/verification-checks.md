@@ -17,8 +17,13 @@ FY mixed with CY, EUR anchor filtered by USD ratios, monthly price ×
 annual count.
 
 Run: walk every quantitative finding; recompute one conversion per
-currency pair in an executed code block.
-FAIL if: any bare number, any unexplained conversion, any basis mismatch.
+currency pair in an executed code block. Grep findings and module
+files for currency conversions; each pair used must have a matching
+entry in `taxonomy_lock.currency.fx` carrying the SOURCES.md id of its
+rate.
+FAIL if: any bare number, any unexplained conversion, any basis
+mismatch, or a conversion performed anywhere with no registered fx
+entry (`fx: []` while conversions exist is the canonical case).
 
 ## D2 — Top-down / bottom-up reconciliation
 
@@ -46,8 +51,14 @@ TAXONOMY.md definitions.
 
 Run: walk each tree level; test boundary cases named in the taxonomy
 (where does X fall?); check leaf sums against parent totals where sums
-are claimed.
-FAIL if: overlap, gap, or a leaf-sum mismatch beyond rounding.
+are claimed. Also diff TAXONOMY.md's prose boundary rules against
+`state.json.taxonomy_lock.segments[].boundary_cases`.
+WARN if: any segment cited by a sizing or competitor finding has an
+empty `boundary_cases` array.
+FAIL if: overlap, gap, or a leaf-sum mismatch beyond rounding; or a
+boundary rule stated in TAXONOMY.md prose is absent from the machine
+lock (prose-only exclusions are exactly how unimplemented arithmetic
+bias survives sweeps).
 
 ## D4 — Citation coverage and source-tier adequacy
 
@@ -62,6 +73,11 @@ findings or 20% of the ledger, whichever is larger; key-line
 load-bearing findings always in the sample).
 FAIL if: dangling citation, unregistered source, tier inadequate to claim
 weight without flag, or a spot-check misquote.
+Locator audit: count tier-1/2-weighted claims whose supporting rows
+carry `UNVERIFIED (snippet)` locators (or a blank Locator cell — itself
+a registry defect) and report the count in the D4 section; a
+key-line-load-bearing claim resting solely on UNVERIFIED locators is a
+FAIL.
 Tier-adequacy precedence: the source hierarchy's categorical rule
 governs — tier-6 sources may never be the sole support of a ledger
 finding, flag or no flag — EXCEPT the tally-of-testimony class, where
@@ -83,8 +99,21 @@ findings, storyline, workplan assumptions). Rounding is allowed;
 divergence is not.
 
 Run: grep headline numbers across `.diligence/`; diff occurrences.
+Provenance: check every report's `engagement_root:` header stamp
+(STATE.md, TRIANGULATION.md, REDTEAM.md, STORYLINE.md) against the
+current engagement root.
+Module state: `state.json.modules` must agree with STATE.md's module
+table AND with `modules/*/FINDINGS.md` on disk — every module with a
+FINDINGS.md has an entry with a schema-enum status
+(pending|in-progress|done|blocked), and STATE.md's Status column uses
+only those tokens.
 FAIL if: two artifacts state materially different values for one quantity
-without a supersession note.
+without a supersession note; or any report's engagement_root stamp does
+not match the current root — report that as "foreign artifact: written
+under <stamped root>" (see references/engagement-root.md); or
+`state.json.modules` is `{}` (or missing an entry) while module
+findings exist on disk; or a module status anywhere is outside the
+schema enum.
 
 ## D6 — Thesis sensitivity
 
@@ -98,7 +127,8 @@ D6 also owns any GATE-OWNED conditions recorded in TREE.md (e.g. the
 thesis-sufficiency check): verify the storyline answers them
 explicitly.
 FAIL if: no sensitivity analysis, an assumption's plausible range flips a
-key-line claim without the storyline saying so.
+key-line claim without the storyline saying so, or a GATE-OWNED condition
+from TREE.md that the storyline leaves unanswered.
 First-sweep rule: on a sweep run before the storyline exists, D6 is
 N-A ("no storyline yet"), recorded with a mandatory post-storyline
 re-run — the pipeline order (triangulate gates storyline; the storyline
@@ -129,15 +159,27 @@ CONTESTED finding.
 
 Run: diff the red-team kill list against ledger statuses and the
 storyline trace map.
-FAIL if: a kill has no disposition, or a CONTESTED id appears in the
-key-line trace.
+No-storyline rule: if REDTEAM.md exists but no STORYLINE.md exists,
+D8 = N-A ("awaiting storyline dispositions"), not FAIL. Dispositions
+are declared in the storyline; failing the gate on their absence
+before any storyline can exist forces every engagement to waive its
+own verification gate on the happy path — that deadlock is never the
+intended reading, and no waiver is needed for this case. D8 can only
+FAIL when a storyline exists and lacks dispositions for CONTESTED
+findings.
+FAIL if (storyline exists): a kill has no disposition, or a CONTESTED
+id appears in the key-line trace.
 Kills that postdate the current storyline cannot appear in its trace
-by construction — that clean trace is fragile, not safe: PASS only
-with the mandatory declaration recorded for the next storyline build.
+by construction — that clean trace is fragile, not safe: PASS only with
+an explicit declaration recorded in the report that names those
+post-storyline kills, so the next storyline build must disposition them.
 
 ## Report rules
 
 - Each check: PASS / FAIL / N-A (with the reason it could not run).
+  WARN is not a fourth verdict: it is a caution surfaced inside a PASS
+  (e.g. D3's empty `boundary_cases`) — recorded in the check's evidence,
+  never failing the gate.
 - At least one executed code block with real output per report — the
   external-oracle rule; asserted arithmetic is not verification.
 - One FAIL fails the gate. Waivers are the user's, quoted verbatim.

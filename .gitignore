@@ -5,3 +5,6 @@
 
 node_modules/
 *.log
+
+# background subagent worktrees
+.claude/worktrees/

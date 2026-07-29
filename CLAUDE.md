@@ -7,5 +7,6 @@ Commits to this repository are authored by its human maintainer.
   commit messages.
 - Do not set the git author or committer identity to anything other than
   the maintainer's own configured `user.name` / `user.email`.
-- If you drafted the change, the maintainer reviews and runs the commit
-  themselves under their own identity.
+- If you drafted the change, the maintainer reviews it before it lands, and
+  it is committed under their own identity — as are routine automated commits
+  (e.g. the public-mirror sync), which also run under that identity.

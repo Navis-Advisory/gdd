@@ -1,5 +1,10 @@
 # Workflow: hypothesis-tree
 
+Engagement root: `<CWD>/.diligence` — it exists at exactly that path or
+the engagement does not exist here. Never search parent or sibling
+directories for `.diligence/`; never read or write another folder's
+engagement. Full contract: references/engagement-root.md.
+
 Preconditions: scoped engagement (ENGAGEMENT.md exists and signed off).
 
 ## Decomposition guidance (for the planner prompt)
@@ -42,7 +47,8 @@ Preconditions: scoped engagement (ENGAGEMENT.md exists and signed off).
   is undecidable because a term is loose, that's a taxonomy gap to
   report, not a judgment call to bury.
 
-1. Spawn `gdd-planner` with ENGAGEMENT.md, TAXONOMY.md, STATE.md, and the
+1. Spawn `gdd-planner` with the engagement root (absolute path),
+   ENGAGEMENT.md, TAXONOMY.md, STATE.md, and the
    module-brief template path.
 2. Planner builds thesis → 3–6 first-order conditions → falsifiable
    leaves; audits MECE against locked segment definitions; assigns each
@@ -53,11 +59,17 @@ Preconditions: scoped engagement (ENGAGEMENT.md exists and signed off).
    module (falsifiability detail lives in the briefs). TREE.md is the
    canonical tree artifact that red-team and storyline consume; STATE.md
    gets only a one-line position update, not a copy of the tree. Then
-   `.diligence/modules/<name>/BRIEF.md` per assigned module.
+   `.diligence/modules/<name>/BRIEF.md` per assigned module. After the
+   briefs are written, write `state.json.modules.<name> =
+   {status: "pending", brief: ".diligence/modules/<name>/BRIEF.md",
+   hypotheses: <leaf count>}` for EVERY module that got a brief —
+   STATE.md's module table is a projection of this machine state, never
+   the other way round. A brief on disk with no state.json.modules
+   entry is an incomplete step.
 4. Orchestrator shows the tree to the user; branch disputes loop back;
    $ARGUMENTS may scope a rebuild to one branch (re-derive only that
    module's brief; supersede, don't edit).
 5. Suggest `/gdd:workplan`.
 
-Artifacts: .diligence/TREE.md, .diligence/modules/*/BRIEF.md, STATE.md
-update.
+Artifacts: .diligence/TREE.md, .diligence/modules/*/BRIEF.md, STATE.md +
+state.json.modules update.

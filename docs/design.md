@@ -111,5 +111,4 @@ verifier checks, mechanically where possible:
 GDD never claims "the market is actually $X." It claims the work product is
 internally consistent and fully traceable — which is exactly the QA a good
 engagement manager performs. That wording lives in the verifier prompts and
-is the promise the tool is built to keep. See `examples/kestrel-sound/` for a
-full engagement run that exercises every one of these gates.
+is the promise the tool is built to keep.

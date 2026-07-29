@@ -1,5 +1,4 @@
 ---
-name: pause-work
 description: Write an explicit handoff into STATE.md before stepping away mid-module
 allowed-tools: Read, Write, Edit
 ---

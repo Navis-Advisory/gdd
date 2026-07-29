@@ -1,5 +1,4 @@
 ---
-name: map-competitors
 description: Build the competitive map — set, positioning, and share estimates with citations
 argument-hint: "[segment or competitor to focus on]"
 arguments: [focus]
@@ -25,8 +24,9 @@ Focus: $ARGUMENTS. Requires the taxonomy lock; runs best after
 </context>
 
 <process>
-1. Spawn `gdd-analyst` with the module brief; heavy evidence gathering
-   goes to `gdd-researcher` in fresh context.
+1. Spawn `gdd-analyst` with the engagement root (absolute path of
+   `<CWD>/.diligence`) and the module brief; heavy evidence gathering
+   goes to `gdd-researcher` in fresh context (root passed along).
 2. Every competitor claim (size, share, positioning) carries a citation
    registered in SOURCES.md at the appropriate source tier.
 3. Write `.diligence/modules/competition/FINDINGS.md`; promote key findings to

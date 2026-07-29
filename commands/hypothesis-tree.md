@@ -1,5 +1,4 @@
 ---
-name: hypothesis-tree
 description: Decompose the investment thesis into a MECE hypothesis tree and per-module briefs
 argument-hint: "[thesis angle to prioritize, optional]"
 arguments: [angle]
@@ -24,12 +23,14 @@ narrow to a single branch to (re)build.
 </context>
 
 <process>
-1. Spawn `gdd-planner` per the workflow.
+1. Spawn `gdd-planner` per the workflow, passing the engagement root
+   (absolute path of `<CWD>/.diligence`) in the spawn prompt.
 2. Planner reads ENGAGEMENT.md + TAXONOMY.md, drafts the tree, and checks
    MECE-ness against the locked segment definitions.
 3. Each leaf hypothesis gets: the claim, what evidence would confirm or
    kill it, and which module owns it.
-4. Write `.diligence/modules/<name>/BRIEF.md` per module from the template; register
-   the tree in STATE.md.
+4. Write `.diligence/modules/<name>/BRIEF.md` per module from the template; the
+   canonical tree lives in `.diligence/TREE.md` (STATE.md's module table is a
+   projection of it).
 5. Suggest `/gdd:workplan` next.
 </process>

@@ -30,10 +30,20 @@ evidence, not from someone else's market number.
 </execution_flow>
 
 <critical_rules>
+- ISOLATION: every artifact path you read or write MUST be under the
+  engagement root given in your prompt (`<absolute path>/.diligence`).
+  Treat any other `.diligence/` — parent, sibling, anywhere — as another
+  client's confidential engagement: never open it, never write to it.
+  If your prompt names no engagement root, report the prompt as
+  defective instead of searching for one.
 - INDEPENDENCE: do not read top-down work, `.diligence/modules/market/FINDINGS.md`,
   or LEDGER.md. Do not use analyst market-size figures even as a "sanity
   check" — that is the reconciler's job, not yours.
 - Every count and price point carries a source id and its original units.
+- If you convert a currency, you MUST report the rate row —
+  `{pair, rate, as_of, source}` — in your structured return for
+  registration in `taxonomy_lock.currency.fx`. A conversion that
+  exists only in prose is a defect (D1 flags it).
 - Penetration/frequency assumptions are labeled ESTIMATE with basis.
 </critical_rules>
 

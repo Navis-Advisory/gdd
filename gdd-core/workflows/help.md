@@ -1,5 +1,10 @@
 # Workflow: help
 
+Engagement root: `<CWD>/.diligence` — it exists at exactly that path or
+the engagement does not exist here. Never search parent or sibling
+directories for `.diligence/`; never read or write another folder's
+engagement. Full contract: references/engagement-root.md.
+
 Canonical command index. Print grouped; keep it compact.
 
 ## Getting started
@@ -36,6 +41,10 @@ Canonical command index. Print grouped; keep it compact.
 ## Continuity
 - `/gdd:resume-work` — reload state, summarize, recommend next
 - `/gdd:pause-work` — explicit handoff into STATE.md
+
+## Maintenance
+- `/gdd:update` — update the GDD install to the latest published version,
+  preserving local edits
 
 Startup ladder: help → start → tour → scope-deal → resume-work.
 

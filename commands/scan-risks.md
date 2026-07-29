@@ -1,5 +1,4 @@
 ---
-name: scan-risks
 description: Run the standing risk screens — trip conditions, bounded deep dives, evidence-of-search for the rest
 argument-hint: "[screen name to focus]"
 arguments: [screen]
@@ -29,10 +28,12 @@ flagged as such, without them.
 </context>
 
 <process>
-1. Spawn `gdd-analyst` with the module brief (or the default six-screen
+1. Spawn `gdd-analyst` with the engagement root (absolute path of
+   `<CWD>/.diligence`), the module brief (or the default six-screen
    brief, noted in STATE.md) and `references/risk-screens.md`; heavy
-   evidence gathering goes to `gdd-researcher` in fresh context,
-   parallel per screen where screens don't share an input.
+   evidence gathering goes to `gdd-researcher` in fresh context (root
+   passed along), parallel per screen where screens don't share an
+   input.
 2. Every screen resolves tripped or clear. Clear screens carry an
    evidence-of-search line. A trip whose deep dive would consume
    material timeline is surfaced to the user first — trip evidence plus

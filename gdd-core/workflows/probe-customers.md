@@ -45,6 +45,22 @@ once a lock exists), and run the other claim types meanwhile. Check
    share, or its outside-in ESTIMATE) is what the risks module's
    concentration screen will cite — promote it even when unremarkable.
 
+> 🔴 **If delegation is unavailable, say so — do not silently inline it.**
+> The fresh-context split is GDD's central design claim: it is why module
+> briefs exist and why analyst and researcher are separate roles. When no
+> subagent tool is exposed, research collapses to a single inline pass with
+> materially lower recall, and **nothing fails** — every postcondition still
+> closes on a well-formed ledger, so the degradation is invisible in the
+> artifacts (GDD-BUG-23).
+> Before starting research, check whether a subagent tool is actually
+> available. If it is not: set `state.json.modules.<name>.status` to
+> `blocked` **or** record `delegation: unavailable` in the module's STATE.md
+> row with the reason, proceed inline, and label the module's recall as
+> degraded in FINDINGS.md. A run that inlined its research is not comparable
+> to one that delegated — the same graceful-degradation-plus-flag pattern the
+> workflows already use for a missing upstream module.
+
+
 ## Method notes (for the analyst prompt)
 
 - Full ladders and hygiene in references/customer-evidence.md; the
@@ -62,6 +78,14 @@ once a lock exists), and run the other claim types meanwhile. Check
   cohort logic, panel data where tier-3 access exists).
 
 ## Completion gate
+
+> **Ledger promotion is serial.** Do not run this module concurrently with
+> another module command: `LEDGER.md` and `SOURCES.md` are unlocked shared
+> tables, and concurrent appends lose rows silently (GDD-BUG-22). If an
+> orchestrator is running modules back-to-back this is automatic; if it is
+> tempted to fan them out, the research may overlap but the promotion step
+> must not.
+
 
 The command is not complete until the module postconditions hold on
 disk: `.diligence/modules/customers/FINDINGS.md` exists non-empty, the

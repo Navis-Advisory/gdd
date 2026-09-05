@@ -1,9 +1,3 @@
-# The public repo's .gitignore. It is installed by bin/sync-public.sh rather
-# than mirrored from the private repo's own .gitignore, because that file is
-# largely ABOUT paths the public repo does not have -- so mirroring it both
-# leaked private structure and made every concurrent sync collide on the same
-# end-of-file lines. Edit this file to change what the public repo ignores.
-
 # Engagement state belongs in each deal folder, not in the tool repo -- except
 # the worked example, which is the point of examples/.
 .diligence/

@@ -39,10 +39,19 @@ try {
     .filter((e) => e.isFile())
     .map((e) => path.relative(pkg, path.join(e.parentPath ?? e.path, e.name)));
 
-  // Ship-surface hygiene: private-only tooling and strategy must never reach npm.
-  check('tarball excludes bin/sync-public.sh', !files.includes(path.join('bin', 'sync-public.sh')));
-  check('tarball excludes the private plan dir', !files.some((f) => f.startsWith(path.join('docs', 'plan') + path.sep)));
-  check('tarball excludes examples/', !files.some((f) => f.startsWith('examples' + path.sep)));
+  // Ship-surface hygiene. Assert against the `files` allowlist itself rather
+  // than naming individual paths to keep out: an allowlist check catches a new
+  // directory nobody thought to exclude, which naming known offenders cannot,
+  // and it keeps development-only path names out of a file that ships publicly.
+  // npm always packs package.json / README / LICENSE / CHANGELOG regardless of
+  // `files`, so those are expected on top of it.
+  const manifest = JSON.parse(fs.readFileSync(path.join(repoRoot, 'package.json'), 'utf8'));
+  const allowedTop = new Set([
+    ...manifest.files.map((f) => f.split('/')[0]),
+    'package.json', 'README.md', 'LICENSE', 'CHANGELOG.md',
+  ]);
+  const strays = [...new Set(files.map((f) => f.split(path.sep)[0]))].filter((t) => !allowedTop.has(t));
+  check(`tarball holds only allowlisted top-level entries${strays.length ? ` (strays: ${strays.join(', ')})` : ''}`, strays.length === 0);
   check('tarball ships bin/install.js', files.includes(path.join('bin', 'install.js')));
   check(`sane file count (${files.length})`, files.length > 40 && files.length < 120);
 

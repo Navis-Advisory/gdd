@@ -1,9 +1,8 @@
 name: CI
 
-# This repo owns this file. The mirror that populates this repo excludes
-# .github/workflows/ deliberately: a sync token able to write workflows could
-# also inject one that reads this repo's secrets, so the mirror bot stays
-# least-privilege (Contents + Pull requests only).
+# This repo owns this file; it is not updated by automation. Workflow files are
+# deliberately kept out of the automated content updates, so that automation
+# cannot write a workflow with access to this repo's secrets.
 #
 # Keep these steps a thin shim over `npm test`. The test logic lives in
 # package.json and tests/, both of which DO mirror across, so this file and

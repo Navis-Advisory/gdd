@@ -5,6 +5,44 @@ Version corresponds to `"version"` in `.claude-plugin/plugin.json`.
 
 ## [Unreleased]
 
+## [0.2.2] - 2026-08-20
+
+### Fixed
+
+- **Concurrent module dispatch could silently lose ledger rows
+  (GDD-BUG-22).** The workplan heuristics describe modules running "in
+  parallel", meaning the work overlaps in the calendar — but this was read
+  as authorisation to dispatch two module commands concurrently.
+  `LEDGER.md` and `SOURCES.md` are shared append-only tables with no
+  locking, no ownership window and no per-module staging, so concurrent
+  appends interleave rows and collide on ids while leaving the file
+  syntactically valid. The loss is silent: it surfaces only as a finding-id
+  gap someone happens to notice, and the ledger is the spine that
+  triangulation, the red team and the storyline all read. The planner
+  heuristics now state the distinction, and every module's completion gate
+  repeats it at the point of the write — research may overlap, ledger
+  promotion is serial.
+
+- **Missing delegation degraded research invisibly (GDD-BUG-23).** When no
+  subagent tool is exposed to a module agent, the fresh-context research
+  split collapses to a single inline pass at materially lower recall — and
+  nothing fails, because every postcondition still closes on a well-formed
+  ledger. The four delegating workflows now require a capability check
+  before research begins; where delegation is unavailable the module must
+  record it (`blocked`, or a `delegation: unavailable` note) and mark its
+  recall degraded, rather than proceeding silently.
+
+### Changed
+
+- **Sources template v4 adds a `Published` column (GDD-BUG-25).** The
+  registry previously recorded only `Accessed` — when a source was
+  *retrieved*. Any cutoff or vintage rule evaluated against that date is
+  meaningless, because retrieval necessarily post-dates the analysis
+  window. `Published` is now required on every row, with `UNDATED` as an
+  explicit and countable category: a page whose publication date cannot be
+  established cannot be shown to pre-date a cutoff, so it cannot carry a
+  date-sensitive claim on its own.
+
 ## [0.2.1] - 2026-07-22
 
 ### Fixed

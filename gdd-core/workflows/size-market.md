@@ -56,6 +56,14 @@ close the segment, version-bump the lock); then re-run.
 
 ## Completion gate
 
+> **Ledger promotion is serial.** Do not run this module concurrently with
+> another module command: `LEDGER.md` and `SOURCES.md` are unlocked shared
+> tables, and concurrent appends lose rows silently (GDD-BUG-22). If an
+> orchestrator is running modules back-to-back this is automatic; if it is
+> tempted to fan them out, the research may overlap but the promotion step
+> must not.
+
+
 The command is not complete until the module postconditions hold on
 disk: `.diligence/modules/market/FINDINGS.md` exists non-empty, the
 promoted LEDGER.md rows exist, STATE.md carries the module row, and

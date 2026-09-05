@@ -9,6 +9,17 @@ Preconditions: module briefs exist.
 
 ## Timeline-fitting heuristics
 
+> 🔴 **"In parallel" below means the WORK overlaps in the calendar. It does
+> NOT authorise dispatching two module commands concurrently.**
+> `LEDGER.md` and `SOURCES.md` are shared append-only tables with no locking,
+> no ownership window and no per-module staging. Two modules writing them at
+> once interleave rows and collide on ids, and the files stay syntactically
+> valid — so the loss is silent and only surfaces as an id gap a human
+> happens to notice. The ledger is the spine that triangulation, the red team
+> and the storyline all read, so a dropped row propagates into the verdict.
+> **Research may overlap; ledger promotion is serial.** (GDD-BUG-22.)
+
+
 - Count BACK from the deadline: final readout ← IC pre-read ← a
   protected synthesis window (gates + storyline ≈ 20% of the timeline;
   never let modules eat it) ← modules.

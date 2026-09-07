@@ -61,8 +61,7 @@ Version corresponds to `"version"` in `.claude-plugin/plugin.json`.
 Feature-and-fix release. It completes the five-module CDD set (three new
 commands), adds the `/gdd:update` maintenance path plus a batch of installer
 hardening, and folds in the WS1-WS5 fixes from the v0.1.0 autonomous
-end-to-end test. Feature requests from that test are deferred (see
-[`ROADMAP.md`](ROADMAP.md)). Ids like `GDD-BUG-N` and `WS-N` below are
+end-to-end test. Feature requests from that test are deferred. Ids like `GDD-BUG-N` and `WS-N` below are
 internal test-log references, kept as a traceable paper trail.
 
 ### Changed

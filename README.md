@@ -134,7 +134,7 @@ in this repo — gitignored): `ENGAGEMENT.md`, `TAXONOMY.md` +
 
 Issues are open and welcome — bug reports and feature ideas both. Pull
 requests are restricted to collaborators (this repo is a mirror). See
-[`CONTRIBUTING.md`](CONTRIBUTING.md) and [`ROADMAP.md`](ROADMAP.md).
+[`CONTRIBUTING.md`](CONTRIBUTING.md).
 
 ## Inspiration
 

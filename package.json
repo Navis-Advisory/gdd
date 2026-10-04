@@ -1,0 +1,40 @@
+{
+  "name": "get-diligence-done",
+  "version": "0.2.3",
+  "description": "GDD (Get Diligence Done): an agentic workflow system for commercial due diligence. Scope the deal, lock the taxonomy, run the modules, triangulate, and tell the story.",
+  "bin": {
+    "gdd": "bin/install.js"
+  },
+  "files": [
+    ".claude-plugin",
+    "bin/install.js",
+    "commands",
+    "agents",
+    "gdd-core",
+    "runtime-catalog.json"
+  ],
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "test": "node tests/smoke-install.mjs && node tests/smoke-install-codex.mjs && node tests/installer-behavior.mjs && node tests/check-references.mjs && node tests/cloud-bootstrap.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Navis-Advisory/gdd.git"
+  },
+  "homepage": "https://github.com/Navis-Advisory/gdd#readme",
+  "author": {
+    "name": "Navis Advisory",
+    "url": "https://github.com/Navis-Advisory/gdd"
+  },
+  "keywords": [
+    "due-diligence",
+    "commercial-due-diligence",
+    "consulting",
+    "market-sizing",
+    "strategy",
+    "diligence"
+  ],
+  "license": "Apache-2.0"
+}

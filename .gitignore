@@ -1,0 +1,7 @@
+.diligence/
+node_modules/
+*.log
+.claude/commands/
+.claude/agents/
+.claude/gdd-core/
+.codex/

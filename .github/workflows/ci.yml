@@ -1,0 +1,31 @@
+name: CI
+
+# This repo owns this file; it is not updated by automation. Workflow files are
+# deliberately kept out of the automated content updates, so that automation
+# cannot write a workflow with access to this repo's secrets.
+#
+# Keep these steps a thin shim over `npm test`. The test logic lives in
+# package.json and tests/, both of which DO mirror across, so this file and
+# its upstream counterpart cannot meaningfully drift.
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm test
+      # Verify the PACKED npm artifact installs cleanly (files whitelist, path
+      # assumptions) — not just the repo working tree.
+      - run: node tests/smoke-pack.mjs

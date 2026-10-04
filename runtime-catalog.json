@@ -1,0 +1,42 @@
+{
+  "catalog_version": 1,
+  "runtimes": [
+    {
+      "runtime_name": "claude-code",
+      "display_name": "Claude Code",
+      "priority": 10,
+      "config_dir_name": ".claude",
+      "install_flags": [
+        "--claude",
+        "--claude-code"
+      ],
+      "launch_command": "claude",
+      "command_prefix": "/gdd:",
+      "command_layout": "nested",
+      "global_config": {
+        "strategy": "env_or_home",
+        "env_var": "CLAUDE_CONFIG_DIR",
+        "home_subpath": ".claude"
+      }
+    },
+    {
+      "runtime_name": "codex",
+      "display_name": "Codex",
+      "priority": 20,
+      "config_dir_name": ".codex",
+      "install_flags": [
+        "--codex"
+      ],
+      "launch_command": "codex",
+      "command_prefix": "$gdd-",
+      "command_layout": "skills",
+      "agent_layout": "codex-toml",
+      "native_include_support": false,
+      "global_config": {
+        "strategy": "env_or_home",
+        "env_var": "CODEX_HOME",
+        "home_subpath": ".codex"
+      }
+    }
+  ]
+}

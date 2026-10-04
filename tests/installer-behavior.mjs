@@ -111,17 +111,20 @@ for (const flag of ['--version', '-v']) {
   }
 }
 
-// --- A7: Antigravity install warns when a tool grant is dropped ---
-// gdd-analyst carries an `Agent` grant with no Gemini equivalent; the
-// converter must surface the drop rather than swallow it.
-{
-  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'gdd-tools-'));
+// Retired runtime flags must fail without changing an existing installation.
+for (const flag of ['--antigravity', '--antigravity-cli']) {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'gdd-retired-'));
   try {
     const configDir = path.join(tmp, '.agents');
-    const r = run(['--antigravity', '--config-dir', configDir]);
-    check('dropped tool grant is warned', /dropping tool grant "Agent"/.test(r.stderr));
+    fs.mkdirSync(configDir);
+    const sentinel = path.join(configDir, 'USER-CONTENT.txt');
+    fs.writeFileSync(sentinel, 'existing installation');
+    const before = fs.readdirSync(configDir);
+    const r = run([flag, '--config-dir', configDir]);
+    check(flag + ' exits 1 with retirement explanation', r.code === 1 && /discontinued/.test(r.stderr));
+    check(flag + ' preserves the existing directory', JSON.stringify(fs.readdirSync(configDir)) === JSON.stringify(before) && fs.readFileSync(sentinel, 'utf8') === 'existing installation');
   } finally {
-    fs.rmSync(tmp, { recursive: true, force: true });
+    fs.rmSync(tmp, {recursive: true, force: true});
   }
 }
 

@@ -24,7 +24,10 @@ try {
   // rather than parsing `npm pack --json`, whose shape has drifted across npm
   // majors (npm 11 broke the array[0].filename assumption this once relied on).
   // The file npm actually wrote is authoritative and version-independent.
-  execFileSync('npm', ['pack', '--pack-destination', tmp], {
+  const npmArgs = ['pack', '--pack-destination', tmp];
+  const npmCli = process.env.npm_execpath || path.join(path.dirname(process.execPath), 'node_modules', 'npm', 'bin', 'npm-cli.js');
+  execFileSync(process.platform === 'win32' ? process.execPath : 'npm',
+    process.platform === 'win32' ? [npmCli, ...npmArgs] : npmArgs, {
     cwd: repoRoot,
     stdio: ['ignore', 'inherit', 'inherit'],
   });

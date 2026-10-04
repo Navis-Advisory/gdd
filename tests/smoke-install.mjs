@@ -69,7 +69,7 @@ try {
         cleanOk = false;
       }
     }
-    if (body.includes(`@${path.join(configDir, 'gdd-core', 'workflows')}`)) includeOk = true;
+    if (body.replaceAll('\\', '/').includes(`@${path.join(configDir, 'gdd-core', 'workflows').replaceAll('\\', '/')}`)) includeOk = true;
   }
   check('install-dir token fully rewritten', rewriteOk);
   check('no stale GSD fragments in installed files', cleanOk);

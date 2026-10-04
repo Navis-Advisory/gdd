@@ -23,7 +23,8 @@ From it, take:
 **Fail closed.** If the manifest is missing, unreadable, or has no `install`
 block, stop. Tell the user GDD can't tell how it was installed, and give them
 the manual path: `npx -y get-diligence-done@latest <runtime-flag> --update`
-(e.g. `--claude`, `--codex`, `--antigravity`). Do not guess.
+(e.g. `--claude`, `--codex`). Do not guess. If the recorded runtime
+is retired, stop and explain; never reinterpret it as another runtime.
 
 ## 2. Check the latest published version
 

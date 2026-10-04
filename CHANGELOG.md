@@ -5,6 +5,21 @@ Version corresponds to `"version"` in `.claude-plugin/plugin.json`.
 
 ## [Unreleased]
 
+## [0.2.3] - 2026-10-04
+
+### Changed
+
+- Discontinued Antigravity support. Retired installer flags fail clearly and
+  leave existing installations untouched. Claude Code and Codex remain the
+  CLI targets; Cowork and ChatGPT Work require separate native acceptance.
+- Corrected Claude plugin installation scopes and removed unverified Cowork
+  form-rendering claims.
+
+### Fixed
+
+- Included the documented cloud bootstrap script and Claude SessionStart
+  entry points in repository distribution.
+
 ## [0.2.2] - 2026-08-20
 
 ### Fixed

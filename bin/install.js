@@ -7,7 +7,7 @@
  * Projects the GDD command/agent surface plus the gdd-core payload
  * (workflows, templates, references) into an AI-agent runtime's config
  * directory. Runtimes are data-defined in runtime-catalog.json: Claude
- * Code, Codex, and Antigravity CLI. Other runtimes are community ports on
+ * Code and Codex. Other runtimes are community ports on
  * demand.
  *
  * Pattern follows the GSD installer (single self-contained Node
@@ -33,27 +33,13 @@ const PLUGIN_ROOT_TOKEN = '${CLAUDE_PLUGIN_ROOT}';
 // Commands are authored once against Claude Code's own conventions: an
 // `<execution_context>@${CLAUDE_PLUGIN_ROOT}/gdd-core/workflows/x.md</execution_context>`
 // block that Claude Code auto-inlines, and `/gdd:x` literals in prose. Runtimes
-// without native @-include support (codex, antigravity) need that block
+// without native @-include support (Codex) need that block
 // resolved to real content at install time, or the installed skill is a
 // dangling reference to nothing.
 // Global: a command may carry more than one <execution_context> include, and
 // every one must resolve. Without /g, replace() would rewrite only the first
 // and silently drop the rest for skills-layout runtimes.
 const INCLUDE_RE = /<execution_context>\s*@\$\{CLAUDE_PLUGIN_ROOT\}\/gdd-core\/([^\s<]+)\s*<\/execution_context>/g;
-
-// Claude → Gemini-family tool name mapping, reused by Antigravity (shares
-// Gemini CLI's tool vocabulary). Source: GSD's claudeToGeminiTools table.
-const CLAUDE_TO_GEMINI_TOOLS = {
-  Read: 'read_file',
-  Write: 'write_file',
-  Edit: 'replace',
-  Bash: 'run_shell_command',
-  Glob: 'glob',
-  Grep: 'search_file_content',
-  WebSearch: 'google_web_search',
-  WebFetch: 'web_fetch',
-  TodoWrite: 'write_todos',
-};
 
 function readJson(p) {
   return JSON.parse(fs.readFileSync(p, 'utf8'));
@@ -87,50 +73,12 @@ function rewriteCommandPrefix(content, runtime) {
   return runtime.command_prefix === '/gdd:' ? content : content.split('/gdd:').join(runtime.command_prefix);
 }
 
-function mapGeminiToolName(tool, agentName) {
-  const who = agentName ? ` (${agentName})` : '';
-  if (tool.startsWith('mcp__') || tool === 'Task' || tool === 'Agent' || tool === 'AskUserQuestion') {
-    process.stderr.write(`  note: dropping tool grant "${tool}"${who} — no Gemini/Antigravity equivalent\n`);
-    return null;
-  }
-  if (!CLAUDE_TO_GEMINI_TOOLS[tool]) {
-    process.stderr.write(`  note: unknown tool "${tool}"${who} — passing through lowercased as "${tool.toLowerCase()}"\n`);
-    return tool.toLowerCase();
-  }
-  return CLAUDE_TO_GEMINI_TOOLS[tool];
-}
-
 // Codex skill: ~/.codex/skills/<name>/SKILL.md, frontmatter trimmed to the
 // two fields Codex's skill spec recognizes (name, description).
-// Antigravity skill: same shape (confirmed against GSD's shipped
-// convertClaudeCommandToAntigravitySkill converter).
 function convertCommandToSkill(resolvedContent, skillName) {
   const { frontmatter, body } = extractFrontmatterAndBody(resolvedContent);
   const description = frontmatter ? extractFrontmatterField(frontmatter, 'description') || '' : '';
   const fm = `---\nname: ${skillName}\ndescription: ${JSON.stringify(description)}\n---`;
-  return `${fm}\n${body}`;
-}
-
-// Antigravity custom agent: flat markdown, name/description/tools(mapped)/
-// color frontmatter, body passthrough. Confirmed against GSD's shipped
-// convertClaudeAgentToAntigravityAgent converter — Antigravity does read
-// static agent files (unlike some blog claims of a dynamic-only model).
-function convertAgentToAntigravity(content) {
-  const { frontmatter, body } = extractFrontmatterAndBody(content);
-  if (!frontmatter) return content;
-  const name = extractFrontmatterField(frontmatter, 'name') || 'unknown';
-  const description = extractFrontmatterField(frontmatter, 'description') || '';
-  const color = extractFrontmatterField(frontmatter, 'color');
-  const toolsRaw = extractFrontmatterField(frontmatter, 'tools') || '';
-  const tools = toolsRaw
-    .split(',')
-    .map((t) => t.trim())
-    .filter(Boolean)
-    .map((t) => mapGeminiToolName(t, name))
-    .filter(Boolean);
-  let fm = `---\nname: ${name}\ndescription: ${JSON.stringify(description)}\ntools: ${tools.join(', ')}\n`;
-  if (color) fm += `color: ${color}\n`;
-  fm += '---';
   return `${fm}\n${body}`;
 }
 
@@ -254,6 +202,9 @@ function parseArgs(argv) {
   };
   for (let i = 0; i < argv.length; i += 1) {
     const a = argv[i];
+    if (a === "--antigravity" || a === "--antigravity-cli") {
+      fail("Antigravity support has been discontinued. Use --claude or --codex. Existing installations are left untouched.");
+    }
     const rt = CATALOG.runtimes.find((r) => r.install_flags.includes(a));
     if (rt) {
       if (opts.runtime && opts.runtime !== rt) fail('Pick a single runtime per invocation.');
@@ -356,8 +307,8 @@ function install(runtime, configDir, opts) {
   let installError = null;
   try {
     // Command surface. Nested layout gives /gdd:<name> on Claude Code; "skills"
-    // (codex, antigravity) converts each command into a SKILL.md directory with
-    // its @-include resolved to real content, since neither runtime auto-inlines
+    // (Codex) converts each command into a SKILL.md directory with
+    // its @-include resolved to real content, since Codex does not auto-inline
     // ${CLAUDE_PLUGIN_ROOT} references the way Claude Code does.
     for (const f of listFilesRecursive(srcCommands)) {
       const rel = path.relative(srcCommands, f);
@@ -388,19 +339,15 @@ function install(runtime, configDir, opts) {
       projectFile(f, dest, ctx, runtime);
     }
 
-    // Agents. codex-toml and antigravity-markdown convert to each runtime's
+    // Agents. codex-toml converts to Codex's
     // native custom-agent format; anything else is a passthrough copy.
     for (const f of listFilesRecursive(srcAgents)) {
       const rel = path.relative(srcAgents, f);
-      if (runtime.agent_layout === 'codex-toml' || runtime.agent_layout === 'antigravity-markdown') {
+      if (runtime.agent_layout === 'codex-toml') {
         const raw = fs.readFileSync(f, 'utf8');
         const rewritten = rewriteCommandPrefix(raw.split(PLUGIN_ROOT_TOKEN).join(configDir), runtime);
-        if (runtime.agent_layout === 'codex-toml') {
-          const base = path.basename(rel, '.md');
-          writeContent(convertAgentToCodexToml(rewritten), path.join(configDir, 'agents', `${base}.toml`), ctx);
-        } else {
-          writeContent(convertAgentToAntigravity(rewritten), path.join(configDir, 'agents', rel), ctx);
-        }
+        const base = path.basename(rel, '.md');
+        writeContent(convertAgentToCodexToml(rewritten), path.join(configDir, 'agents', `${base}.toml`), ctx);
         continue;
       }
       projectFile(f, path.join(configDir, 'agents', rel), ctx, runtime);

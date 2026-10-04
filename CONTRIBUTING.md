@@ -10,7 +10,7 @@ Issues are open and they're the contribution we value most. A good bug report
 or a well-argued feature idea moves this further than a patch would — tell us:
 
 - **Bugs** — what you ran, what happened, what you expected, and the runtime
-  (Claude Code / Codex / Antigravity) and OS. A minimal repro is gold.
+  (Claude Code / Claude Cowork / Codex / ChatGPT Work) and OS. A minimal repro is gold.
 - **Ideas** — the diligence problem you're trying to solve, not just the
   feature. We care about the underlying need.
 

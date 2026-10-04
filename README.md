@@ -11,8 +11,9 @@ analytical leaves, persistent state in markdown plus a machine lock, and a
 verification gate whose honest claim is **consistency and traceability, not
 truth**.
 
-Claude Code, Codex, and Antigravity CLI are supported runtimes; other
-runtimes are community ports on demand. See [`docs/design.md`](docs/design.md) for the full
+Claude Code and Codex have CLI adapters. Claude Cowork and ChatGPT Work
+are separate native acceptance targets; their plugin installation and
+persistence paths are not yet certified. See [`docs/design.md`](docs/design.md) for the full
 design and [`docs/install.md`](docs/install.md) for every install path.
 
 ## Install
@@ -25,7 +26,7 @@ npx get-diligence-done --claude --global
 
 That projects GDD into `~/.claude`, so `/gdd:` works from any deal folder —
 the tool's normal per-engagement usage pattern. Swap `--claude` for
-`--codex` or `--antigravity` to target those runtimes. The installer is a
+`--codex` to target Codex. The installer is a
 single file with no dependencies; there's nothing to build.
 
 **From source** (to read the code first, or to hack on it):
@@ -44,16 +45,14 @@ Once installed, GDD runs out of `~/.claude`; engagement state lives in a
 update: re-run `npx get-diligence-done@latest --claude --global`, or
 `/gdd:update` from inside the runtime.
 
-**Claude Code plugin (secondary).** `/plugin marketplace add
-Navis-Advisory/gdd` then `/plugin install gdd@gdd` works, but registers at
-local scope pinned to the project you ran it in — `/gdd:` won't follow you
-into other deal folders, and it can't reach Antigravity CLI. Use the CLI
-install above unless you're staying in one project folder for the whole
-engagement.
+**Claude Code plugin.** Add the marketplace with `/plugin marketplace add
+Navis-Advisory/gdd`, then open `/plugin install gdd@gdd` and choose user,
+project, or local scope. User scope makes it available across your projects
+on that machine.
 
-**Claude Cowork.** Install **GDD — Get Diligence Done** from the plugin
-browser once it's listed in the community catalog. The intake commands
-render as fill-in-the-blank forms.
+**Claude Cowork and ChatGPT Work.** Native installation and persistence
+acceptance are pending. Do not assume a CLI installation makes the plugin
+available in either app. See the installation guide for current status.
 
 ## Why we built this
 
@@ -116,8 +115,8 @@ cited source, and the segment tree is MECE. It never claims the market is
 
 | Path | What |
 |---|---|
-| `.claude-plugin/` | Plugin manifest (`plugin.json`) and private marketplace (`marketplace.json`) — the no-terminal install surface |
-| `bin/install.js` | Single-file CLI installer; runtimes data-defined in `runtime-catalog.json` (Claude Code, Codex, Antigravity CLI) |
+| `.claude-plugin/` | Plugin manifest (`plugin.json`) and marketplace (`marketplace.json`) — the no-terminal install surface |
+| `bin/install.js` | Single-file CLI installer; runtimes data-defined in `runtime-catalog.json` (Claude Code, Codex) |
 | `commands/` | The 17 slash commands — flat `.md` files (plugin skills → `/gdd:*`), thin wrappers that delegate to workflows |
 | `agents/` | The 10 subagents (scoper, planner, researcher, independent sizers, analyst, verifier, red-teamer, storyliner, librarian) |
 | `gdd-core/workflows/` | The real mechanics each command routes into |
@@ -142,6 +141,19 @@ GDD takes its name and skeleton in analogy with
 [GSD](https://github.com/open-gsd/get-shit-done-redux) (MIT), whose
 command-workflow idea transfers cleanly beyond software development.
 Machinery here is written fresh against that pattern.
+
+## Cloud sessions
+
+Claude Code cloud sessions self-install this checkout's GDD workflows through
+the tracked SessionStart hook. For Codex Cloud, set the repository Environment
+setup script to:
+
+```sh
+bash scripts/cloud-bootstrap.sh codex
+```
+
+The script installs GDD locally into the ephemeral clone, so the commands
+match the checked-out revision rather than an unrelated user-level install.
 
 ## License
 

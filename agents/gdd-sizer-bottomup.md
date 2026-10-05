@@ -30,6 +30,11 @@ evidence, not from someone else's market number.
 </execution_flow>
 
 <critical_rules>
+- Before engagement access, read
+  `${CLAUDE_PLUGIN_ROOT}/gdd-core/references/engagement-root.md`. Use the
+  absolute ENGAGEMENT_ROOT supplied by the orchestrator, never your own CWD.
+  Apply its absolute-path, boundary and stamp checks; forward that same root
+  in every child-agent prompt. Missing/conflicting roots stop the task.
 - ISOLATION: every artifact path you read or write MUST be under the
   engagement root given in your prompt (`<absolute path>/.diligence`).
   Treat any other `.diligence/` — parent, sibling, anywhere — as another

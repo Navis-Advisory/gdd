@@ -56,7 +56,7 @@ try {
   const strays = [...new Set(files.map((f) => f.split(path.sep)[0]))].filter((t) => !allowedTop.has(t));
   check(`tarball holds only allowlisted top-level entries${strays.length ? ` (strays: ${strays.join(', ')})` : ''}`, strays.length === 0);
   check('tarball ships bin/install.js', files.includes(path.join('bin', 'install.js')));
-  check(`sane file count (${files.length})`, files.length > 40 && files.length < 120);
+  check(`sane file count (${files.length})`, files.length > 40 && files.length < 240);
 
   // The packed installer must resolve its payload from the packed tree, not the
   // repo copy — this is the assertion the repo-relative smoke tests can't make.

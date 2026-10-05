@@ -24,8 +24,8 @@ try {
   check('skill dir exists', fs.existsSync(path.join(configDir, 'skills', 'gdd-help', 'SKILL.md')));
   check('agent toml exists', fs.existsSync(path.join(configDir, 'agents', 'gdd-planner.toml')));
   check(
-    '17 skills (found ' + fs.readdirSync(path.join(configDir, 'skills')).length + ')',
-    fs.readdirSync(path.join(configDir, 'skills')).length === 17
+    '19 skills (found ' + fs.readdirSync(path.join(configDir, 'skills')).length + ')',
+    fs.readdirSync(path.join(configDir, 'skills')).length === 19
   );
   check(
     '10 agent TOML files (found ' + fs.readdirSync(path.join(configDir, 'agents')).length + ')',

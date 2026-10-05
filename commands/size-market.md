@@ -14,10 +14,13 @@ reconciliation gap is the signal, and hiding it destroys the method.
 
 This is GDD's dimensional-analysis moment: two estimates built from
 disjoint evidence that land within tolerance are worth more than either
-alone.
+alone. A market brief containing only descriptive Qs and no requested sizing
+uses the workflow's existing-analyst route; do not manufacture a sizing exercise
+or claim independent estimates for that route.
 </objective>
 
 <execution_context>
+@${CLAUDE_PLUGIN_ROOT}/gdd-core/references/engagement-root.md
 @${CLAUDE_PLUGIN_ROOT}/gdd-core/workflows/size-market.md
 </execution_context>
 
@@ -28,10 +31,18 @@ segment; route to /gdd:scope-deal to lock definitions first.
 </context>
 
 <process>
+First apply the workflow's SOW coverage/dependency preflight. If the accepted
+brief is descriptive-only and sizing was not requested, dispatch the existing
+analyst for those Qs, preserve their criteria, save/promote evidence serially
+and report answers/gaps, then return through the workflow's completion gate.
+Otherwise follow the sizing steps below. Missing briefs for assigned Qs or
+named required inputs are blockers; never substitute generic coverage.
+
 1. Spawn `gdd-sizer-topdown` and `gdd-sizer-bottomup` in parallel, each
-   with only the engagement root (absolute path of `<CWD>/.diligence`),
-   ENGAGEMENT.md, TAXONOMY.md, and its own method reference — never the
-   other's output or prior sizing work.
+   with only the engagement root (resolved absolute path ENGAGEMENT_ROOT),
+   ENGAGEMENT.md, TAXONOMY.md, sizing-relevant brief/accepted Q criteria and its
+   own method reference — never the other leg's output, prior sizing work or
+   the register's answers/evidence. Hold non-sizing analyses until both return.
 2. Each sizer returns an estimate with explicit assumptions, units per the
    taxonomy lock, and citations registered in its own per-leg scratch
    registry — never shared SOURCES.md (the orchestrator merges both
@@ -43,4 +54,8 @@ segment; route to /gdd:scope-deal to lock definitions first.
    re-run the weaker leg.
 4. Write findings to `.diligence/modules/market/FINDINGS.md` and promote headline
    numbers to LEDGER.md with confidence levels.
+5. Complete remaining assigned descriptive Q analyses per the workflow,
+   preserving sizing sections/anchors. Report substantive answers or explicit
+   criterion gaps; only the orchestrator reconciles QUESTIONS.md after serial
+   promotion. A market-size finding does not answer unrelated Qs.
 </process>

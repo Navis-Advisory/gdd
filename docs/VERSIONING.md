@@ -2,16 +2,30 @@
 
 GDD follows [semver](https://semver.org): `MAJOR.MINOR.PATCH`.
 
-- **One version, three places.** Bump `package.json` and
-  `.claude-plugin/plugin.json` together, and add the matching `## [X.Y.Z]`
-  heading to `CHANGELOG.md`. `tests/check-references.mjs` enforces that all three
-  agree — a mismatch fails CI.
-- **Roll the changelog at tag time.** Write day-to-day notes under
-  `## [Unreleased]`; when cutting a release, rename that section to the new
-  `## [X.Y.Z] - <date>` heading (and start a fresh empty `## [Unreleased]`).
-- **`latest` dist-tag only.** No `next`/`beta` channels — every publish is the
-  new `latest`.
-- **Publishing is manual.** Bump + roll the changelog, merge to `main`, then a
-  human triggers `.github/workflows/publish.yml` (workflow_dispatch). It runs
-  `npm test` + the packed-artifact smoke test, refuses if the version is already
-  on npm, `npm publish --provenance --access public`, then pushes tag `v<version>`.
+- Keep `package.json`, `.claude-plugin/plugin.json`, root `plugin.json` and
+  the first versioned `CHANGELOG.md` heading aligned. Reference and plugin
+  package checks enforce parity across these surfaces.
+- Record development notes under `Unreleased`; use a versioned entry when
+  preparing an identified candidate. That entry does not establish publication
+  or availability through every channel.
+- The 0.2.4 SOW candidate needs a correction and acceptance pass. Native
+  installation checks do not establish successful ingestion or Git tracking.
+- Record source commit and SHA-256 digest with each candidate ZIP or tarball.
+  Rebuilt contents require new digests and affected checks even if the
+  candidate version has not changed.
+- npm publication is a separate, manually triggered release action. The current
+  workflow runs source tests and a packing smoke test, publishes the working
+  tree, then pushes `v<version>`. It does not yet bind publication to one
+  previously tested tarball or provide complete tagging recovery.
+- Required release work is to build once, test and scan that exact artifact,
+  publish those bytes, and verify the downloaded artifact and release tag.
+  This target contract is not yet implemented by the current workflow.
+- npm uses the `latest` dist-tag; candidate ZIP testing does not update it.
+  Do not republish an existing version or move a tag to different content.
+- Trusted OIDC publishing authenticates the publisher; it is distinct from
+  provenance attestation. The current workflow explicitly disables provenance.
+  A public repository alone does not establish an attestation.
+
+Test native updates through the host plugin manager. CLI updates must identify
+the existing installation and the exact target version. See
+[installation](install.md) and the [SOW pilot guide](sow-pilot.md).

@@ -14,6 +14,7 @@ citation. Findings marked CONTESTED cannot carry key-line claims.
 </objective>
 
 <execution_context>
+@${CLAUDE_PLUGIN_ROOT}/gdd-core/references/engagement-root.md
 @${CLAUDE_PLUGIN_ROOT}/gdd-core/workflows/storyline.md
 </execution_context>
 
@@ -24,7 +25,7 @@ may request an alternative framing ("build it around the risk case").
 
 <process>
 1. Spawn `gdd-storyliner` in draft mode (the engagement root — absolute
-   path of `<CWD>/.diligence` — LEDGER.md, the hypothesis tree, both
+   path ENGAGEMENT_ROOT — LEDGER.md, the hypothesis tree, both
    reports) to propose only the governing thought.
 2. Check the governing thought with the user directly before expanding —
    the answer is the client's decision support, not a surprise.

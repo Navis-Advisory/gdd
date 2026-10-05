@@ -28,16 +28,23 @@ folder — never in this repo (it's gitignored).
 
 ## Persistent state artifacts
 
-Each artifact has a template in `gdd-core/templates/`; a command fills it.
+Most artifacts have templates in `gdd-core/templates/`; workflows write them.
+The 0.2.4 candidate adds SOW intake before scoping. Its intended contract is
+one QUESTIONS.md register with stable IDs and local Git history, while
+state.json retains module/gate state. SOW questions can be descriptive and need
+not become thesis hypotheses. End-to-end behavior still needs correction and
+acceptance; see [pilot status](sow-pilot.md#candidate-readiness--before-following-the-test-instructions).
 
 | File in `.diligence/` | Purpose |
 |---|---|
+| `SOW.md` / versioned snapshots | Source extraction with locators; scope input, not evidence answering its questions |
+| `QUESTIONS.md` | Candidate's sole SOW question-status register: stable IDs, criteria, coverage, evidence and amendment history |
 | `ENGAGEMENT.md` | Engagement brief: target, client context, investment thesis, key questions, deadline, scope in/out |
 | `TAXONOMY.md` | The convention lock: segment definitions, geography, currency/units/FX, time basis (CY/FY), source hierarchy (filings > paid data > press > blogs), defined terms |
-| `WORKPLAN.md` | Workstreams × weeks; module status; dependency order |
+| `WORKPLAN.md` | Workstreams × weeks, Q-id/analysis coverage and dependency order; not a second status authority |
 | `STATE.md` | Position in the loop, last-session summary, next actions |
 | `LEDGER.md` | Findings ledger: numbered findings, each with claim, evidence, source citation, confidence (H/M/L), open questions |
-| `SOURCES.md` | Source registry: every source, its tier per the taxonomy hierarchy, access date, reliability notes |
+| `SOURCES.md` | Source registry: every source, tier, publication and access dates, locator and reliability notes |
 | `modules/<name>/BRIEF.md` | Module brief: hypotheses to test, analyses planned, sources to hit |
 | `modules/<name>/FINDINGS.md` | Module output including the numbers, feeding the ledger |
 | `reports/TRIANGULATION.md` | Verification report: unit checks, TD/BU reconciliation within tolerance, MECE audit, citation coverage, thesis sensitivity |
@@ -55,6 +62,7 @@ installer per `runtime-catalog.json`. The MVP path is in **bold**.
 | Command | What it does |
 |---|---|
 | `/gdd:help`, `/gdd:start`, `/gdd:tour` | onboarding ladder |
+| `/gdd:ingest-sow`, `/gdd:sow-status` | candidate intake, stable question register, evidence-linked coverage and amendments |
 | **`/gdd:scope-deal`** | interview the user → write `ENGAGEMENT.md` + initial `TAXONOMY.md`; locks conventions before any analysis |
 | **`/gdd:hypothesis-tree`** | decompose the thesis into a MECE hypothesis tree → module briefs |
 | **`/gdd:workplan`** | lay modules across the timeline → `WORKPLAN.md` |

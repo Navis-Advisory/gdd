@@ -1,16 +1,30 @@
 # Workflow: storyline
 
-Engagement root: `<CWD>/.diligence` — it exists at exactly that path or
-the engagement does not exist here. Never search parent or sibling
-directories for `.diligence/`; never read or write another folder's
-engagement. Full contract: references/engagement-root.md.
+Resolve ENGAGEMENT_ROOT per `references/engagement-root.md` before any
+engagement access. Use that same absolute path throughout this workflow;
+never search parent/sibling engagements or derive the root from the install.
 
 Governing-thought patterns per decision type and key-line construction
 rules live in references/pyramid-principle.md — the storyliner loads it;
 this workflow owns only the mechanics.
 
+If QUESTIONS.md exists, read it and include an SOW coverage appendix in
+the readout: every active Q-id, answer/evidence or unresolved gap, plus dated
+exclusions. Do not claim the full SOW is answered when any active Q is open.
+
 Preconditions: triangulation gate PASS or WAIVED (check
-`state.json.gates`). FAIL → stop with the failing checks listed.
+`state.json.gates`). Any other status, including `not-run` after a material
+scope amendment, stops with the required check/recheck listed. An old report
+or invalidated waiver is not current approval. Preserve the existing first-draft
+D6/D8 exception; it does not exempt changed scope from re-verification.
+
+Check STATE.md's current stale-report notes and `state.json.gates.red_team`
+before forwarding REDTEAM.md. A red-team gate invalidated by a material scope
+change requires a new completed red-team run against that scope; a fresh
+triangulation PASS alone does not make the old report current. Stop with that
+rerun as the next action while it remains not-run/stale. Do not pass a historical
+report to the storyliner as current evidence. After red-team changes the ledger,
+re-verify the changed evidence before synthesis. Retain historical reports/notes.
 
 1. Spawn `gdd-storyliner` in **draft mode**: the engagement root
    (absolute path), LEDGER.md, `.diligence/TREE.md`,

@@ -11,7 +11,7 @@
   "plugins": [
     {
       "name": "gdd",
-      "source": ".",
+      "source": "./",
       "displayName": "GDD — Get Diligence Done",
       "description": "Agentic commercial due-diligence workflow: scope, size, triangulate, red-team, storyline. Consistency and traceability, not truth.",
       "category": "productivity"

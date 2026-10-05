@@ -1,6 +1,6 @@
 {
   "name": "get-diligence-done",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "GDD (Get Diligence Done): an agentic workflow system for commercial due diligence. Scope the deal, lock the taxonomy, run the modules, triangulate, and tell the story.",
   "bin": {
     "gdd": "bin/install.js"
@@ -11,13 +11,17 @@
     "commands",
     "agents",
     "gdd-core",
-    "runtime-catalog.json"
+    "runtime-catalog.json",
+    "plugin.json",
+    "skills",
+    ".agents/plugins/marketplace.json"
   ],
   "engines": {
     "node": ">=20.0.0"
   },
   "scripts": {
-    "test": "node tests/smoke-install.mjs && node tests/smoke-install-codex.mjs && node tests/installer-behavior.mjs && node tests/check-references.mjs && node tests/cloud-bootstrap.mjs"
+    "test": "node tests/smoke-install.mjs && node tests/smoke-install-codex.mjs && node tests/installer-behavior.mjs && node tests/check-references.mjs && node tests/cloud-bootstrap.mjs && node tests/plugin-package.mjs",
+    "build:skills": "node scripts/build-skills.mjs"
   },
   "repository": {
     "type": "git",

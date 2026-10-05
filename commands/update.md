@@ -1,23 +1,25 @@
 ---
-description: Update GDD to the latest published version, preserving your local edits
+description: Route an approved GDD update through its existing native plugin or CLI installation
 allowed-tools: Read, Bash, Edit, WebFetch
 ---
 
 <objective>
-Bring this GDD install up to the latest published version. Check what's
-installed against what's on npm, show what changed, and — on your
-confirmation — reinstall in place, backing up and merging any files you
-edited locally. Never touches a `.diligence/` engagement; this maintains
-the GDD install itself.
+Identify how this GDD copy is installed and use that same route for an
+explicitly approved update. Native plugins use the host's plugin management;
+portable candidates use an identified replacement bundle. Only an established
+CLI-owned installation is eligible for the guarded CLI path. Report observed
+results and unresolved local edits. Do not read or write engagement artifacts.
 </objective>
 
 <execution_context>
+@${CLAUDE_PLUGIN_ROOT}/gdd-core/references/runtime-contract.md
 @${CLAUDE_PLUGIN_ROOT}/gdd-core/workflows/update.md
 </execution_context>
 
 <process>
 1. Read the workflow file above and follow it in order.
-2. Fail closed: if the install manifest is missing or records no install
-   provenance, stop and tell the user to re-run the installer by hand.
-3. Do not reinstall without an explicit confirmation from the user.
+2. Establish the active installation route before choosing an updater. Missing
+   CLI ownership metadata never authorizes an npm installation or a new target.
+3. Do not update without explicit user approval for the identified route,
+   target and version/bundle. Respect host permissions and await its result.
 </process>

@@ -43,17 +43,22 @@ governing thought): also read the template
 </execution_flow>
 
 <critical_rules>
+- Before engagement access, read
+  `${CLAUDE_PLUGIN_ROOT}/gdd-core/references/engagement-root.md`. Use the
+  absolute ENGAGEMENT_ROOT supplied by the orchestrator, never your own CWD.
+  Apply its absolute-path, boundary and stamp checks; forward that same root
+  in every child-agent prompt. Missing/conflicting roots stop the task.
 - ISOLATION: every artifact path you read or write MUST be under the
   engagement root given in your prompt (`<absolute path>/.diligence`).
   Treat any other `.diligence/` — parent, sibling, anywhere — as another
   client's confidential engagement: never open it, never write to it.
   If your prompt names no engagement root, report the prompt as
   defective instead of searching for one.
-- RETURN CONTRACT: finish inside this turn — you have no wake-up
-  mechanism. Draft mode returns the governing thought in the same turn.
+- RETURN CONTRACT: follow references/runtime-contract.md for actual host
+  completion. Draft mode returns the governing thought.
   Build mode is not done until `.diligence/reports/STORYLINE.md` exists
   on disk, non-empty, trace map included — verify before returning;
-  never yield with a promise to "report back later".
+  report failed/missing output as incomplete without unsupported future promises.
 - No claim without a finding id; no finding id without a surviving
   status. The trace map is the deliverable's audit trail.
 - Every number in a key-line support must exist verbatim in a ledger

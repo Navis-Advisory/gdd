@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.2.4] - 2026-10-04 — SOW intake pilot
+
+Candidate status: bounded intake corrections included; synthetic acceptance pending. This entry
+does not indicate npm publication or a completed four-app behavioral test.
+
+- Ingest an SOW into stable question IDs, review source coverage, and track
+  evidence-linked progress and amendments in a local Git repository.
+- Carry SOW IDs through scoping, module briefs, workplans, and readouts.
+- Bundle a portable skills entry point and native marketplace metadata.
+  Live acceptance remains separate for each of the four target apps.
+- Align selected-root isolation, staged handoffs/read-only resume, accepted
+  amendments and gate invalidation, descriptive-question coverage, exact-file
+  checkpoints, native update routing and runtime permission/completion rules.
+  Source/package checks do not establish native behavior.
+
+
 Notable changes to GDD, loosely following [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 Version corresponds to `"version"` in `.claude-plugin/plugin.json`.
 

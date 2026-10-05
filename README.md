@@ -16,9 +16,24 @@ are separate native acceptance targets; their plugin installation and
 persistence paths are not yet certified. See [`docs/design.md`](docs/design.md) for the full
 design and [`docs/install.md`](docs/install.md) for every install path.
 
+## SOW intake pilot (0.2.4)
+
+The candidate adds `/gdd:ingest-sow <file>`, stable question IDs in
+QUESTIONS.md, `/gdd:sow-status`, and local Git checkpoints. The portable
+plugin offers the entry point as `$gdd`.
+
+**The candidate includes bounded intake corrections and still needs full synthetic
+acceptance before real-SOW testing.** Bounded Claude Code checks do not certify
+Cowork. The pilot targets Cowork's repository marketplace: add
+`Navis-Advisory/gdd` through Customize → Plugins → Add → Add marketplace, then
+install GDD after the reviewed public candidate is available. See
+[the pilot guide](docs/sow-pilot.md) for exact candidate identification,
+account separation and lifecycle checks. No ZIP handoff or npm release is needed.
+
 ## Install
 
-**One command (recommended).** Requires Node.js >= 20.
+**Legacy CLI adapter.** Requires Node.js >= 20. For this SOW pilot, use
+the native plugin package and instructions above.
 
 ```bash
 npx get-diligence-done --claude --global
@@ -31,6 +46,9 @@ single file with no dependencies; there's nothing to build.
 
 **From source** (to read the code first, or to hack on it):
 
+Run the npx command from outside a GDD clone. Inside a clone, use the
+source command below; npx may resolve the local package before it is installed.
+
 ```bash
 git clone https://github.com/Navis-Advisory/gdd.git
 cd gdd
@@ -40,10 +58,10 @@ node bin/install.js --claude --global
 `npm test` verifies the install round-trip and reference integrity. Full
 details in [`docs/install.md`](docs/install.md).
 
-Once installed, GDD runs out of `~/.claude`; engagement state lives in a
+With the global Claude CLI adapter, GDD runs out of `~/.claude`; engagement state lives in a
 `.diligence/` folder inside each deal folder, never in the install. To
-update: re-run `npx get-diligence-done@latest --claude --global`, or
-`/gdd:update` from inside the runtime.
+update a native plugin, use the host's plugin manager. CLI updates are a
+separate route; see [installation guidance](docs/install.md#updating).
 
 **Claude Code plugin.** Add the marketplace with `/plugin marketplace add
 Navis-Advisory/gdd`, then open `/plugin install gdd@gdd` and choose user,
@@ -117,7 +135,7 @@ cited source, and the segment tree is MECE. It never claims the market is
 |---|---|
 | `.claude-plugin/` | Plugin manifest (`plugin.json`) and marketplace (`marketplace.json`) — the no-terminal install surface |
 | `bin/install.js` | Single-file CLI installer; runtimes data-defined in `runtime-catalog.json` (Claude Code, Codex) |
-| `commands/` | The 17 slash commands — flat `.md` files (plugin skills → `/gdd:*`), thin wrappers that delegate to workflows |
+| `commands/` | The 19 slash commands — flat `.md` files (plugin skills → `/gdd:*`), thin wrappers that delegate to workflows |
 | `agents/` | The 10 subagents (scoper, planner, researcher, independent sizers, analyst, verifier, red-teamer, storyliner, librarian) |
 | `gdd-core/workflows/` | The real mechanics each command routes into |
 | `gdd-core/templates/` | Engagement state artifacts (brief, taxonomy, ledger, reports…) |

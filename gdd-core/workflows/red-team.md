@@ -1,9 +1,8 @@
 # Workflow: red-team
 
-Engagement root: `<CWD>/.diligence` — it exists at exactly that path or
-the engagement does not exist here. Never search parent or sibling
-directories for `.diligence/`; never read or write another folder's
-engagement. Full contract: references/engagement-root.md.
+Resolve ENGAGEMENT_ROOT per `references/engagement-root.md` before any
+engagement access. Use that same absolute path throughout this workflow;
+never search parent/sibling engagements or derive the root from the install.
 
 Preconditions: ledger non-empty; best after triangulate.
 
@@ -79,13 +78,15 @@ Preconditions: ledger non-empty; best after triangulate.
 
 ## Completion gate
 
+After a successful rerun following a scope amendment, update the current
+STATE.md stale-report note for REDTEAM.md and its gate to reflect this actual
+run; retain the dated invalidation/history. Old report existence alone cannot
+clear staleness. Ledger changes require re-verification before synthesis.
+
 The command is not complete until the postconditions hold on disk:
 `.diligence/reports/REDTEAM.md` exists non-empty, every kill is marked
 CONTESTED in LEDGER.md, and `state.json.gates.red_team` + STATE.md
-reflect the run. Verify before yielding the turn. Never yield with a
-promise to "report back": the red-teamer call is synchronous — if it
-has not returned, wait for it; if it failed, re-run it once or execute
-the work inline and say so in the session log.
+reflect the run. Follow references/runtime-contract.md: await the actual host completion result, check failure status, and verify this run's named output and state. A prior report or launch acknowledgement is not success. On failure, apply its bounded transient retry rule or report incomplete/blocked; do not fabricate output or silently substitute an inline run.
 
 Artifacts: .diligence/reports/REDTEAM.md, LEDGER.md status changes, state.json,
 STATE.md update.

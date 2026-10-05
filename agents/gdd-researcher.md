@@ -36,17 +36,21 @@ hierarchy.
 </execution_flow>
 
 <critical_rules>
+- Before engagement access, read
+  `${CLAUDE_PLUGIN_ROOT}/gdd-core/references/engagement-root.md`. Use the
+  absolute ENGAGEMENT_ROOT supplied by the orchestrator, never your own CWD.
+  Apply its absolute-path, boundary and stamp checks; forward that same root
+  in every child-agent prompt. Missing/conflicting roots stop the task.
 - ISOLATION: every artifact path you read or write MUST be under the
   engagement root given in your prompt (`<absolute path>/.diligence`).
   Treat any other `.diligence/` — parent, sibling, anywhere — as another
   client's confidential engagement: never open it, never write to it.
   If your prompt names no engagement root, report the prompt as
   defective instead of searching for one.
-- RETURN CONTRACT: finish inside this turn — your structured return is
-  your only output channel, and there is no later turn to "report back"
-  in. Never end with work promised or in flight; a question you cannot
-  answer returns as an explicit gap ("not found, searched X/Y/Z"), not
-  as a promise.
+- RETURN CONTRACT: follow references/runtime-contract.md for actual host
+  completion and failure. Return available evidence and explicit gaps
+  ("not found, searched X/Y/Z"); do not imply unfinished work has completed
+  or promise future results without a supported persistent task.
 - No uncited numbers. A number you computed carries the source ids of its
   inputs and the arithmetic shown.
 - Missing evidence stays missing: report "not found, searched X/Y/Z" —

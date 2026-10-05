@@ -18,6 +18,7 @@ that the numbers are true. That is the QA a good engagement manager runs.
 </objective>
 
 <execution_context>
+@${CLAUDE_PLUGIN_ROOT}/gdd-core/references/engagement-root.md
 @${CLAUDE_PLUGIN_ROOT}/gdd-core/workflows/triangulate.md
 </execution_context>
 
@@ -27,7 +28,7 @@ $ARGUMENTS may scope to one module or one check ID. Default: full sweep.
 
 <process>
 1. Spawn `gdd-verifier` in fresh context with the engagement root
-   (absolute path of `<CWD>/.diligence`), read access to all of
+   (resolved absolute path ENGAGEMENT_ROOT), read access to all of
    `.diligence/`, and the check registry reference.
 2. Verifier runs each applicable check, showing its work — arithmetic
    re-done in an executed code block, not asserted (the external-oracle

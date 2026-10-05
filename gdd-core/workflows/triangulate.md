@@ -1,9 +1,8 @@
 # Workflow: triangulate
 
-Engagement root: `<CWD>/.diligence` — it exists at exactly that path or
-the engagement does not exist here. Never search parent or sibling
-directories for `.diligence/`; never read or write another folder's
-engagement. Full contract: references/engagement-root.md.
+Resolve ENGAGEMENT_ROOT per `references/engagement-root.md` before any
+engagement access. Use that same absolute path throughout this workflow;
+never search parent/sibling engagements or derive the root from the install.
 
 Preconditions: at least one module has findings; ledger non-empty.
 
@@ -16,7 +15,10 @@ Preconditions: at least one module has findings; ledger non-empty.
      blocks (external-oracle rule: ≥1 executed computation per report);
    - `state.json.taxonomy_lock` is the authority; missing lock → loud
      warning in the report header;
-   - PASS only for checks actually run; otherwise N-A with reason.
+   - PASS only for checks actually run. Report a required check that cannot
+     execute as not executed with the missing capability; keep the gate unpassed.
+     N-A is only for documented inapplicability, including the first-draft
+     D6/D8 cases below, not failed or unavailable tools.
 3. Verifier writes `.diligence/reports/TRIANGULATION.md` and sets
    `state.json.gates.triangulation` + STATE.md gate line.
 4. Orchestrator summarizes: gate result, FAILs with owning modules;
@@ -41,16 +43,16 @@ Preconditions: at least one module has findings; ledger non-empty.
   and wasn't checked; a scoped PASS never updates the gate to PASS —
   gate status changes only on full sweeps.
 - Re-runs after remediation: re-run failed checks plus D5 (fixes
-  ripple); carry forward prior PASSes with their dates noted.
+  ripple); carry forward prior PASSes only when their checked inputs and scope
+  are unchanged, with dates noted. After material scope/criterion amendment,
+  run a full sweep against the current accepted register/planning/evidence;
+  never carry the invalidated PASS or waiver forward from an old report.
 
 ## Completion gate
 
 The command is not complete until the postconditions hold on disk:
 `.diligence/reports/TRIANGULATION.md` exists non-empty and
 `state.json.gates.triangulation` + STATE.md's gate line reflect this
-sweep's result. Verify before yielding the turn. Never yield with a
-promise to "report back": the verifier call is synchronous — if it has
-not returned, wait for it; if it failed, re-run it once or run the
-checks inline and say so in the session log.
+sweep's result. Follow references/runtime-contract.md: await the actual host completion result, check failure status, and verify this run's named output and state. A prior report or launch acknowledgement is not success. On failure, apply its bounded transient retry rule or report incomplete/blocked; do not fabricate output or silently substitute an inline run.
 
 Artifacts: .diligence/reports/TRIANGULATION.md, state.json gates, STATE.md update.

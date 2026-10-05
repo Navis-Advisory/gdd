@@ -1,9 +1,8 @@
 # Workflow: hypothesis-tree
 
-Engagement root: `<CWD>/.diligence` — it exists at exactly that path or
-the engagement does not exist here. Never search parent or sibling
-directories for `.diligence/`; never read or write another folder's
-engagement. Full contract: references/engagement-root.md.
+Resolve ENGAGEMENT_ROOT per `references/engagement-root.md` before any
+engagement access. Use that same absolute path throughout this workflow;
+never search parent/sibling engagements or derive the root from the install.
 
 Preconditions: scoped engagement (ENGAGEMENT.md exists and signed off).
 
@@ -47,13 +46,24 @@ Preconditions: scoped engagement (ENGAGEMENT.md exists and signed off).
   is undecidable because a term is loose, that's a taxonomy gap to
   report, not a judgment call to bury.
 
+If QUESTIONS.md exists, pass its current accepted scope and criteria to the
+planner. Active means every Q-id not marked out-of-scope, including answered
+questions whose evidence may be reused. Every active Q-id must map to an owning
+module brief and named analysis, or a visible blocker with the missing input
+and next action. Descriptive questions need no thesis leaf: do not invent a
+hypothesis to accommodate them. QUESTIONS.md alone owns question status;
+briefs hold the execution plan and criterion references, not a second register.
+
 1. Spawn `gdd-planner` with the engagement root (absolute path),
-   ENGAGEMENT.md, TAXONOMY.md, STATE.md, and the
+   ENGAGEMENT.md, TAXONOMY.md, STATE.md, state.json, QUESTIONS.md if present, and the
    module-brief template path.
 2. Planner builds thesis → 3–6 first-order conditions → falsifiable
    leaves; audits MECE against locked segment definitions; assigns each
    leaf an owning module (market / competition / customers / company /
-   risks — only modules with leaves get briefs).
+   risks). Create briefs for the union of modules owning leaves and active
+   Q-ids. A Q-only module is valid and has a hypothesis count of zero. Keep
+   uncovered or unmapped Q-ids visible as planning blockers; do not invent an
+   owner, evidence instrument or accepted criterion.
 3. Planner writes `.diligence/TREE.md` — the full tree as an indented
    outline, one line per node, leaves carrying their id and owning
    module (falsifiability detail lives in the briefs). TREE.md is the
@@ -63,13 +73,21 @@ Preconditions: scoped engagement (ENGAGEMENT.md exists and signed off).
    briefs are written, write `state.json.modules.<name> =
    {status: "pending", brief: ".diligence/modules/<name>/BRIEF.md",
    hypotheses: <leaf count>}` for EVERY module that got a brief —
+   including `hypotheses: 0` for Q-only modules. This initializes NEW module
+   entries only. On existing entries, update affected brief/count metadata while
+   preserving status and evidence unless an accepted material change reopens
+   them under `references/sow-register.md`.
    STATE.md's module table is a projection of this machine state, never
    the other way round. A brief on disk with no state.json.modules
    entry is an incomplete step.
 4. Orchestrator shows the tree to the user; branch disputes loop back;
-   $ARGUMENTS may scope a rebuild to one branch (re-derive only that
-   module's brief; supersede, don't edit).
-5. Suggest `/gdd:workplan`.
+   $ARGUMENTS may scope a rebuild to one branch. Preserve unrelated briefs and
+   all active Q-id coverage, including descriptive work in the affected module.
+   Record a dated revision; scope/criterion changes and completion invalidation
+   follow `references/sow-register.md`, never an implicit rewrite of the register.
+5. After the tree/briefs are accepted, the orchestrator follows the Local Git
+   checkpoints contract in `references/sow-register.md` for exact changed
+   planning files; report the actual SHA or limitation. Suggest `/gdd:workplan`.
 
 Artifacts: .diligence/TREE.md, .diligence/modules/*/BRIEF.md, STATE.md +
 state.json.modules update.

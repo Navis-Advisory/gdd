@@ -15,6 +15,7 @@ and what evidence would settle each dispute.
 </objective>
 
 <execution_context>
+@${CLAUDE_PLUGIN_ROOT}/gdd-core/references/engagement-root.md
 @${CLAUDE_PLUGIN_ROOT}/gdd-core/workflows/red-team.md
 </execution_context>
 
@@ -24,8 +25,8 @@ $ARGUMENTS may target a single hypothesis branch. Runs best after
 </context>
 
 <process>
-1. Spawn `gdd-red-teamer` with the engagement root (absolute path of
-   `<CWD>/.diligence`), the ledger, module findings, and hypothesis
+1. Spawn `gdd-red-teamer` with the engagement root (resolved absolute path
+   ENGAGEMENT_ROOT), the ledger, module findings, and hypothesis
    tree — instructed to refute, not to balance.
 2. Findings it kills are marked CONTESTED in LEDGER.md (never silently
    deleted); the storyline may not rest a key-line claim on a CONTESTED

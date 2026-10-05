@@ -114,7 +114,7 @@ if (!fs.existsSync(marketplacePath)) {
   const market = JSON.parse(fs.readFileSync(marketplacePath, 'utf8'));
   const entry = (market.plugins || []).find((p) => p.name === 'gdd');
   if (!entry) reportPath(marketplacePath, 'marketplace does not list the gdd plugin');
-  else if (entry.source !== '.') reportPath(marketplacePath, `gdd plugin source should be "." (got ${JSON.stringify(entry.source)})`);
+  else if (!['.', './'].includes(entry.source)) reportPath(marketplacePath, `gdd plugin source should be "." (got ${JSON.stringify(entry.source)})`);
 }
 
 // Version parity: package.json, .claude-plugin/plugin.json, and the first

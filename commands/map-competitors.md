@@ -15,6 +15,7 @@ deferred to triangulation.
 </objective>
 
 <execution_context>
+@${CLAUDE_PLUGIN_ROOT}/gdd-core/references/engagement-root.md
 @${CLAUDE_PLUGIN_ROOT}/gdd-core/workflows/map-competitors.md
 </execution_context>
 
@@ -24,8 +25,16 @@ Focus: $ARGUMENTS. Requires the taxonomy lock; runs best after
 </context>
 
 <process>
-1. Spawn `gdd-analyst` with the engagement root (absolute path of
-   `<CWD>/.diligence`) and the module brief; heavy evidence gathering
+First apply the workflow's SOW coverage/dependency preflight. Include assigned
+active Q-ids, accepted criteria and analyses in the prompt; execute descriptive
+questions even without a thesis leaf. Missing coverage or a named required input
+blocks affected work; a generic default brief or exploratory fallback cannot
+replace it. After serial evidence promotion, only the orchestrator reconciles
+QUESTIONS.md. Record substantive Q answers/gaps with evidence, not forced
+hypothesis verdicts.
+
+1. Spawn `gdd-analyst` with the engagement root (resolved absolute path
+   ENGAGEMENT_ROOT) and the module brief; heavy evidence gathering
    goes to `gdd-researcher` in fresh context (root passed along).
 2. Every competitor claim (size, share, positioning) carries a citation
    registered in SOURCES.md at the appropriate source tier.

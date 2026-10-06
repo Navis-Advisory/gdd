@@ -31,4 +31,4 @@ if ! command -v node >/dev/null 2>&1; then
 fi
 
 cd "$REPO_ROOT"
-exec node "$REPO_ROOT/bin/install.js" "$RUNTIME_FLAG" --local
+exec node "$REPO_ROOT/scripts/install.js" "$RUNTIME_FLAG" --local

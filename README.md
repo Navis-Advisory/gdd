@@ -52,7 +52,7 @@ source command below; npx may resolve the local package before it is installed.
 ```bash
 git clone https://github.com/Navis-Advisory/gdd.git
 cd gdd
-node bin/install.js --claude --global
+node scripts/install.js --claude --global
 ```
 
 `npm test` verifies the install round-trip and reference integrity. Full
@@ -134,7 +134,7 @@ cited source, and the segment tree is MECE. It never claims the market is
 | Path | What |
 |---|---|
 | `.claude-plugin/` | Plugin manifest (`plugin.json`) and marketplace (`marketplace.json`) — the no-terminal install surface |
-| `bin/install.js` | Single-file CLI installer; runtimes data-defined in `runtime-catalog.json` (Claude Code, Codex) |
+| `scripts/install.js` | Single-file CLI installer; runtimes data-defined in `runtime-catalog.json` (Claude Code, Codex) |
 | `commands/` | The 19 slash commands — flat `.md` files (plugin skills → `/gdd:*`), thin wrappers that delegate to workflows |
 | `agents/` | The 10 subagents (scoper, planner, researcher, independent sizers, analyst, verifier, red-teamer, storyliner, librarian) |
 | `gdd-core/workflows/` | The real mechanics each command routes into |

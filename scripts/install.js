@@ -167,7 +167,7 @@ function usage() {
     .join('\n');
   return `GDD ${VERSION}: Get Diligence Done installer
 
-Usage: node bin/install.js [runtime] [scope] [options]
+Usage: node scripts/install.js [runtime] [scope] [options]
 
 Runtimes:
 ${flags}

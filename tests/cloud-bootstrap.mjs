@@ -45,7 +45,7 @@ const codex = runBootstrap("codex");
 try {
   assert.equal(
     readFileSync(codex.log, "utf8").trim(),
-    `${shellPath(join(repo, "bin", "install.js"))} --codex --local`,
+    `${shellPath(join(repo, "scripts", "install.js"))} --codex --local`,
   );
 } finally {
   rmSync(codex.temp, { recursive: true, force: true });
@@ -55,7 +55,7 @@ const claude = runBootstrap("claude", { CLAUDE_CODE_REMOTE: "true" });
 try {
   assert.equal(
     readFileSync(claude.log, "utf8").trim(),
-    `${shellPath(join(repo, "bin", "install.js"))} --claude --local`,
+    `${shellPath(join(repo, "scripts", "install.js"))} --claude --local`,
   );
 } finally {
   rmSync(claude.temp, { recursive: true, force: true });

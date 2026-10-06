@@ -21,6 +21,11 @@ Version corresponds to `"version"` in `.claude-plugin/plugin.json`.
 
 ## [Unreleased]
 
+- Prepare hosted plugin compatibility: keep the existing installer under
+  scripts/install.js, preserving the gdd npm command while removing
+  top-level bin/ from the generated public/plugin payload. Native Cowork
+  synchronization still requires an observed acceptance run.
+
 ## [0.2.3] - 2026-10-04
 
 ### Changed

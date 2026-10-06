@@ -3,11 +3,11 @@
   "version": "0.2.4",
   "description": "GDD (Get Diligence Done): an agentic workflow system for commercial due diligence. Scope the deal, lock the taxonomy, run the modules, triangulate, and tell the story.",
   "bin": {
-    "gdd": "bin/install.js"
+    "gdd": "scripts/install.js"
   },
   "files": [
     ".claude-plugin",
-    "bin/install.js",
+    "scripts/install.js",
     "commands",
     "agents",
     "gdd-core",

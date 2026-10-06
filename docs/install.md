@@ -38,14 +38,14 @@ npx get-diligence-done --codex --global
 
 These commands install the published npm version, which can lag this checkout.
 Run npx from outside a GDD clone. Inside a clone it may resolve the local
-package before installation; use `node bin/install.js` instead.
+package before installation; use `node scripts/install.js` instead.
 To test the checked-out source revision:
 
 ```bash
 git clone https://github.com/Navis-Advisory/gdd.git
 cd gdd
-node bin/install.js --claude --config-dir /absolute/path/to/scratch-config
-node bin/install.js --codex --config-dir /absolute/path/to/another-scratch-config
+node scripts/install.js --claude --config-dir /absolute/path/to/scratch-config
+node scripts/install.js --codex --config-dir /absolute/path/to/another-scratch-config
 ```
 
 `--global` uses the runtime's user configuration directory. `--local` uses

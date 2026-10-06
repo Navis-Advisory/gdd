@@ -7,7 +7,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const installer = path.join(repoRoot, 'bin', 'install.js');
+const installer = path.join(repoRoot, 'scripts', 'install.js');
 const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'gdd-smoke-codex-'));
 const configDir = path.join(tmp, '.codex');
 

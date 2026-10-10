@@ -41,7 +41,9 @@ to report to the orchestrator before engagement access.
 - Reuse this resolved value in every workflow and delegated prompt in the
   request. A fresh session resolves it again from the user's/host's selection;
   saved `engagement_root:` headers are validation stamps, never routing hints.
-  Check a stamp when opening an artifact; on mismatch, stop and report the
+  Open engagement artifacts one at a time and check each stamp before opening
+  the next artifact. Do not batch multiple file reads in one tool call: a later
+  result cannot undo reading past a mismatch. On mismatch, stop and report the
   foreign artifact rather than adopting its path or silently restamping it.
 
 ## Choose the boundary evidence route
@@ -107,6 +109,15 @@ result before a dependent operation; parallel checking and access is not a gate.
    information under the host's enforced boundary. An ordinary directory and
    confirmed nonexistent entry are distinct results. Empty listings or ambiguous
    false results prove neither absence nor a safe root.
+   A listing of the selected folder's children checks the .diligence entry,
+   not the selected folder itself. Use a permission-checked host metadata result
+   for that folder, or a simple read-only metadata operation on its exact
+   host-mapped path through the already selected connected-device route. For
+   example, mounted-view lstat/stat without link following can supply visible
+   entry type; it does not supply backing Windows reparse attributes. Do not
+   enumerate a parent to obtain this information. Await and inspect this result
+   separately from child listings or content reads. If required visible metadata
+   or mapping is unavailable, stop and name the missing check.
 2. Only after this succeeds may you enumerate the root's direct inventory.
    Check each artifact and intermediate directory for redirection using the
    chosen route before content access. A path string does not prove containment.

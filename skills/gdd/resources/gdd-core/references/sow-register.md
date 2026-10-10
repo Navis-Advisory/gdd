@@ -58,8 +58,11 @@ Before full scoping, QUESTIONS.md also holds `## Intake handoff` and
 `## Intake session log` sections from `templates/questions.md`. These contain
 continuation notes, not duplicate question rows, statuses or module/gate state.
 Pause may append these sections to a legacy register. It changes only those
-sections and the register's writer stamp, preserving Q blocks, coverage,
-review status, source metadata and all SOW extraction bytes. Record Position,
+sections and the register's `written_by:` stamp. Every other byte is preserved,
+including `GDD version:`, template version, `engagement_root:`, review, Q blocks,
+coverage and source metadata. The installed version is not permission to refresh
+historical headers, remove DRAFT labels or normalize unrelated formatting.
+Preserve all SOW extraction bytes. Record Position,
 In-flight, Open decisions and one Next step; use file/section or Q-id pointers.
 On a later pause, preserve the previous handoff with its date in the intake
 session log before replacing it. Add an honest dated progress line even when

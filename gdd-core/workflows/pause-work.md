@@ -35,8 +35,13 @@ when this workflow is followed directly without a slash command.
 4. **Staged intake:** follow the reference's Staged continuity contract.
    Save only QUESTIONS.md's Intake handoff and Intake session log (and writer
    stamp); preserve the previous handoff in that log before replacement.
-   Preserve review status, Q blocks and every source snapshot. Do not create
-   any core artifact. If a save fails, stop and report what was saved or is
+   Before saving, compare the proposed register with the read original in
+   request memory: only those two sections and `written_by:` may differ. Keep
+   every other byte, including the historical `GDD version:` header, unchanged.
+   Use a targeted edit; do not regenerate the register or save a backup copy.
+   If the proposed change exceeds these bounds, correct the proposal before
+   writing. Preserve review status, Q blocks and every source snapshot. Do not
+   create any core artifact. If a save fails, stop and report what was saved or is
    unverified; do not try an alternate write route. On success, proceed to step 6.
 5. **Full engagement:** preserve an existing handoff with its date in
    STATE.md's Session log before replacing the Handoff section. Add a dated
@@ -44,8 +49,12 @@ when this workflow is followed directly without a slash command.
    Change no other machine state. If write access or either save fails, report
    exactly what was saved and what remains inconsistent; do not claim a clean
    pause or attempt an alternate write route.
-6. Read back the changed continuity sections at the saved paths and compare
-   them with the draft and intended preservation. If this cannot complete,
+6. Read back the saved artifacts and compare the continuity sections with the
+   visible draft. For staged intake, also compare every byte outside the two
+   allowed sections and `written_by:` against the original held in request
+   memory. A matching handoff alone does not verify preservation. Report any
+   unexpected difference and stop; do not silently repair it or claim a clean
+   pause. If this comparison cannot complete,
    report the save result and unverified content separately. Confirm only the
    observed paths, saved handoff and checks, including any failures. Do not call
    the pause clean if the visible preview, required boundary checks or readback

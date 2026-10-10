@@ -5,6 +5,15 @@ Version corresponds to `"version"` in `.claude-plugin/plugin.json`.
 
 ## [Unreleased]
 
+## [0.2.6] - 2026-10-10 — Cowork continuity checks
+
+Candidate for review; native acceptance and npm publication remain separate.
+
+- Check the selected folder's own metadata before its contents, and validate
+  each artifact's root stamp before reading another artifact.
+- Keep staged pause edits limited to handoff, session log and writer stamp;
+  verify historical headers and all other content remain unchanged.
+
 ## [0.2.5] - 2026-10-10 — Cowork folder access
 
 Candidate status: prepared for review; native acceptance and npm publication

@@ -32,8 +32,8 @@ Most artifacts have templates in `gdd-core/templates/`; workflows write them.
 The 0.2.4 candidate adds SOW intake before scoping. Its intended contract is
 one QUESTIONS.md register with stable IDs and local Git history, while
 state.json retains module/gate state. SOW questions can be descriptive and need
-not become thesis hypotheses. End-to-end behavior still needs correction and
-acceptance; see [pilot status](sow-pilot.md#candidate-readiness--before-following-the-test-instructions).
+not become thesis hypotheses. End-to-end acceptance remains pending; see
+[pilot status](sow-pilot.md#candidate-availability-and-acceptance).
 
 | File in `.diligence/` | Purpose |
 |---|---|

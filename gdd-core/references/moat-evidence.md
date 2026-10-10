@@ -57,10 +57,7 @@ against **revealed** allocation — job postings by function over time,
 release notes by product area, pricing-page changes, M&A record.
 Divergence is a finding either way: stated-but-not-resourced means the
 plan is decorative; resourced-but-not-stated means the real strategy is
-elsewhere. Worked sketch (illustrative "Project Marlin", placeholder
-ids): `stated: "win enterprise chains" [CIM, Sx2 tier 4] vs revealed:
-9 of 11 open roles are SMB inside sales [Sx5 postings, 6-mo window]` →
-finding: enterprise motion unresourced, confidence M.
+elsewhere.
 
 ## Product portfolio and comparison grid
 

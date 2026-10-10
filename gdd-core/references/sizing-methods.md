@@ -3,7 +3,7 @@
 Method reference for the sizer agents. Each sizer reads ONLY its own
 section plus Common rules — independence between the legs is enforced by
 the size-market workflow, and this file is structured so a leg never
-sees the other's method examples.
+sees the other's method section.
 
 ## Common rules (both sizers)
 
@@ -45,14 +45,6 @@ ESTIMATE basis. Canonical chain shapes:
 - *Layer-cake check*: if two chains from different anchors exist, run
   both; their spread feeds the range.
 
-Worked sketch (illustrative deal "Project Marlin", US car-wash
-operators' management software — deliberately NOT your deal's vertical;
-`Sx#` are placeholder ids, never real registry ids):
-`US car-wash services revenue $17B [Sx1, tier 3]` × `software spend
-1.0–1.6% of revenue [Sx2 ARPU × site counts on two disclosed cohorts —
-ESTIMATE, basis shown]` → `$170–272M` — and if that lands far from
-expectations, that is the finding; do not massage filters to a target.
-
 **Failure modes to avoid:** citing a sizing that itself cites your
 other anchor (fake corroboration — trace to the root); using a TAM
 slide from any interested party as an anchor (tier 4 cap); filters
@@ -84,13 +76,6 @@ tier and date), ARPU from filings, procurement disclosures. Map price
 to the unit of account explicitly (per-truck/month vs per-location/
 year). NEVER back price out of a market-size report — that contaminates
 the leg (D2 checks for exactly this).
-
-Worked sketch (illustrative "Project Marlin" again — not your vertical;
-placeholder ids):
-`~60–65k US car-wash sites [Sx3 census, Sx4 association]` ×
-`software penetration 45–60% [ESTIMATE: vendor customer counts Sx5,Sx6
-vs universe]` × `$5–7k/site/yr blended [Sx5 ARPU, Sx7 pricing pages]` →
-`$135–273M`.
 
 **Failure modes:** double-counting multi-state operators in license
 registries; penetration and price both taken from the same vendor's

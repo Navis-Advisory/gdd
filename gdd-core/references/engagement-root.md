@@ -33,60 +33,101 @@ to report to the orchestrator before engagement access.
   it before accessing content. Stop on a redirected or unprovable boundary;
   do not read the target to find out which engagement it is.
 - Report the selected deal folder and absolute ENGAGEMENT_ROOT before the
-  first engagement access. Read/write tools use absolute artifact paths;
-  shell operations use the selected deal folder explicitly as their working
-  directory (or `git -C <selected deal folder>`). Shell CWD changes do not
-  change ENGAGEMENT_ROOT. If a tool cannot target the selected folder, stop.
+  first engagement access. Read/write tools use absolute artifact paths or
+  their host-verified mounted equivalents as defined below. Shell operations
+  explicitly target that selected folder/root, never a shell default. A CWD
+  change or mounted alias does not change ENGAGEMENT_ROOT. If a tool cannot
+  target the selected folder, stop.
 - Reuse this resolved value in every workflow and delegated prompt in the
   request. A fresh session resolves it again from the user's/host's selection;
   saved `engagement_root:` headers are validation stamps, never routing hints.
   Check a stamp when opening an artifact; on mismatch, stop and report the
   foreign artifact rather than adopting its path or silently restamping it.
 
+## Choose the boundary evidence route
+
+Choose before engagement access from the current host's capabilities and grants,
+never as a fallback after a refused or inconclusive operation. Tool names, a
+folder label, or a mounted path alone do not establish an access boundary.
+
+- **Direct filesystem:** use native metadata to resolve the selected directory
+  and inspect link/reparse information. On Windows begin with separate plain
+  `Get-Item -LiteralPath '<absolute path>' -Force` calls. Missing required
+  native metadata stops this route; do not switch to managed mode to retry.
+- **Cowork-managed folder:** use only Cowork's permission-checked connected-folder
+  tools. Establish the effective folder grant and host-provided device/mount
+  mapping before content access. For the pilot, the selected deal must be the
+  only connected business-data folder available to this task; a displayed task
+  selection does not narrow a broader grant. Product resources and explicitly
+  supplied source documents remain separate inputs. If the grant or mapping
+  cannot be established, stop and request the missing host information or a
+  task-scoped folder selection; do not enumerate other folders' contents.
+
+The managed route relies on Cowork's enforced folder permissions for backing
+filesystem containment. Inspect visible metadata for the selected root and
+each artifact; reject visible links or out-of-root resolutions. Linux/FUSE
+metadata is not proof of Windows junction/reparse status. When those Windows
+fields are not exposed, say so; their absence alone does not block an otherwise
+established managed route. Report the actual basis: "Cowork-managed folder
+permissions; visible metadata checked; Windows reparse attributes not exposed."
+This is reliance on the host, not an independent security certification.
+
+Generic shells, custom MCPs, computer use and cloud staging do not qualify as
+this managed route. Missing/refused permission, mapping, or required visible
+metadata still stops work. Never broaden grants or use an alternate tool to
+turn a denial into a successful access. Native acceptance must exercise this
+route with synthetic ordinary-folder, refusal/mismatch and redirected-root
+cases; packaging checks and a version label do not establish that acceptance.
+
+### Canonical root and mounted paths
+
+ENGAGEMENT_ROOT remains the absolute root derived from the host's selected
+device folder. A current session mount is a tool-path translation, not another
+engagement. Use only the mapping supplied by the host for this connection; never
+infer equivalence from matching folder names, user documents or a saved stamp.
+Carry that canonical root and verified mapping into delegated requests.
+Validate and write root stamps using the canonical value, not a temporary
+session mount. On restart obtain a fresh mapping, leaving saved stamps intact.
+An unknown mapping or a stamp referring to a different root stops the workflow;
+do not silently restamp or read a second engagement to reconcile it. Keep these
+values in request context, not a new configuration or attestation store.
+
 ## Mandatory boundary preflight
 
-Selection is not proof of isolation. Complete this gate before any engagement
-inventory (including Glob), source-document read, engagement read or write.
-Product instructions may be loaded first. Await each metadata result before
-issuing a dependent operation; checking metadata alongside a Glob, read or write
-does not satisfy this gate.
+Selection is not proof of isolation. Complete the chosen route's checks before
+engagement inventory (including Glob), source-document reads, or engagement
+content access. Product instructions may be loaded first. Await each metadata
+result before a dependent operation; parallel checking and access is not a gate.
 
-1. Report the selected deal folder and absolute ENGAGEMENT_ROOT. Use the host's
-   literal-path metadata operation to inspect the selected folder itself and
-   its resolved location, then the exact ENGAGEMENT_ROOT entry. Obtain entry
-   type and link/reparse-point information without opening target contents.
-   An existing ordinary directory and a confirmed nonexistent entry are distinct
-   results; an empty listing, Glob with no matches or ambiguous false result
-   proves neither absence nor a safe boundary.
+1. Report the selected deal folder, canonical ENGAGEMENT_ROOT and evidence route
+   (plus the host-provided mount mapping when applicable). Inspect the selected
+   folder itself and its resolved location, then the exact root entry, without
+   opening target contents. Direct mode requires native entry/link information;
+   managed mode requires established grants/mapping and visible entry/link
+   information under the host's enforced boundary. An ordinary directory and
+   confirmed nonexistent entry are distinct results. Empty listings or ambiguous
+   false results prove neither absence nor a safe root.
 2. Only after this succeeds may you enumerate the root's direct inventory.
-   Check each artifact and any intermediate directory for redirection before
-   content access; the spelling of an absolute path does not prove containment.
+   Check each artifact and intermediate directory for redirection using the
+   chosen route before content access. A path string does not prove containment.
    Never inspect another engagement to decide whether a redirect is acceptable.
-3. A redirected, inaccessible, unavailable or inconclusive boundary stops the
-   workflow before dependent reads/writes. Approval-required or refused checks
-   remain blocked until the host supplies the required approval. Do not replace
-   them with a child listing or another tool that omits the required proof.
-   Report the failed check and needed access in the response; do not write a
-   handoff into an unverified root just to record the blocker.
-4. State the observed boundary result before continuing: existing ordinary root,
-   confirmed absent root (eligible commands may create it), or blocked with the
-   exact reason. Do not claim "no links" or "no blockers" from an unperformed or
-   failed check. Defer creation until the workflow has classified the confirmed
-   absent root and admitted initialization. Only then, immediately before the
-   first artifact write, eligible commands create the empty
-   directory through a host-approved operation, then await its metadata check,
-   then write the first artifact. Do not let an artifact Write implicitly create
-   the unchecked directory. A refused directory creation stops the workflow.
+3. A redirected, inaccessible or inconclusive result, or a missing check required
+   by the chosen route, stops dependent reads/writes. Approval-required/refused
+   checks remain blocked until the host supplies the required approval. Do not
+   substitute a child listing, previous external check or alternative route.
+   Report the failed check and needed access; do not write a handoff to record
+   the blocker in an unverified root.
+4. State the observed result and its evidence basis: existing ordinary root,
+   confirmed absent root, or blocked with the exact reason. Do not claim that
+   unexposed backing metadata was checked. Eligible workflows may initialize
+   only a confirmed absent root after classification. Create the empty directory
+   through an approved operation, await its route-appropriate metadata check,
+   then write the first artifact. Do not let an artifact write implicitly create
+   an unchecked directory. Refused creation stops the workflow.
 
-Use an available host metadata API or a read-only literal-path shell operation
-(for example native PowerShell Get-Item or a filesystem lstat equivalent).
-On Windows, begin with separate plain `Get-Item -LiteralPath '<absolute path>'
--Force` calls. Use the returned entry/link information; avoid unnecessary
-variables, pipelines and subexpressions. If the output lacks required boundary
-information, report what is missing instead of inferring it.
-Tool availability does not grant access or override a permission refusal. If
-metadata cannot be obtained with current tools/permissions, report that limit
-and stop; do not weaken the host's access controls to continue.
+Use a host metadata API or read-only literal-path operation supported by the
+chosen route. Keep expressions simple and report missing information rather
+than inferring it. Tool availability never grants access or overrides refusal.
 
 ## Rules (all commands, all agents)
 

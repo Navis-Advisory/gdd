@@ -1,6 +1,6 @@
 ---
 description: Save an intake or engagement handoff before stepping away
-allowed-tools: Read, Write, Edit, Glob
+allowed-tools: Read, Write, Edit, Glob, Bash
 ---
 
 <objective>
@@ -17,12 +17,15 @@ and next step in the existing staged register or full engagement state, so
 </execution_context>
 
 <process>
-Any host-approved shell access in this command is for read-only boundary metadata, not writes
-or Git. Host permissions remain authoritative.
+Host permissions remain authoritative. After the required boundary preflight,
+a host-approved file or connected-device tool (including a shell) may perform
+only this workflow's reads and continuity saves inside the selected root.
+No Git, cloud/temp staging or alternate route after refused/unclear access.
 
 Follow the loaded pause-work workflow in order. Its visible draft is a separate
-assistant message before the first Edit/Write call, including any writer-stamp
-change. A tool payload does not display that draft. Existing save authorization
+assistant message before the first artifact write by any tool, including a
+shell save or writer-stamp change. A tool payload does not display that draft.
+Existing save authorization
 allows proceeding immediately after the message; it does not skip the message.
 Use the workflow's staged/full destination and preservation rules, then read back
 and report the observed result. A skipped preview or failed check is an incomplete

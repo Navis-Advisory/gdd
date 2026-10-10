@@ -1,5 +1,23 @@
 # Changelog
 
+Notable changes to GDD, loosely following [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
+Version corresponds to `"version"` in `.claude-plugin/plugin.json`.
+
+## [Unreleased]
+
+## [0.2.5] - 2026-10-10 — Cowork folder access
+
+Candidate status: prepared for review; native acceptance and npm publication
+remain separate.
+
+- Support explicit direct-filesystem and Cowork-managed folder evidence routes,
+  with host-provided path mapping, scoped permissions and honest check limits.
+- Use approved connected-folder tools for pause/resume, preserve previews and
+  refusal stops, and avoid reporting old Git log entries as current status.
+- Route plain-language resume directly to its saved-state workflow.
+
+- Clarify repository installation and remove bundled worked-example snippets.
+
 ## [0.2.4] - 2026-10-04 — SOW intake pilot
 
 Candidate status: bounded intake corrections included; synthetic acceptance pending. This entry
@@ -14,17 +32,6 @@ does not indicate npm publication or a completed four-app behavioral test.
   amendments and gate invalidation, descriptive-question coverage, exact-file
   checkpoints, native update routing and runtime permission/completion rules.
   Source/package checks do not establish native behavior.
-
-
-Notable changes to GDD, loosely following [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
-Version corresponds to `"version"` in `.claude-plugin/plugin.json`.
-
-## [Unreleased]
-
-- Prepare hosted plugin compatibility: keep the existing installer under
-  scripts/install.js, preserving the gdd npm command while removing
-  top-level bin/ from the generated public/plugin payload. Native Cowork
-  synchronization still requires an observed acceptance run.
 
 ## [0.2.3] - 2026-10-04
 
@@ -158,7 +165,7 @@ internal test-log references, kept as a traceable paper trail.
   Checks the installed version against npm, shows the changelog delta,
   confirms, then reinstalls in place. Locally modified files are backed up
   to `gdd-patches/` and merged back; files a new version drops are pruned.
-- Dogfood fold-backs from the kestrel-sound five-module run: D4
+- Method refinements from end-to-end testing: D4
   platform-metadata and citation-chain clauses, D6 staleness rule
   (waiver, not reclassification), D8 stale-trace fragility note, and a
   grown-ledger re-run rule in the check registry; `unreachable`

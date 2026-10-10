@@ -5,7 +5,8 @@ template_version: 1
 
 # `.diligence/state.json` schema (v1)
 
-Machine source of truth. Markdown artifacts are projections. Written by
+Machine authority for taxonomy, module/gate state and full-session continuation;
+QUESTIONS.md remains the SOW question-status authority. Written by
 gdd-scoper at init; taxonomy_lock amended only by gdd-librarian.
 
 ```json

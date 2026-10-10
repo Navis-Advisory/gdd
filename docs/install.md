@@ -5,7 +5,7 @@ are separate native plugin targets; native acceptance is pending. Antigravity
 support has been discontinued. Existing Antigravity installations are not
 changed by this release.
 
-The corrected 0.2.4 SOW candidate needs review and full synthetic acceptance
+The 0.2.5 SOW candidate still needs full synthetic acceptance
 before real-SOW use. [The pilot guide](sow-pilot.md) leads with Cowork's
 repository marketplace route and records the required candidate identification
 and acceptance checks. The npm package can lag behind; no npm release or ZIP
@@ -59,8 +59,8 @@ establish native plugin discovery in Codex or ChatGPT Work.
 
 ## Claude Cowork
 
-Once the reviewed public candidate is available, open Cowork → Customize →
-Plugins → Add → Add marketplace, enter `Navis-Advisory/gdd`, and install GDD.
+Open Cowork → Customize → Plugins → Add → Add marketplace → Add from a
+repository, enter `Navis-Advisory/gdd`, and add GDD from that marketplace.
 Verify the installed revision and version using the [pilot guide](sow-pilot.md).
 Run the synthetic lifecycle in the development account before a clean install
 and synthetic smoke in a second account; only then use a separate real-SOW folder.

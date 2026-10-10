@@ -10,9 +10,7 @@ executing agent as its terms of reference. The brief is the contract:
 findings answer assigned hypotheses and Q-ids, in these definitions, from these
 kinds of sources. A module that wanders from its brief produces
 interesting noise. A module owning only descriptive Q-ids is valid; write
-"None — Q-only scope" under Hypotheses rather than fabricating a claim.
-
-Worked-example lines: Project Kestrel, competition module. -->
+"None — Q-only scope" under Hypotheses rather than fabricating a claim. -->
 
 ## Hypotheses under test
 
@@ -21,14 +19,7 @@ Worked-example lines: Project Kestrel, competition module. -->
 confirming evidence · killing evidence. Both evidence fields must be
 gatherable within the engagement's access constraints — a hypothesis
 only expert calls can settle, on an engagement with no expert-call
-budget, is a scoping defect to raise now.
-
-e.g.:
-**H-comp-1.** KestrelSoft is the #2 FSM vendor by share among NA pest
-operators (>10 trucks).
-- Confirms: share build from S-1s/pricing-page counts/operator census
-  puts Kestrel behind exactly one vertical or horizontal player.
-- Kills: ≥2 players each clearly larger in-segment. -->
+budget, is a scoping defect to raise now. -->
 
 ## SOW questions covered
 

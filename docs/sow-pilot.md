@@ -1,16 +1,16 @@
 # Test the SOW pilot
 
-Candidate: GDD 0.2.4. The first pilot target is Claude Cowork, installed from
+Candidate: GDD 0.2.5. The first pilot target is Claude Cowork, installed from
 the public GitHub marketplace. Claude Code has its own acceptance checks;
 test Codex and ChatGPT Work after incorporating feedback from both Claude apps.
 No worked engagement is bundled. Antigravity support is discontinued.
 
 ## Candidate availability and acceptance
 
-The corrected candidate is under review. Version 0.2.4 alone does not identify
-its contents: rebuilt candidates can share that version. Before installing,
-obtain the maintainer's reviewed public commit and confirm it is available at
-the repository marketplace. An older public revision is not this pilot.
+Install only after the maintainer identifies the reviewed 0.2.5 public commit
+and confirms it is available through the repository marketplace. Version alone
+does not identify its contents. A prepared candidate is not a published or
+natively accepted release; an older public revision is not this candidate.
 
 Repository/package checks and bounded Claude Code behavior checks do not prove
 Cowork installation or intake acceptance. Cowork's complete synthetic run,
@@ -23,17 +23,25 @@ This pilot uses the native marketplace; no ZIP handoff, npm release or official
 directory listing is required. Keep paid usage credits disabled if using only
 included subscription usage. Stop at a plan limit; do not switch to API billing.
 
+Cowork uses the managed-folder route: establish the effective connected-folder
+grant and device/mount mapping, check visible metadata, and rely on the host
+for backing filesystem containment. Windows reparse attributes may be unexposed;
+do not claim they were inspected. Missing grants/mapping, visible redirects or
+refused access still stop work. Direct filesystem hosts retain native checks.
+The managed route needs synthetic refusal and redirect tests in addition to
+ordinary save/resume; do not grant access to a rejected target to finish a test.
+
 ## Claude Cowork — repository installation
 
 1. Sign in to the intended development account in Claude Desktop. Verify the
    account and subscription before starting; a Claude Code login does not
    establish which account Cowork uses.
-2. Open **Cowork → Customize → Plugins**. Choose **Add → Add marketplace** and
+2. Open **Cowork → Customize → Plugins**. Choose **Add → Add marketplace → Add from a repository** and
    enter `Navis-Advisory/gdd` or `https://github.com/Navis-Advisory/gdd`.
    Select GDD from that marketplace and install/enable it. If the interface
    differs or adding a repository is unavailable, record the app version and
    what the interface offers; do not treat a CLI install as Cowork acceptance.
-3. Open GDD's details. Confirm version **0.2.4** and discovery of `ingest-sow`
+3. Open GDD's details. Confirm version **0.2.5** and discovery of `ingest-sow`
    and `sow-status`. Record the marketplace source and resolved public revision
    where available. If the installed revision cannot be established, keep
    candidate identity unverified rather than inferring it from the version.
@@ -41,7 +49,9 @@ included subscription usage. Stop at a plan limit; do not switch to API billing.
    Start a Cowork task and explicitly select/grant access to that folder.
    Supply a short private synthetic SOW and paste the extraction prompt below.
    If slash commands are available, use `/gdd:ingest-sow` with the same request.
-5. Complete the intake checks below, then close/reopen Cowork and verify that
+5. Use plain language to ask GDD to resume the selected folder read-only if a
+   slash command is unavailable; stop if the installed skill cannot be loaded.
+   Complete the intake checks below, then close/reopen Cowork and verify that
    the plugin remains enabled and a fresh task can resume the saved engagement.
    Test an actual marketplace/plugin update when a reviewed replacement is
    available, and verify the newly active revision. Record an unavailable or
@@ -58,8 +68,7 @@ and app test. Local checkpoints must not create a remote or push deal data.
 ## Claude Code — separate acceptance
 
 Use the development subscription account and a separate synthetic deal folder.
-After the reviewed candidate is available in the public repository, enter these
-one at a time **inside Claude Code**, not in PowerShell:
+Enter these one at a time **inside Claude Code**, not in PowerShell:
 
 ```text
 /plugin marketplace add Navis-Advisory/gdd
@@ -69,7 +78,7 @@ one at a time **inside Claude Code**, not in PowerShell:
 Choose user scope for all projects or local scope for this pilot folder. For
 an existing installation, update the marketplace and plugin through `/plugin`
 and start a new session. Confirm the installed revision as well as version
-0.2.4. Then use `/gdd:ingest-sow sow.pdf`, replacing the filename with your
+0.2.5. Then use `/gdd:ingest-sow sow.pdf`, replacing the filename with your
 synthetic SOW. Perform the same lifecycle checks and record results separately.
 
 Native marketplace setup is documented in
@@ -79,7 +88,7 @@ Code installation/discovery does not establish Cowork installation or behavior.
 ## Extraction prompt — copy and paste
 
 ```text
-Use GDD 0.2.4 to ingest the SOW I supplied into this selected deal folder.
+Use GDD 0.2.5 to ingest the SOW I supplied into this selected deal folder.
 Start with extraction and scope mapping only; do not begin research.
 Preserve every substantive question and requested analysis, the source
 wording and page/section references, and the original section grouping.
@@ -135,46 +144,23 @@ questions with no thesis hypothesis. Inspect the local scope/planning
 checkpoints as well. Full diligence research and benchmark-quality conclusions
 are outside this first ingestion test.
 
-## Codex — after Claude feedback
+## Codex and ChatGPT Work — after Claude feedback
 
-1. Extract `gdd-openai-0.2.4.zip` into a tool folder. Keep that folder intact.
-   Its root contains `plugin.json`, `.agents/`, and `skills/`.
-2. In a terminal, add the extracted folder's absolute path:
+Add the repository marketplace in a terminal:
 
 ```text
-codex plugin marketplace add <absolute-path-to-gdd-openai>
-codex plugin add gdd@gdd
+codex plugin marketplace add Navis-Advisory/gdd
 ```
 
-Replace the angle-bracket path with your actual extracted folder path. If
-your CLI lacks these commands, update it or use the desktop marketplace UI;
-do not substitute the old CLI-adapter installer and count it as native success.
-After merge, `codex plugin marketplace add Navis-Advisory/gdd` is the Git route.
+Use the desktop app's Plugins Directory to select the GDD marketplace and
+install/enable GDD. Start a fresh local task in a separate deal folder, select
+GDD, and use the extraction prompt above. Record the installed revision and
+repeat the lifecycle checks independently in Codex and ChatGPT Work.
 
-3. Open Codex in a fresh deal folder, enable GDD from the plugin picker, and
-   invoke `$gdd` with the extraction prompt. Run the same save/resume/amend/Git
-   checks; record results independently of Claude.
-
-## ChatGPT Work — separate from Codex
-
-Use the desktop app with local execution and an explicitly selected deal
-folder for this Git-based pilot. A web chat without local execution is not an
-equivalent test of folder persistence and local commits.
-
-1. Use the same extracted OpenAI plugin folder and add its marketplace as
-   above. Open/select that folder as a trusted local project so the repo
-   marketplace is visible. Restart the desktop app if needed.
-2. Open **Plugins**, select the **GDD** marketplace source, and install/enable
-   GDD. If GDD is missing, report the app version and missing UI rather than
-   assuming a CLI install made it available in Work.
-3. Start a **Work** task using local execution in your separate deal folder.
-   Select GDD in the plugin picker; paste the extraction prompt and supply
-   the SOW. Repeat all seven checks above.
-
-OpenAI documents local marketplaces and desktop installation in
-[Package your plugin](https://developers.openai.com/plugins/build/plugins).
-Git marketplaces and local ZIPs do not create a public directory listing.
-Universal directory submission is a later step after pilot feedback.
+Follow [OpenAI's current marketplace instructions](https://developers.openai.com/plugins/build/plugins)
+if the interface differs. A CLI adapter install does not establish native
+plugin acceptance; a web-only chat does not test local saving or Git. No ZIP
+handoff is required. Directory submission remains a separate later step.
 
 ## Send feedback back here
 

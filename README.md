@@ -16,7 +16,7 @@ are separate native acceptance targets; their plugin installation and
 persistence paths are not yet certified. See [`docs/design.md`](docs/design.md) for the full
 design and [`docs/install.md`](docs/install.md) for every install path.
 
-## SOW intake pilot (0.2.4)
+## SOW intake pilot (0.2.5)
 
 The candidate adds `/gdd:ingest-sow <file>`, stable question IDs in
 QUESTIONS.md, `/gdd:sow-status`, and local Git checkpoints. The portable
@@ -24,16 +24,18 @@ plugin offers the entry point as `$gdd`.
 
 **The candidate includes bounded intake corrections and still needs full synthetic
 acceptance before real-SOW testing.** Bounded Claude Code checks do not certify
-Cowork. The pilot targets Cowork's repository marketplace: add
-`Navis-Advisory/gdd` through Customize → Plugins → Add → Add marketplace, then
-install GDD after the reviewed public candidate is available. See
+Cowork. Install from the repository marketplace after the reviewed candidate
+is published. See
 [the pilot guide](docs/sow-pilot.md) for exact candidate identification,
 account separation and lifecycle checks. No ZIP handoff or npm release is needed.
 
 ## Install
 
+**Claude Cowork plugin:** Customize → Plugins → Add → Add marketplace →
+Add from a repository → `Navis-Advisory/gdd`; then select GDD and click Add.
+
 **Legacy CLI adapter.** Requires Node.js >= 20. For this SOW pilot, use
-the native plugin package and instructions above.
+the repository plugin route above. npm may lag the plugin; see [versioning](docs/VERSIONING.md).
 
 ```bash
 npx get-diligence-done --claude --global
@@ -68,7 +70,7 @@ Navis-Advisory/gdd`, then open `/plugin install gdd@gdd` and choose user,
 project, or local scope. User scope makes it available across your projects
 on that machine.
 
-**Claude Cowork and ChatGPT Work.** Native installation and persistence
+**Native acceptance.** Cowork and ChatGPT Work installation and persistence
 acceptance are pending. Do not assume a CLI installation makes the plugin
 available in either app. See the installation guide for current status.
 

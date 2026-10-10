@@ -87,13 +87,6 @@ poison a module. Mandatory hygiene, every time:
   across pairs before treating them as separate corpora; record the
   ownership check). Never sum across platforms you haven't cleared.
 
-Worked sketch (illustrative "Project Marlin", US car-wash software —
-deliberately not your deal; placeholder ids): `G2+Capterra, 2024-26
-window, n=214 after dedup [Sx8]: reliability named in 41% of negative
-reviews vs 12% for the category median [Sx8, Sx9 — ESTIMATE, review
-tally, direction-only per D4]` → finding: "review testimony runs
-against the reliability claim," confidence M, magnitude not claimed.
-
 ## Outside-in toolkit
 
 Beyond review mining (recipes with tiers and failure modes live in

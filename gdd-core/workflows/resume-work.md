@@ -7,7 +7,22 @@ never search parent/sibling engagements or derive the root from the install.
 
 Read-only summary, then a recommendation. Never write, clear or archive a
 handoff, update writer stamps, reconcile state, or make a Git checkpoint here,
-including after the user confirms resuming. Order matters:
+including after the user confirms resuming. After preflight, a host-approved
+connected-folder tool, including a shell, may perform only the inventory and
+reads below. No Git, writes, repairs or out-of-root staging. Missing access or
+a refused/unclear result stops dependent work; do not switch routes to bypass
+it. These limits also apply to direct workflow invocation.
+
+Use the current handoff and explicit review state for the saved position;
+interpret session-log entries as dated history, not current authorization or
+checkpoint status. Git remains the checkpoint authority. Do not infer that a
+commit exists or is absent from an old log entry, missing SHA or planned
+checkpoint. This workflow does not run Git: if discussing checkpoint status,
+say it was not checked in this resume. Attribute any recorded historical claim
+to its entry rather than presenting it as verified current state. Do not add a
+second checkpoint store or change the saved log to compensate.
+
+Order matters:
 
 1. Read `references/sow-register.md` and use its Intake and core-state
    classification. For absent, incomplete, malformed or unsupported state,

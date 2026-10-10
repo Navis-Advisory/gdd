@@ -27,9 +27,6 @@ Rules:
 - Status: OPEN (landed, not yet through a gate) · SUPPORTED (survived
   triangulation) · CONTESTED (red-team kill, disposition pending) ·
   RETIRED (conceded/superseded — kept for the audit trail).
-
-Worked example row (Project Kestrel):
-| F1 | NA pest-control FSM software spend was $1.1B in CY2025 (USD, $M basis) | .diligence/modules/market/FINDINGS.md#reconciliation | S3, S7, S12 | USD $M, CY2025 | H | SUPPORTED | market |
 -->
 
 Statuses: OPEN · SUPPORTED · CONTESTED · RETIRED

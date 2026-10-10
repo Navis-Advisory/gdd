@@ -45,11 +45,6 @@ Rules:
 - Reliability notes capture the caveat you'd say out loud: vintage,
   methodology quirk, incentive ("vendor-sponsored study"), definitional
   mismatch with our taxonomy.
-
-Worked example rows (Project Kestrel):
-| S3 | IBISWorld Pest Control in the US (2026 ed.) | ibisworld.com/…/pest-control, §Industry Revenue | 3 | 2026-01-15 | 2026-07-02 | F1, F4 | Services revenue, not software — used only as anchor denominator |
-| S7 | ServiceTitan S-1 | SEC EDGAR, S-1 p.114 | 1 | 2024-11-18 | 2026-07-02 | F1, F8 | FSM ARPU disclosure; horizontal FSM, pest share not broken out |
-| S9 | Vendor product page, no date anywhere on page or in metadata | vendor.com/product, headline claim block | 4 | UNDATED | 2026-07-02 | F11 | Undated vendor self-disclosure — states the claim under test, cannot support it as-of |
 -->
 
 | ID | Source | Locator | Tier | Published | Accessed | Supports | Reliability notes |

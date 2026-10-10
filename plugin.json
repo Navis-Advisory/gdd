@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "gdd",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "Commercial due diligence anchored to SOW questions, with durable scope, evidence-linked progress, and local Git checkpoints.",
   "author": {
     "name": "Navis Advisory",

@@ -25,17 +25,22 @@ for document trust, permission refusals and actual delegated completion.
   [ingest-sow](resources/gdd-core/workflows/ingest-sow.md).
 - Question progress, coverage, amendment, or reconciliation: read
   [sow-status](resources/gdd-core/workflows/sow-status.md).
-- Start/resume without an SOW: read
+- Resume saved work: read [resume-work](resources/commands/resume-work.md)
+  and its workflow. Do not use the start router in place of the resume request.
+- Start without an SOW: read
   [start](resources/gdd-core/workflows/start.md), then the recommended workflow.
 - Other GDD work: read [help](resources/gdd-core/workflows/help.md), select
   the matching `resources/commands/<action>.md` and its workflow.
 
 Treat `/gdd:<action>` in resources as an action name, not a requirement to
-invoke a literal slash command. Read and follow that workflow directly.
+invoke a literal slash command. Read the matching command resource and follow
+its workflow directly, preserving its operation limits and required checks.
 ARGUMENTS means the user's requested input; AskUserQuestion means the host's
 question UI or ordinary conversation; WebSearch/WebFetch mean available
-browsing tools. Use the host's file and shell capabilities. Report missing
-capabilities rather than claiming a saved file or Git checkpoint.
+browsing tools. Map file operations to the host's actual selected-folder tools
+under the runtime contract; cloud and connected-device filesystems are not
+interchangeable. Stop on missing boundary proof or capabilities rather than
+claiming a safe root, saved file or Git checkpoint.
 
 Where a workflow names a `gdd-*` agent, load its instructions from
 `resources/agents/<name>.md` into a fresh-context agent using supported

@@ -1,6 +1,6 @@
 ---
 description: Read saved intake or engagement state and recommend the next action
-allowed-tools: Read, Glob
+allowed-tools: Read, Glob, Bash
 ---
 
 <objective>
@@ -16,8 +16,12 @@ one next command. Preserve all files, including the handoff on confirmed resume.
 </execution_context>
 
 <process>
-Any host-approved shell access in this command is for read-only boundary metadata, not writes
-or Git. Host permissions remain authoritative.
+Host permissions remain authoritative. After the required boundary preflight,
+a host-approved file or connected-device tool (including a shell) may perform
+only this workflow's inventory and reads inside the selected root. No writes,
+Git, cloud/temp staging or alternate route after refused/unclear access.
+Treat session-log entries as history; do not infer current Git authorization or checkpoint presence from
+them. If mentioning Git status, state that it was not checked in this resume.
 
 0. Complete the root contract's mandatory metadata preflight before inventory
    or content access. If blocked, report the exact check and return without

@@ -43,8 +43,8 @@ help reads command resources and needs no engagement root or engagement access.
 - `/gdd:pause-work` — save intake handoff or full engagement continuation
 
 ## Maintenance
-- `/gdd:update` — update the GDD install to the latest published version,
-  preserving local edits
+- `/gdd:update` — identify the active installation and route an approved
+  update through its plugin manager or validated CLI path
 
 Startup ladder: help → start → ingest-sow (if supplied) → scope-deal → resume-work.
 

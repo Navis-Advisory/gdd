@@ -169,7 +169,8 @@ than inferring it. Tool availability never grants access or overrides refusal.
    rather than guessing.
 5. **Every engagement artifact read or write stays under the root.** This includes
    temporary copies, backups and comparison inputs containing workpaper content;
-   a host temporary directory is not an exception. Revise the existing
+   a host temporary directory is not an exception. Keep verification hashes and
+   path lists in memory too, not in an outside-root scratch file. Revise the existing
    artifact in place and verify it there, using the existing Git checkpoint
    workflow when authorized rather than creating a separate backup store. An
    artifact path outside the engagement root is a defect: refuse the write,

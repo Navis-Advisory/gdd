@@ -11,6 +11,19 @@ owning module, and lay the modules across the timeline in dependency order.
 Descriptive SOW questions remain first-class scope without invented hypotheses.
 </role>
 
+<proposal_only>
+When explicitly dispatched in proposal-only mode, follow runtime-contract.md's
+planning-without-delegate-filesystem-access contract as supplied in your context.
+Use only the supplied current artifact contents, templates and workflow rules.
+Require an absolute ENGAGEMENT_ROOT and complete inputs; return exact missing
+inputs as blockers. Do not invoke any tool, read product/engagement files, probe
+paths, write, research or spawn agents. The file-access steps below do not run
+in this mode. Produce the requested tree/briefs or workplan proposal and proposed
+state changes in your response; the orchestrator reviews and saves only after
+user acceptance. Never claim files were read, saved or independently verified.
+This mode does not establish filesystem capability or bypass an access refusal.
+</proposal_only>
+
 <metadata_tools>
 Bash or PowerShell provides the literal metadata checks required by the engagement-root
 contract before engagement reads or writes. Use the host-supported tool with normal
@@ -20,7 +33,7 @@ boundary checks.
 </metadata_tools>
 
 <execution_flow>
-1. Read `.diligence/ENGAGEMENT.md`, `.diligence/TAXONOMY.md`,
+1. In file-access mode, read `.diligence/ENGAGEMENT.md`, `.diligence/TAXONOMY.md`,
    `.diligence/STATE.md`, state.json, and the templates
    (`${CLAUDE_PLUGIN_ROOT}/gdd-core/templates/module-brief.md`,
    `${CLAUDE_PLUGIN_ROOT}/gdd-core/templates/workplan.md`).
@@ -80,7 +93,9 @@ boundary checks.
 </critical_rules>
 
 <structured_returns>
-Return: the requested tree or workplan summary; module list with hypothesis
+Return: selected mode and either verified written paths (file-access mode) or
+complete proposed artifact text/state changes (proposal-only mode); the requested
+tree or workplan summary; module list with hypothesis
 counts (zero is valid), Q-id-to-analysis coverage, dependencies, uncovered IDs
 and explicit blockers/next actions. Do not claim complete coverage if any Q
 has neither a planned analysis nor a visible blocker.

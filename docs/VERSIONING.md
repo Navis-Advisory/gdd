@@ -8,7 +8,7 @@ GDD follows [semver](https://semver.org): `MAJOR.MINOR.PATCH`.
 - Record development notes under `Unreleased`; use a versioned entry when
   preparing an identified candidate. That entry does not establish publication
   or availability through every channel.
-- The 0.2.7 candidate still needs full synthetic acceptance. Native
+- The 0.2.8 candidate still needs full synthetic acceptance. Native
   installation checks do not establish successful ingestion or Git tracking.
 - Record source commit and SHA-256 digest with each candidate ZIP or tarball.
   Rebuilt contents require new digests and affected checks even if the

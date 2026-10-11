@@ -38,10 +38,12 @@ state rather than initializing missing core.
    Interview the user directly (AskUserQuestion, four batches) per the
    workflow — target/client, thesis/questions, deliverable/constraints,
    taxonomy.
-2. Spawn `gdd-scoper` with the engagement root (resolved absolute path
-   ENGAGEMENT_ROOT — the folder it must create) and the collected
-   answers to draft `ENGAGEMENT.md` and `TAXONOMY.md` from the
-   templates and write the machine lock into `.diligence/state.json`.
+2. Select the drafting writer under the workflow's capability check: default
+   to `gdd-scoper`; do not infer device-tool access from its static tool list.
+   Pass the resolved absolute ENGAGEMENT_ROOT, collected answers and template
+   paths. The workflow permits direct orchestrator drafting only on established
+   delegate-tool absence with already-authorized root access; unknown/refused
+   access or a user instruction to stop remains a stop.
 3. Review both artifacts with the user before declaring the engagement
    scoped; check feasibility per active Q-id and accepted criterion, including
    descriptive questions without hypotheses. Unresolved taxonomy fields and

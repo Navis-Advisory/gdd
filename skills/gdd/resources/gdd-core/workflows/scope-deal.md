@@ -85,7 +85,25 @@ may group many Q-ids; never replace the SOW with a generic question list.
    teaser, spreadsheets), list them and confirm each is in scope as
    input (plain conversation, not a form).
 
-3. Spawn `gdd-scoper` with: the engagement root (absolute path of
+3. Choose the drafting writer before any draft write. Default to `gdd-scoper`.
+   Establish its connected-folder capability from current host-exposed tool
+   definitions, not only an agent frontmatter list or a guess about inheritance.
+   If that evidence is missing, dispatch it once in **capability-only mode**:
+   supply the canonical root and host mapping and request a report of its actual
+   exposed tools and their documented target filesystem. No engagement I/O,
+   search, trial write or shell probe is authorized in this mode. A tool list
+   establishes availability only; actual access still requires normal preflight.
+   Unknown capability stops drafting; do not call an untested route impossible.
+   If current host evidence establishes that the delegate lacks the required
+   tools (not a refused, approval-required or unclear operation), the orchestrator
+   may draft directly through its own already-authorized selected-folder tools.
+   State the evidence and chosen writer before writing; run the same templates,
+   preflight, preservation and readback checks as the scoper. A user instruction
+   to stop on a missing capability takes precedence: stop rather than substitute.
+   This exception is only for scope drafting and its same-review edits, not
+   independent research legs or a general permission fallback.
+
+   For delegated drafting, spawn `gdd-scoper` with: the engagement root (absolute path of
    `<ENGAGEMENT_ROOT>` — the folder it must create), the target, the
    full set of batch A–D answers
    collected above (including open_fields), the document-intake list,
@@ -95,7 +113,7 @@ may group many Q-ids; never replace the SOW with a generic question list.
    paths to the engagement/taxonomy/state templates and the state-json
    schema, and the source-hierarchy reference. The scoper does not ask
    the user anything — it writes from what it is given.
-4. Scoper drafts and writes:
+4. The selected writer follows `RESOURCE_ROOT/agents/gdd-scoper.md` and drafts and writes:
    - `.diligence/ENGAGEMENT.md`, `.diligence/TAXONOMY.md`
    - `.diligence/state.json` (schema v1, `taxonomy_lock` populated,
      unknowns in `open_fields`)
@@ -115,9 +133,10 @@ may group many Q-ids; never replace the SOW with a generic question list.
    (STATE.md's scope sign-off entries are written in step 6; any transferred
    intake handoff is retained before that); STRUCTURAL
    changes — adding/removing sections or KQs, any change to the
-   taxonomy lock or `state.json` — re-spawn the scoper with the
-   corrected input, the same ENGAGEMENT_ROOT and an explicit same-review
-   draft-edit request. The scoper rewrites only affected sections, preserving
+   taxonomy lock or `state.json` — send the corrected input to the writer
+   selected under step 3 (re-spawn the scoper for delegated drafting), with the
+   same ENGAGEMENT_ROOT and an explicit same-review draft-edit request. The
+   selected writer edits only affected sections, preserving
    all other core/register/history content; it does not reinitialize the full
    draft. This exception does not permit repair of partial/malformed core.
    No re-interview is needed.

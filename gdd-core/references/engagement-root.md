@@ -149,6 +149,12 @@ than inferring it. Tool availability never grants access or overrides refusal.
    work, a different client. Treat it as confidential material behind
    an information barrier: do not read it, do not write it, do not
    summarize it, do not adopt its state.
+   This also prohibits metadata/name-only searches outside the selected root
+   to find workpaper copies, verify cleanup or investigate a prior mistake.
+   An empty search result is not proof of containment. Report the known operation
+   and unverified extent; do not investigate or delete outside the selected root.
+   Host grant/mapping metadata and explicitly supplied source/product inputs
+   retain only their separate, bounded permissions above.
 2. **If the root is absent, stop and route.** The engagement does not
    exist here. Say so and point at `/gdd:ingest-sow <file>` (SOW intake),
    `/gdd:scope-deal <target>` (interview), or `/gdd:start` (route). Never proceed

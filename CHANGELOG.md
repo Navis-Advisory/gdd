@@ -5,6 +5,16 @@ Version corresponds to `"version"` in `.claude-plugin/plugin.json`.
 
 ## [Unreleased]
 
+## [0.2.7] - 2026-10-10 — Bounded scope drafting
+
+Candidate for review; native acceptance and npm publication remain separate.
+
+- Keep verification and cleanup diagnostics within their authorized paths;
+  do not treat hidden errors or empty search results as containment evidence.
+- Check current scoper capabilities before choosing a drafting writer. Permit
+  direct scoping through already-approved folder tools only on established
+  delegate-tool absence, preserving user stops and scope review.
+
 ## [0.2.6] - 2026-10-10 — Cowork continuity checks
 
 Candidate for review; native acceptance and npm publication remain separate.

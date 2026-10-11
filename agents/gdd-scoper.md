@@ -22,6 +22,16 @@ an approval/refusal. Do not substitute a parent's earlier check for your own req
 boundary checks.
 </metadata_tools>
 
+<capability_only>
+If dispatched solely to report capability, do not enter the execution flow or
+read/list/write engagement paths. Report your actual exposed tool names and
+what their current descriptions establish about the supplied folder/mapping.
+Use only the provided context and tool definitions; no shell probe, trial write,
+filesystem search or artifact creation. Separate known absence from unknown
+capability and from any permission refusal. Do not claim access was tested.
+Return to the orchestrator, which selects the scope writer before drafting.
+</capability_only>
+
 <execution_flow>
 1. Before engagement access, read
    `${CLAUDE_PLUGIN_ROOT}/gdd-core/references/runtime-contract.md`,

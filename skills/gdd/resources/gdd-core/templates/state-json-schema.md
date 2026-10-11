@@ -7,7 +7,7 @@ template_version: 1
 
 Machine authority for taxonomy, module/gate state and full-session continuation;
 QUESTIONS.md remains the SOW question-status authority. Written by
-gdd-scoper at init; taxonomy_lock amended only by gdd-librarian.
+scope-deal's selected writer at init; taxonomy_lock amended only by gdd-librarian.
 
 ```json
 {

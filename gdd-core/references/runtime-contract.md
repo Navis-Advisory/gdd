@@ -27,6 +27,14 @@ input rules.
 Report the actual tool, destination and limits rather than implying a native
 editor was used. Read-only workflows stay read-only, regardless of tool power.
 
+Verification is limited to the same authorized paths as the operation. Do not
+scan a filesystem, home directory, mount parent or scratch directory to prove
+that no workpaper copy exists elsewhere, even by names/metadata alone. Use the
+known saved-path list and in-root readback; state the limit on any broader claim.
+Do not suppress check errors or translate a failing command/pipeline into an
+empty-result or clean-state claim. Inspect the relevant result and errors; a
+successful final pipeline stage does not establish that earlier checks passed.
+
 Classify a failed tool result before any follow-up tool call:
 
 - **Permission refused, policy blocked, or approval required:** stop that

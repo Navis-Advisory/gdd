@@ -54,9 +54,18 @@ and next action. Descriptive questions need no thesis leaf: do not invent a
 hypothesis to accommodate them. QUESTIONS.md alone owns question status;
 briefs hold the execution plan and criterion references, not a second register.
 
-1. Spawn `gdd-planner` with the engagement root (absolute path),
-   ENGAGEMENT.md, TAXONOMY.md, STATE.md, state.json, QUESTIONS.md if present, and the
-   module-brief template path.
+1. Select and state the planner mode before dispatch under runtime-contract.md's
+   planning-without-delegate-filesystem-access contract. Use file-access mode only
+   on a verified authorized delegate route; otherwise use proposal-only mode when
+   the orchestrator has approved access, without claiming delegate file access.
+   Refused/unclear parent access or a missing required input stops the operation.
+   Spawn gdd-planner with the absolute engagement root, this workflow,
+   ENGAGEMENT.md, TAXONOMY.md, STATE.md, state.json, QUESTIONS.md if present, and
+   the module-brief template. Supply paths for file-access mode; for proposal-only
+   mode, the orchestrator first reads and supplies their full required contents
+   plus the proposal-only/runtime and register rules, never scratch copies. For a
+   rebuild include the current TREE.md and affected briefs/state so unrelated work
+   and all active Q coverage can be preserved. Await the actual planner result.
 2. Planner builds thesis → 3–6 first-order conditions → falsifiable
    leaves; audits MECE against locked segment definitions; assigns each
    leaf an owning module (market / competition / customers / company /
@@ -64,7 +73,7 @@ briefs hold the execution plan and criterion references, not a second register.
    Q-ids. A Q-only module is valid and has a hypothesis count of zero. Keep
    uncovered or unmapped Q-ids visible as planning blockers; do not invent an
    owner, evidence instrument or accepted criterion.
-3. Planner writes `.diligence/TREE.md` — the full tree as an indented
+3. In file-access mode the planner writes `.diligence/TREE.md` — the full tree as an indented
    outline, one line per node, leaves carrying their id and owning
    module (falsifiability detail lives in the briefs). TREE.md is the
    canonical tree artifact that red-team and storyline consume; STATE.md
@@ -79,8 +88,15 @@ briefs hold the execution plan and criterion references, not a second register.
    them under `references/sow-register.md`.
    STATE.md's module table is a projection of this machine state, never
    the other way round. A brief on disk with no state.json.modules
-   entry is an incomplete step.
-4. Orchestrator shows the tree to the user; branch disputes loop back;
+   entry is an incomplete step. In proposal-only mode the planner instead returns
+   the complete proposed TREE.md, each BRIEF.md and machine/prose state changes;
+   nothing is saved yet and no module entry is initialized before acceptance.
+4. Orchestrator shows the tree and briefs (or concrete revision diff) to the user.
+   In proposal-only mode, after acceptance recheck input freshness and save the
+   exact accepted artifact/state changes through the approved root route per the
+   runtime contract. Verify full Q coverage, readback and machine/prose consistency;
+   a failed or partial save stops the checkpoint and is reported accurately.
+   Branch disputes loop back;
    ARGUMENTS may scope a rebuild to one branch. Preserve unrelated briefs and
    all active Q-id coverage, including descriptive work in the affected module.
    Record a dated revision; scope/criterion changes and completion invalidation

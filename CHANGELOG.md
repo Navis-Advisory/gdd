@@ -5,6 +5,15 @@ Version corresponds to `"version"` in `.claude-plugin/plugin.json`.
 
 ## [Unreleased]
 
+## [0.2.8] - 2026-10-10 — Cowork planning proposals
+
+Candidate for review; native acceptance and npm publication remain separate.
+
+- Let the planner return tree/brief and workplan proposals without file access;
+  the orchestrator saves accepted proposals through approved folder tools after
+  checking input freshness and preserving scope, state and history.
+- Keep verification hashes and path lists in memory, including during Git checks.
+
 ## [0.2.7] - 2026-10-10 — Bounded scope drafting
 
 Candidate for review; native acceptance and npm publication remain separate.

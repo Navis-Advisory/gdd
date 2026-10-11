@@ -5,7 +5,8 @@ template_version: 3
 
 # Module brief — {MODULE} ({DEAL_NAME})
 
-<!-- Written by gdd-planner from the hypothesis tree and accepted SOW scope; consumed by the
+<!-- Prepared by gdd-planner from the hypothesis tree and accepted SOW scope; saved
+by the workflow-selected writer after any required acceptance; consumed by the
 executing agent as its terms of reference. The brief is the contract:
 findings answer assigned hypotheses and Q-ids, in these definitions, from these
 kinds of sources. A module that wanders from its brief produces

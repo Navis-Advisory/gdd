@@ -47,11 +47,18 @@ WORKPLAN.md holds this plan, not a copy of question statuses. If a brief or
 criterion is missing, expose the gap and route its repair through planning or
 the accepted-amendment contract; never fabricate one to claim complete coverage.
 
-1. Spawn `gdd-planner` (workplan mode) with the engagement root
-   (absolute path), ENGAGEMENT.md (deadline),
-   all module briefs, current QUESTIONS.md if present, STATE.md, state.json,
-   and the workplan template path. Workplan mode schedules existing briefs;
-   it does not rebuild TREE.md or overwrite briefs.
+1. Select and state file-access or proposal-only planner mode using the same
+   runtime-contract.md planning contract as hypothesis-tree. File-access mode
+   requires a verified authorized delegate route and its own preflight. For
+   proposal-only mode the orchestrator reads the required inputs through its
+   approved root route, then supplies their contents in the dispatch context:
+   ENGAGEMENT.md (deadline), TAXONOMY.md, all module briefs, QUESTIONS.md if present,
+   STATE.md, state.json, current WORKPLAN.md if any, the workplan template and
+   relevant workflow/runtime/register rules. Pass the absolute ENGAGEMENT_ROOT
+   in both modes. No missing-input guesses, scratch copies or delegate I/O in
+   proposal-only mode; refused/unclear parent access remains a stop.
+   Spawn gdd-planner in workplan mode and await its actual proposal. Workplan
+   mode schedules existing briefs; it does not rebuild TREE.md or overwrite briefs.
 2. Order modules by hard dependencies (market sizing before share math;
    customer evidence before moat conclusions where briefs say so), then
    fit to the timeline; insert checkpoints (interim readout, IC pre-read,
@@ -64,8 +71,11 @@ the accepted-amendment contract; never fabricate one to claim complete coverage.
 4. Show the proposed plan and, for an adjustment, its concrete diff before
    writing. Resolve scope/criterion changes through the amendment contract;
    reuse an exact approval already supplied. The planner returns an unapproved
-   proposal without writes; after acceptance the orchestrator saves it or
-   re-dispatches the planner with that exact approved plan. Then write
+   proposal without writes; after acceptance the orchestrator saves it through
+   its approved route, or re-dispatches a planner with verified file access and
+   that exact approved plan. Proposal-only mode always remains no-I/O, including
+   on re-dispatch. Re-read inputs and check freshness before saving per the runtime
+   contract; changed scope, criteria, briefs or state require refreshed review. Then write
    `.diligence/WORKPLAN.md` with complete Q coverage and dependencies;
    update STATE.md Position/session log. Preserve existing module statuses in
    both STATE.md and state.json; replanning alone does not reset work to pending.

@@ -26,17 +26,22 @@ narrow to a single branch to (re)build.
 </context>
 
 <process>
-1. Spawn `gdd-planner` per the workflow, passing the engagement root
-   (resolved absolute path ENGAGEMENT_ROOT) in the spawn prompt.
-2. Planner reads ENGAGEMENT.md, TAXONOMY.md and current QUESTIONS.md if present, drafts the tree, and checks
-   MECE-ness against the locked segment definitions.
+1. Select file-access or proposal-only planner mode per the workflow/runtime
+   contract, then spawn gdd-planner with the absolute ENGAGEMENT_ROOT. In
+   proposal-only mode supply current inputs/templates in the conversation after
+   approved parent reads; the planner uses no tools and saves nothing.
+2. Planner uses ENGAGEMENT.md, TAXONOMY.md and current QUESTIONS.md if present
+   to draft the tree and check MECE-ness against the locked definitions.
 3. Each leaf hypothesis gets: the claim, what evidence would confirm or
    kill it, and which module owns it.
-4. Write a brief for every module owning leaves or active Q-ids, with criterion,
+4. Prepare a brief for every module owning leaves or active Q-ids, with criterion,
    analysis, evidence instrument and dependency/blocker mappings. Q-only modules
    use `hypotheses: 0` in state.json; STATE.md projects that existing module state.
    TREE.md remains the thesis tree, not a replacement question register.
-5. After acceptance, checkpoint exact changed planning files under the shared
+5. In proposal-only mode show the concrete tree/briefs, then after acceptance
+   recheck input freshness, save through approved parent tools and verify the
+   artifact/state readback. Refused or unclear access remains a stop.
+   After acceptance and verified saves, checkpoint exact changed files under the shared
    Local Git checkpoints contract; report the SHA or limitation. Suggest
    `/gdd:workplan` next.
 </process>

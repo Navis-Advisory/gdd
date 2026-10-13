@@ -1,15 +1,12 @@
 # Install GDD
 
-Claude Code and Codex have CLI adapters. Claude Cowork and ChatGPT Work
-are separate native plugin targets; native acceptance is pending. Antigravity
-support has been discontinued. Existing Antigravity installations are not
-changed by this release.
+GDD installs as a repository plugin in Claude Code and Claude Cowork.
+Claude Code and Codex also have CLI adapters; Codex and ChatGPT Work native
+acceptance remains separate. Antigravity support is discontinued.
 
-The 0.2.5 SOW candidate still needs full synthetic acceptance
-before real-SOW use. [The pilot guide](sow-pilot.md) leads with Cowork's
-repository marketplace route and records the required candidate identification
-and acceptance checks. The npm package can lag behind; no npm release or ZIP
-handoff is needed for this pilot.
+Plugin and npm releases can differ; see [versioning](VERSIONING.md) before
+switching installation routes. SOW intake is described in the
+[design overview](design.md#sow-intake).
 
 ## Claude Code plugin
 
@@ -61,9 +58,10 @@ establish native plugin discovery in Codex or ChatGPT Work.
 
 Open Cowork → Customize → Plugins → Add → Add marketplace → Add from a
 repository, enter `Navis-Advisory/gdd`, and add GDD from that marketplace.
-Verify the installed revision and version using the [pilot guide](sow-pilot.md).
-Run the synthetic lifecycle in the development account before a clean install
-and synthetic smoke in a second account; only then use a separate real-SOW folder.
+Use a separate private deal folder for each engagement. Load `/gdd:help`
+after installation and confirm the active plugin version. Installation alone
+does not establish acceptance of every workflow; the [pilot guide](sow-pilot.md)
+records the historical 0.2.5 test procedure, not current release readiness.
 
 Native plugin installation, command discovery, folder selection, durable
 saving, and fresh-session resume must be tested independently of Claude Code.
@@ -110,3 +108,10 @@ runtime with another adapter.
 `node tests/smoke-pack.mjs` tests the packed npm artifact.
 Command frontmatter must omit `name:`: Claude derives names from files,
 while the Codex converter supplies skill names.
+
+## Cloud sessions
+
+Claude Code cloud sessions install this checkout's workflows through the
+tracked SessionStart hook. For Codex Cloud, set the repository Environment
+setup script to `bash scripts/cloud-bootstrap.sh codex`. This installs into
+the ephemeral clone so the commands match the checked-out revision.

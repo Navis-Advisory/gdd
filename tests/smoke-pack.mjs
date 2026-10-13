@@ -3,6 +3,7 @@
 // "works-from-repo, broken-from-npm" class (files whitelist, chmod, path
 // assumptions). Packs the tarball, extracts it, audits the ship surface, then
 // runs the packed scripts/install.js end to end (install → verify → uninstall).
+import crypto from 'node:crypto';
 import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
 import os from 'node:os';
@@ -24,16 +25,19 @@ try {
   // rather than parsing `npm pack --json`, whose shape has drifted across npm
   // majors (npm 11 broke the array[0].filename assumption this once relied on).
   // The file npm actually wrote is authoritative and version-independent.
+  const suppliedTarball = process.argv[2] ? path.resolve(process.argv[2]) : null;
+  const pluginRoot = process.argv[3] ? path.resolve(process.argv[3]) : null;
   const npmArgs = ['pack', '--pack-destination', tmp];
   const npmCli = process.env.npm_execpath || path.join(path.dirname(process.execPath), 'node_modules', 'npm', 'bin', 'npm-cli.js');
-  execFileSync(process.platform === 'win32' ? process.execPath : 'npm',
+  if (!suppliedTarball) execFileSync(process.platform === 'win32' ? process.execPath : 'npm',
     process.platform === 'win32' ? [npmCli, ...npmArgs] : npmArgs, {
     cwd: repoRoot,
     stdio: ['ignore', 'inherit', 'inherit'],
   });
   const tgzName = fs.readdirSync(tmp).find((f) => f.endsWith('.tgz'));
-  if (!tgzName) throw new Error(`npm pack wrote no .tgz into ${tmp}`);
-  const tgz = path.join(tmp, tgzName);
+  if (!suppliedTarball && !tgzName) throw new Error(`npm pack wrote no .tgz into ${tmp}`);
+  const tgz = suppliedTarball || path.join(tmp, tgzName);
+  const beforeDigest = crypto.createHash('sha512').update(fs.readFileSync(tgz)).digest('base64');
   execFileSync('tar', ['-xzf', tgz, '-C', tmp]);
   const pkg = path.join(tmp, 'package');
 
@@ -54,6 +58,30 @@ try {
   for (const relative of ['.claude-plugin/plugin.json', 'plugin.json']) {
     const pluginManifest = JSON.parse(fs.readFileSync(path.join(pkg, relative), 'utf8'));
     check(`packed ${relative} version matches npm`, pluginManifest.version === packedManifest.version);
+  }
+
+  // Verify every installable resource, not merely version labels. An optional
+  // reviewed marketplace checkout binds the npm payload to the public plugin.
+  const productFiles = files.filter((file) => manifest.files.some((entry) => {
+    const normalized = file.split(path.sep).join('/');
+    return normalized === entry || normalized.startsWith(entry.replace(/\/$/, '') + '/');
+  }));
+  for (const [label, root] of [['source', repoRoot], ...(pluginRoot ? [['public plugin', pluginRoot]] : [])]) {
+    const expectedFiles = manifest.files.flatMap((entry) => {
+      const full = path.join(root, entry);
+      if (!fs.existsSync(full)) return [entry];
+      if (fs.statSync(full).isFile()) return [entry.split('/').join(path.sep)];
+      return fs.readdirSync(full, {recursive: true, withFileTypes: true})
+        .filter((item) => item.isFile())
+        .map((item) => path.relative(root, path.join(item.parentPath ?? item.path, item.name)));
+    });
+    check(`complete canonical file inventory matches ${label}`, expectedFiles.length === productFiles.length && expectedFiles.every((file) => productFiles.includes(file)));
+    const mismatches = productFiles.filter((file) => !fs.existsSync(path.join(root, file)) ||
+      !fs.readFileSync(path.join(pkg, file)).equals(fs.readFileSync(path.join(root, file))));
+    check(`canonical packed files match ${label}${mismatches.length ? ': ' + mismatches.join(', ') : ''}`, mismatches.length === 0);
+    if (pluginRoot && label === 'public plugin') {
+      check('public plugin version matches npm', JSON.parse(fs.readFileSync(path.join(root, '.claude-plugin/plugin.json'), 'utf8')).version === packedManifest.version);
+    }
   }
 
   const allowedTop = new Set([
@@ -100,6 +128,13 @@ try {
     JSON.parse(fs.readFileSync(path.join(configDir, 'gdd-core', 'gdd-file-manifest.json'), 'utf8')).version === packedManifest.version);
   execFileSync('node', [installer, '--claude', '--config-dir', configDir, '--uninstall'], { stdio: 'pipe' });
   check('packed uninstall removes gdd-core', !fs.existsSync(path.join(configDir, 'gdd-core')));
+  const codexDir = path.join(tmp, 'codex-config');
+  execFileSync(process.execPath, [installer, '--codex', '--config-dir', codexDir], {stdio: 'pipe'});
+  check('packed Codex install includes SOW intake', fs.existsSync(path.join(codexDir, 'skills', 'gdd-ingest-sow', 'SKILL.md')));
+  check('packed Codex VERSION matches npm', fs.readFileSync(path.join(codexDir, 'gdd-core', 'VERSION'), 'utf8').trim() === packedManifest.version);
+  execFileSync(process.execPath, [installer, '--codex', '--config-dir', codexDir, '--uninstall'], {stdio: 'pipe'});
+  check('tested tarball bytes are unchanged', beforeDigest === crypto.createHash('sha512').update(fs.readFileSync(tgz)).digest('base64'));
+  process.stdout.write(`artifact integrity: sha512-${beforeDigest}\n`);
 } finally {
   fs.rmSync(tmp, { recursive: true, force: true });
 }

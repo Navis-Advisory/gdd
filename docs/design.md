@@ -26,19 +26,26 @@ GSD's Project → Milestone → Phase → Plan → Task becomes:
 Engagement state lives in a `.diligence/` directory inside the user's deal
 folder — never in this repo (it's gitignored).
 
+## SOW intake
+
+`/gdd:ingest-sow` extracts a statement of work into `SOW.md` with source
+locators and a `QUESTIONS.md` register with stable question IDs. Review coverage,
+ambiguities and proposed answer criteria before scoping; descriptive questions
+need not become thesis hypotheses. Intake can be saved and resumed on its own.
+
+`/gdd:sow-status` tracks coverage, evidence gaps and amendments. Re-ingestion
+preserves question IDs and amendment history. `QUESTIONS.md` is the question
+register, `state.json` retains module and gate state, and optional local Git
+checkpoints record agreed changes. Ingestion does not start research.
+
 ## Persistent state artifacts
 
 Most artifacts have templates in `gdd-core/templates/`; workflows write them.
-The 0.2.4 candidate adds SOW intake before scoping. Its intended contract is
-one QUESTIONS.md register with stable IDs and local Git history, while
-state.json retains module/gate state. SOW questions can be descriptive and need
-not become thesis hypotheses. End-to-end acceptance remains pending; see
-[pilot status](sow-pilot.md#candidate-availability-and-acceptance).
 
 | File in `.diligence/` | Purpose |
 |---|---|
 | `SOW.md` / versioned snapshots | Source extraction with locators; scope input, not evidence answering its questions |
-| `QUESTIONS.md` | Candidate's sole SOW question-status register: stable IDs, criteria, coverage, evidence and amendment history |
+| `QUESTIONS.md` | Sole SOW question-status register: stable IDs, criteria, coverage, evidence and amendment history |
 | `ENGAGEMENT.md` | Engagement brief: target, client context, investment thesis, key questions, deadline, scope in/out |
 | `TAXONOMY.md` | The convention lock: segment definitions, geography, currency/units/FX, time basis (CY/FY), source hierarchy (filings > paid data > press > blogs), defined terms |
 | `WORKPLAN.md` | Workstreams × weeks, Q-id/analysis coverage and dependency order; not a second status authority |
@@ -62,7 +69,7 @@ installer per `runtime-catalog.json`. The MVP path is in **bold**.
 | Command | What it does |
 |---|---|
 | `/gdd:help`, `/gdd:start`, `/gdd:tour` | onboarding ladder |
-| `/gdd:ingest-sow`, `/gdd:sow-status` | candidate intake, stable question register, evidence-linked coverage and amendments |
+| `/gdd:ingest-sow`, `/gdd:sow-status` | SOW intake, stable question register, evidence-linked coverage and amendments |
 | **`/gdd:scope-deal`** | interview the user → write `ENGAGEMENT.md` + initial `TAXONOMY.md`; locks conventions before any analysis |
 | **`/gdd:hypothesis-tree`** | decompose the thesis into a MECE hypothesis tree → module briefs |
 | **`/gdd:workplan`** | lay modules across the timeline → `WORKPLAN.md` |

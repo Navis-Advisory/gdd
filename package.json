@@ -20,7 +20,7 @@
     "node": ">=20.0.0"
   },
   "scripts": {
-    "test": "node tests/smoke-install.mjs && node tests/smoke-install-codex.mjs && node tests/installer-behavior.mjs && node tests/check-references.mjs && node tests/cloud-bootstrap.mjs && node tests/plugin-package.mjs",
+    "test": "node tests/smoke-install.mjs && node tests/smoke-install-codex.mjs && node tests/installer-behavior.mjs && node tests/check-references.mjs && node tests/cloud-bootstrap.mjs && node tests/plugin-package.mjs && node tests/workflow-contexts.mjs",
     "build:skills": "node scripts/build-skills.mjs"
   },
   "repository": {

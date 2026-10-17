@@ -5,6 +5,15 @@ Version corresponds to `"version"` in `.claude-plugin/plugin.json`.
 
 ## [Unreleased]
 
+## [0.2.9] - 2026-10-16 — Installer and adapter reliability
+
+- Align agent tool lists with required boundary checks and storyline arithmetic;
+  retain explicit stops when the host cannot provide the required access.
+- Correct risk-screen verdicts, taxonomy amendment routing and engagement
+  amendment guidance. Replace historical pilot instructions with concise usage
+  documentation and version verification.
+- Fix Codex CLI conversion: preserve agent instructions in valid TOML and
+  expand every required file in execution-context blocks, in order.
 - Preserve user files and unresolved backups during CLI install, update and
   uninstall. Reject invalid ownership manifests and linked destinations before
   changing files; remove only unchanged owned files unless explicitly forced.

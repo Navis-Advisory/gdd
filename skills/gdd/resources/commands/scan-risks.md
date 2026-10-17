@@ -44,8 +44,10 @@ hypothesis verdicts.
    evidence gathering goes to `gdd-researcher` in fresh context (root
    passed along), parallel per screen where screens don't share an
    input.
-2. Every screen resolves tripped or clear. Clear screens carry an
-   evidence-of-search line. A trip whose deep dive would consume
+2. Every screen resolves tripped, clear, or unreachable — recorded open.
+   Clear screens carry an evidence-of-search line. When access or evidence
+   cannot support the test, record what is visible and what would settle it;
+   never label an unevaluated screen clear. A trip whose deep dive would consume
    material timeline is surfaced to the user first — trip evidence plus
    proposed scope — so the user chooses chase vs record-as-open.
 3. Write `.diligence/modules/risks/FINDINGS.md`; promote per the

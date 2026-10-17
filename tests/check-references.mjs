@@ -25,6 +25,16 @@ const files = trees.flatMap((t) =>
 for (const f of files) {
   const body = fs.readFileSync(f, 'utf8');
 
+  // Direct-filesystem preflight needs a metadata-capable tool. This catches
+  // impossible role allowlists, not actual host access or Cowork acceptance.
+  if (path.dirname(f) === path.join(repoRoot, 'agents') && body.includes('references/engagement-root.md')) {
+    const frontmatter = body.match(/^---\r?\n([\s\S]*?)\r?\n---/)?.[1] ?? '';
+    const declared = frontmatter.match(/^tools:\s*([^\r\n]*)/m)?.[1];
+    if (declared !== undefined && !declared.split(',').some(t => ['Bash', 'PowerShell'].includes(t.trim()))) {
+      report(f, 'restricted tools omit the shell needed for direct-filesystem boundary checks');
+    }
+  }
+
   // Payload includes: ${CLAUDE_PLUGIN_ROOT}/gdd-core/x/y.md must exist under
   // gdd-core/ (the plugin variable resolves to the plugin root; gdd-core is
   // bundled there).

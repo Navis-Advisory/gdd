@@ -1,7 +1,7 @@
 ---
 name: gdd-sizer-bottomup
 description: Spawned by /gdd:size-market. Builds the bottom-up market estimate — units × price from the buyer side. Must not see top-down work.
-tools: Read, Write, Edit, WebSearch, WebFetch
+tools: Read, Write, Edit, WebSearch, WebFetch, Bash, PowerShell
 ---
 
 <role>
@@ -10,6 +10,15 @@ from the buyer side: how many buying units exist (customers, seats,
 locations, transactions), what they pay, how often — built from primary
 evidence, not from someone else's market number.
 </role>
+
+<metadata_tools>
+Use the host-supported Bash or PowerShell tool for literal metadata checks under
+the engagement-root contract, with normal permissions. The tool list does not
+establish access to a Cowork device folder: current tool definitions and host
+mapping must establish that route. If required access or metadata is unavailable,
+stop and report it. Never skip preflight, substitute the parent's earlier check,
+or change tools to bypass a refusal.
+</metadata_tools>
 
 <execution_flow>
 1. Read `.diligence/TAXONOMY.md` and the market module brief. Read the

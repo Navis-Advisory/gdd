@@ -1,44 +1,40 @@
 # Versioning
 
 GDD follows [semver](https://semver.org): `MAJOR.MINOR.PATCH`.
+Changes under `Unreleased` in the [changelog](../CHANGELOG.md) are repository
+changes awaiting a release. A repository plugin can contain these changes even
+when its manifest version still matches the last published npm package.
 
-- Keep `package.json`, `.claude-plugin/plugin.json`, root `plugin.json` and
-  the first versioned `CHANGELOG.md` heading aligned. Reference and plugin
-  package checks enforce parity across these surfaces.
-- Record development notes under `Unreleased`; use a versioned entry when
-  preparing an identified candidate. That entry does not establish publication
-  or availability through every channel.
-- The 0.2.8 candidate still needs full synthetic acceptance. Native
-  installation checks do not establish successful ingestion or Git tracking.
-- Record source commit and SHA-256 digest with each candidate ZIP or tarball.
-  Rebuilt contents require new digests and affected checks even if the
-  candidate version has not changed.
-- npm publication is a separate, manually triggered release action on private
-  `main`, after maintainer review. Supply the reviewed version and full public
-  plugin commit SHA to the Publish workflow. It packs once, runs the existing
-  artifact smoke test on those exact bytes and compares every canonical resource
-  and its inventory with the public plugin checkout before publishing.
-- The workflow retains the tarball and source/plugin identities as a GitHub
-  artifact. It verifies registry download integrity, repeats both CLI adapter
-  installs, and checks npm `latest` and fresh registry-based npx execution before
-  creating the release tag. These are distribution checks, not native-app acceptance.
-- An existing version is accepted only when its integrity is identical; an existing
-  tag must identify the current source commit. This permits verification/tagging
-  recovery without overwriting a version or moving a tag. If a run fails after
-  publication, inspect the registry and retained artifact before retrying; a
-  different rebuild is rejected, not republished. Publication is not atomic with
-  verification or tagging.
-- npm uses the `latest` dist-tag; candidate ZIP testing does not update it.
-  Do not republish an existing version or move a tag to different content.
-- Trusted OIDC publishing authenticates the publisher; it is distinct from
-  provenance attestation. The current workflow explicitly disables provenance.
-  A public repository alone does not establish an attestation.
+## Check what you are installing
 
-As checked on 2026-10-13, npm `latest` is 0.2.2 and the public repository plugin
-is 0.2.8. The channels are not yet aligned. The workflow changes prepare a release;
-they do not publish it. Keep the existing private-repository OIDC publisher and
-provenance setting until a separately reviewed publisher migration.
+```bash
+npm view get-diligence-done dist-tags --json
+npm view get-diligence-done@latest version dist.integrity --json
+```
 
-Test native updates through the host plugin manager. CLI updates must identify
-the existing installation and the exact target version. See
-[installation](install.md) and the [SOW pilot guide](sow-pilot.md).
+For a reproducible CLI install, replace `latest` with the exact version you want:
+
+```bash
+npx get-diligence-done@latest --claude --global
+```
+
+Check the active plugin manifest through the host's plugin manager/resources
+and record its source revision when available. Matching version strings alone
+are not proof of matching contents. Plugin updates use the host's plugin manager;
+CLI updates target the existing configuration directory. See [installation](install.md).
+
+## Release checks
+
+- Align `package.json`, `.claude-plugin/plugin.json`, root `plugin.json` and the
+  first versioned changelog heading. Record each candidate commit and digest.
+- After review, the release process packs once and compares the artifact's
+  canonical resources and inventory with the reviewed public plugin commit.
+  Publication is a separate manual action; a merge does not publish to npm.
+- Retain the tarball and identities. Verify registry integrity, both CLI installs,
+  the `latest` tag and fresh npx execution against those bytes. These are
+  distribution checks, not native workflow acceptance.
+- Never overwrite a published version or move a release tag. Recovery of a
+  partially completed release requires identical artifact integrity and tag
+  identity; inspect the registry before retrying.
+- Trusted OIDC publishing authenticates the publisher. It does not itself prove
+  provenance attestation; the current release process disables that attestation.

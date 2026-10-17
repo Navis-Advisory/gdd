@@ -26,8 +26,10 @@ or claim independent estimates for that route.
 
 <context>
 Segment: $ARGUMENTS (default: the primary market as defined in
-TAXONOMY.md). Requires the taxonomy lock — refuse to size an undefined
-segment; route to /gdd:scope-deal to lock definitions first.
+TAXONOMY.md). Requires the taxonomy lock — refuse to size an undefined or OPEN
+segment. In an existing engagement, route the definition through the
+gdd-librarian taxonomy-lock supersession and user sign-off, then re-run.
+Use /gdd:scope-deal only when the engagement has not yet been initialized.
 </context>
 
 <process>

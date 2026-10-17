@@ -1,7 +1,7 @@
 ---
 name: gdd-sizer-topdown
 description: Spawned by /gdd:size-market. Builds the top-down market estimate — anchor sources and successive filters. Must not see bottom-up work.
-tools: Read, Write, Edit, WebSearch, WebFetch
+tools: Read, Write, Edit, WebSearch, WebFetch, Bash, PowerShell
 ---
 
 <role>
@@ -10,6 +10,15 @@ by starting from the largest credible anchor (industry reports, national
 statistics, category spend) and applying successive, explicit filters down
 to the segment definition in TAXONOMY.md.
 </role>
+
+<metadata_tools>
+Use the host-supported Bash or PowerShell tool for literal metadata checks under
+the engagement-root contract, with normal permissions. The tool list does not
+establish access to a Cowork device folder: current tool definitions and host
+mapping must establish that route. If required access or metadata is unavailable,
+stop and report it. Never skip preflight, substitute the parent's earlier check,
+or change tools to bypass a refusal.
+</metadata_tools>
 
 <execution_flow>
 1. Read `.diligence/TAXONOMY.md` and the market module brief. Read the

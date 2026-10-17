@@ -4,9 +4,9 @@ name: CI
 # deliberately kept out of the automated content updates, so that automation
 # cannot write a workflow with access to this repo's secrets.
 #
-# Keep these steps a thin shim over `npm test`. The test logic lives in
-# package.json and tests/, both of which DO mirror across, so this file and
-# its upstream counterpart cannot meaningfully drift.
+# Keep these steps thin shims over the package scripts and tests.
+# Test implementations arrive through the content sync; this workflow
+# and its read-only permissions are reviewed separately.
 
 on:
   pull_request:
@@ -18,6 +18,26 @@ permissions:
   contents: read
 
 jobs:
+  adapters:
+    name: Adapters (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: node tests/smoke-install.mjs
+      - run: node tests/smoke-install-codex.mjs
+      - run: node tests/installer-safety.mjs
+      - run: npm run test:codex
+
   test:
     runs-on: ubuntu-latest
     steps:

@@ -36,10 +36,9 @@ const PLUGIN_ROOT_TOKEN = '${CLAUDE_PLUGIN_ROOT}';
 // without native @-include support (Codex) need that block
 // resolved to real content at install time, or the installed skill is a
 // dangling reference to nothing.
-// Global: a command may carry more than one <execution_context> include, and
-// every one must resolve. Without /g, replace() would rewrite only the first
-// and silently drop the rest for skills-layout runtimes.
-const INCLUDE_RE = /<execution_context>\s*@\$\{CLAUDE_PLUGIN_ROOT\}\/gdd-core\/([^\s<]+)\s*<\/execution_context>/g;
+// Each context block can contain several includes and surrounding prose.
+const CONTEXT_RE = /<execution_context>([\s\S]*?)<\/execution_context>/g;
+const INCLUDE_RE = /@\$\{CLAUDE_PLUGIN_ROOT\}\/gdd-core\/([^\s<]+)/g;
 
 function readJson(p) {
   return JSON.parse(fs.readFileSync(p, 'utf8'));
@@ -179,9 +178,17 @@ function extractFrontmatterField(frontmatter, field) {
 }
 
 function resolveIncludes(content, srcCore) {
-  return content.replace(INCLUDE_RE, (_, relPath) => {
-    const includeContent = fs.readFileSync(path.join(srcCore, relPath), 'utf8');
-    return `<execution_context>\n${includeContent.trim()}\n</execution_context>`;
+  return content.replace(CONTEXT_RE, (_, context) => {
+    const resolved = context.replace(INCLUDE_RE, (_include, relPath) => {
+      const parts = relPath.split('/');
+      if (parts.some((p) => !p || p === '.' || p === '..' || /[\\:\0]/.test(p) || /[. ]$/.test(p))) {
+        throw new Error(`invalid execution-context include: ${relPath}`);
+      }
+      const target = path.join(srcCore, ...parts);
+      safeEntry(srcCore, target);
+      return fs.readFileSync(target, 'utf8').trim();
+    });
+    return `<execution_context>${resolved}</execution_context>`;
   });
 }
 
@@ -199,24 +206,23 @@ function convertCommandToSkill(resolvedContent, skillName) {
 }
 
 // Codex custom agent: standalone TOML under ~/.codex/agents/<name>.toml.
-// Per developers.openai.com/codex/subagents, `developer_instructions` is an
-// inline TOML multi-line string — no external file reference is supported,
-// so the agent's full body is embedded directly.
+// Required fields are strings: https://learn.chatgpt.com/docs/agent-configuration/subagents
+// JSON's string escapes also work in TOML basic strings, except that TOML
+// additionally forbids an unescaped DEL. Encode instructions as a string so
+// Windows paths, newlines and quote delimiters survive parsing unchanged.
+function tomlString(value) {
+  return JSON.stringify(value).replace(/\u007f/g, '\\u007f');
+}
+
 function convertAgentToCodexToml(content) {
   const { frontmatter, body } = extractFrontmatterAndBody(content);
   const name = frontmatter ? extractFrontmatterField(frontmatter, 'name') || 'unknown' : 'unknown';
   const description = frontmatter ? extractFrontmatterField(frontmatter, 'description') || '' : '';
   const instructions = body.trim();
-  if (instructions.includes('"""')) {
-    fail(
-      `Codex TOML conversion: agent "${name}" body contains a literal """ sequence, ` +
-        'which would break the TOML multi-line string. Rewrite the agent content to avoid it.'
-    );
-  }
   return (
-    `name = ${JSON.stringify(name)}\n` +
-    `description = ${JSON.stringify(description)}\n` +
-    `developer_instructions = """\n${instructions}\n"""\n`
+    `name = ${tomlString(name)}\n` +
+    `description = ${tomlString(description)}\n` +
+    `developer_instructions = ${tomlString(instructions)}\n`
   );
 }
 

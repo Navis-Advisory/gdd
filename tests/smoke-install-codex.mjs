@@ -54,6 +54,25 @@ try {
   );
   check('skill body inlines the workflow content', skillMd.includes('Startup ladder: help'));
 
+  // Check complete include contents and order for every command. Looking only
+  // for a replaced root token misses unresolved @/absolute/path references.
+  for (const file of fs.readdirSync(path.join(repoRoot, 'commands')).filter((f) => f.endsWith('.md'))) {
+    const authored = fs.readFileSync(path.join(repoRoot, 'commands', file), 'utf8');
+    const installed = fs.readFileSync(path.join(configDir, 'skills', `gdd-${file.slice(0, -3)}`, 'SKILL.md'), 'utf8');
+    let previous = -1;
+    let complete = true;
+    for (const block of authored.matchAll(/<execution_context>([\s\S]*?)<\/execution_context>/g)) {
+      for (const include of block[1].matchAll(/@\$\{CLAUDE_PLUGIN_ROOT\}\/gdd-core\/([^\s<]+)/g)) {
+        const expected = fs.readFileSync(path.join(repoRoot, 'gdd-core', include[1]), 'utf8').trim()
+          .split('${CLAUDE_PLUGIN_ROOT}').join(configDir).split('/gdd:').join('$gdd-');
+        const position = installed.indexOf(expected, previous + 1);
+        if (position < 0) complete = false;
+        previous = position;
+      }
+    }
+    check(`${file}: every execution-context include is present in order`, complete);
+  }
+
   // Command prefix rewritten from /gdd: to $gdd- throughout.
   check('no stale /gdd: prefix in skill body', !skillMd.includes('/gdd:'));
   check('rewritten to $gdd- prefix', skillMd.includes('$gdd-start'));
@@ -62,7 +81,7 @@ try {
   const agentToml = fs.readFileSync(path.join(configDir, 'agents', 'gdd-planner.toml'), 'utf8');
   check('toml has name field', /^name = "gdd-planner"$/m.test(agentToml));
   check('toml has description field', /^description = /m.test(agentToml));
-  check('toml has inline developer_instructions', /^developer_instructions = """$/m.test(agentToml));
+  check('toml has inline developer_instructions', /^developer_instructions = "/m.test(agentToml));
   check('toml instructions body present', agentToml.includes('<role>'));
   check('toml has no unresolved plugin-root token', !agentToml.includes('${CLAUDE_PLUGIN_ROOT}'));
 

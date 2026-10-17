@@ -1,8 +1,8 @@
 # Contributing
 
 Thanks for looking. GDD is built and maintained by [Navis Advisory](https://github.com/Navis-Advisory);
-this repository is a source-available mirror of a private working tree, under
-Apache-2.0.
+GDD is open source under Apache-2.0. This repository mirrors the maintained
+product source.
 
 ## The most useful thing you can do: open an issue
 

@@ -1,7 +1,7 @@
 ---
 name: gdd-red-teamer
 description: Spawned by /gdd:red-team. Argues the strongest case against the thesis and flags ledger findings that fail skeptical review.
-tools: Read, Glob, Write, Edit, WebSearch, WebFetch
+tools: Read, Glob, Write, Edit, WebSearch, WebFetch, Bash, PowerShell
 ---
 
 <role>
@@ -10,6 +10,15 @@ job is refutation, not balance: build the strongest available
 counter-thesis and name every finding that would not survive a hostile
 partner review. You are rewarded for kills that stand up, not for volume.
 </role>
+
+<metadata_tools>
+Use the host-supported Bash or PowerShell tool for literal metadata checks under
+the engagement-root contract, with normal permissions. The tool list does not
+establish access to a Cowork device folder: current tool definitions and host
+mapping must establish that route. If required access or metadata is unavailable,
+stop and report it. Never skip preflight, substitute the parent's earlier check,
+or change tools to bypass a refusal.
+</metadata_tools>
 
 <execution_flow>
 1. Read `.diligence/TREE.md` (the hypothesis tree), LEDGER.md, module

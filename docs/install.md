@@ -1,12 +1,15 @@
 # Install GDD
 
-GDD installs as a repository plugin in Claude Code and Claude Cowork.
-Claude Code and Codex also have CLI adapters; Codex and ChatGPT Work native
-acceptance remains separate. Antigravity support is discontinued.
+Use the repository plugin in Claude Cowork or Claude Code, or the CLI adapters
+for Claude Code and Codex. Antigravity support is discontinued.
+See [versioning](VERSIONING.md) when switching routes and
+[SOW intake](sow-pilot.md) to start from a statement of work.
 
-Plugin and npm releases can differ; see [versioning](VERSIONING.md) before
-switching installation routes. SOW intake is described in the
-[design overview](design.md#sow-intake).
+## Claude Cowork
+
+Open **Customize → Plugins → Add → Add marketplace → Add from a repository**,
+enter `Navis-Advisory/gdd`, and add GDD from that marketplace. Start a new task
+with your private deal folder selected, then load `/gdd:help`.
 
 ## Claude Code plugin
 
@@ -18,25 +21,26 @@ In Claude Code:
 ```
 
 Choose user scope for availability across projects on the same machine,
-project scope for repository collaborators, or local scope for just that
-repository. Installation requires access to the marketplace repository.
-After activation, run `/gdd:help` and `/gdd:tour` in a scratch deal folder.
-Native installation and invocation must be checked on the exact candidate.
+project scope for repository collaborators, or local scope for this repository.
+Open a separate deal folder and run `/gdd:help` or `/gdd:tour`.
 
-## CLI installation
+## CLI adapters
 
-Requires Node.js >= 20. Use a scratch configuration directory for candidate
-testing; installer ownership and recovery hardening remain outstanding.
+Requires Node.js >= 20. Run from outside a GDD clone:
 
 ```bash
-npx get-diligence-done --claude --global
-npx get-diligence-done --codex --global
+npx get-diligence-done@latest --claude --global
+npx get-diligence-done@latest --codex --global
 ```
 
-These commands install the published npm version, which can lag this checkout.
-Run npx from outside a GDD clone. Inside a clone it may resolve the local
-package before installation; use `node scripts/install.js` instead.
-To test the checked-out source revision:
+`--global` uses the runtime's user configuration directory. `--local` uses
+its project configuration directory; `--config-dir <path>` overrides either.
+Use `--dry-run` to inspect intended changes. Claude invokes `/gdd:help`;
+Codex invokes `$gdd-help`. Work stays in the deal folder's `.diligence/`,
+separate from the installation.
+
+These commands install npm's published version. To try repository changes
+that are still listed under `Unreleased`, use a disposable configuration:
 
 ```bash
 git clone https://github.com/Navis-Advisory/gdd.git
@@ -45,73 +49,41 @@ node scripts/install.js --claude --config-dir /absolute/path/to/scratch-config
 node scripts/install.js --codex --config-dir /absolute/path/to/another-scratch-config
 ```
 
-`--global` uses the runtime's user configuration directory. `--local` uses
-its project configuration directory. `--config-dir` overrides either.
-Claude invokes `/gdd:help`; Codex invokes `$gdd-help`. Engagement state
-lives in the selected deal folder's `.diligence/`, separate from the install.
-
-Codex commands are converted into skills with workflow includes inlined.
-Agent instructions are converted to TOML. This CLI conversion does not
-establish native plugin discovery in Codex or ChatGPT Work.
-
-## Claude Cowork
-
-Open Cowork → Customize → Plugins → Add → Add marketplace → Add from a
-repository, enter `Navis-Advisory/gdd`, and add GDD from that marketplace.
-Use a separate private deal folder for each engagement. Load `/gdd:help`
-after installation and confirm the active plugin version. Installation alone
-does not establish acceptance of every workflow; the [pilot guide](sow-pilot.md)
-records the historical 0.2.5 test procedure, not current release readiness.
-
-Native plugin installation, command discovery, folder selection, durable
-saving, and fresh-session resume must be tested independently of Claude Code.
-Argument hints are input guidance, not proof that native forms render.
-Do not advertise community-directory availability before a listing exists.
+Codex commands become skills with their context includes expanded; agent
+instructions become TOML. This conversion does not establish native plugin
+behavior in Codex or ChatGPT Work.
 
 ## ChatGPT Work and Codex plugins
 
-Portable packaging is provided in root plugin.json, skills/, and the native
-marketplace catalog. CLI installation is not a substitute for native
-behavioral acceptance. Test each app with a pinned plugin candidate and a
-synthetic document before using a real SOW.
+The repository includes portable plugin packaging and a marketplace catalog.
+Native workflow validation in these apps remains separate from CLI installation.
+Verify command discovery, access to the selected folder, saving and fresh-session
+resume with a synthetic document before using confidential material. Missing
+file, delegate or Git capabilities are reported as limitations.
 
-## Candidate acceptance
+## Updating and removing
 
-For each of Claude Code, Claude Cowork, Codex, and ChatGPT Work, record:
+For plugins, use the host's plugin manager, then start a new session.
+`/gdd:update` identifies the active installation route before proposing changes;
+it does not replace a native plugin with an npm adapter.
 
-1. Candidate revision, app version, installation route, and model.
-2. Discovery and invocation in a fresh session.
-3. Access to an explicitly selected engagement folder.
-4. Saving and resuming without rebuilding or losing question IDs.
-5. Git availability and an actual checkpoint containing the intended files.
+For CLI adapters, use the existing configuration directory and an exact
+[release version](VERSIONING.md). Review local edits and the dry-run before
+updating or uninstalling. The current repository installer preserves edited and
+unowned files by default; `--update` backs up replaced local edits in
+`gdd-patches/` and refuses to overwrite unresolved backups. `--uninstall` keeps
+modified files. `--force` explicitly permits overwriting/removing local edits.
+These protections require 0.2.9 or later. Check [registry availability](VERSIONING.md)
+before installing; a repository version is not proof of npm publication.
 
-Missing file or Git capabilities must be reported explicitly. SOW ingestion is a pilot; each app still needs independent behavioral
-acceptance against a private synthetic document before a real SOW.
+## Development checks
 
-## Updating
+`npm test` checks installation, references and packaging.
+`node tests/smoke-pack.mjs` checks the packed npm artifact.
+`npm run test:codex` requires Python 3.11+ (`python`) to parse generated agent TOML.
+None of these checks establishes native app behavior.
 
-For a native plugin, use the host's plugin manager or replace the candidate
-through the same native installation route. `/gdd:update` first identifies
-the active native, candidate, source-checkout or CLI route. Missing CLI
-ownership metadata never routes a native plugin to npm. The corrected routing
-still needs native-app acceptance; an installed version alone does not prove it.
-
-CLI installation/update hardening remains pending integration and validation.
-Test that route only in a disposable configuration directory, using an exact
-reviewed version and the known existing destination. Preserve unresolved local
-edits. Do not silently create another installation or substitute a retired
-runtime with another adapter.
-
-## Author checks
-
-`npm test` checks CLI installation and references, not native app behavior.
-`node tests/smoke-pack.mjs` tests the packed npm artifact.
-Command frontmatter must omit `name:`: Claude derives names from files,
-while the Codex converter supplies skill names.
-
-## Cloud sessions
-
-Claude Code cloud sessions install this checkout's workflows through the
-tracked SessionStart hook. For Codex Cloud, set the repository Environment
-setup script to `bash scripts/cloud-bootstrap.sh codex`. This installs into
-the ephemeral clone so the commands match the checked-out revision.
+Command frontmatter omits `name:`: Claude derives names from files, while the
+Codex converter supplies skill names. Claude Code cloud sessions install this
+checkout through the tracked SessionStart hook. For Codex Cloud, set the
+repository Environment setup script to `bash scripts/cloud-bootstrap.sh codex`.

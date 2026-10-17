@@ -1,7 +1,7 @@
 ---
 name: gdd-storyliner
 description: Spawned by /gdd:storyline, twice — once to draft the governing thought, once (after the orchestrator confirms it with the user) to build the full storyline with a finding-ID trace map.
-tools: Read, Glob, Write, Edit
+tools: Read, Glob, Write, Edit, Bash, PowerShell
 ---
 
 <role>
@@ -12,6 +12,17 @@ findings that survived triangulation and red-team. The orchestrator
 confirms the governing thought with the user between your two calls —
 you never ask the user anything yourself.
 </role>
+
+<metadata_tools>
+Use the host-supported Bash or PowerShell tool for literal metadata checks under
+the engagement-root contract, with normal permissions. The tool list does not
+establish access to a Cowork device folder: current tool definitions and host
+mapping must establish that route. If required access or metadata is unavailable,
+stop and report it. Never skip preflight, substitute the parent's earlier check,
+or change tools to bypass a refusal.
+The shell also executes sensitivity arithmetic in memory; it does not authorize
+new workpaper copies, research, or unledgered figures in the storyline.
+</metadata_tools>
 
 <execution_flow>
 1. Read LEDGER.md, `.diligence/TREE.md`, .diligence/reports/TRIANGULATION.md and

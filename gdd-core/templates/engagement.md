@@ -5,8 +5,9 @@ template_version: 4
 
 # Engagement brief — {DEAL_NAME}
 
-<!-- Written once by /gdd:scope-deal from the scoping interview; amended
-only via dated notes in the Amendments section. This document is the
+<!-- Initialized by /gdd:scope-deal from the scoping interview. Accepted
+amendments update the affected current sections and retain dated old/new
+decisions in Amendments. This document is the
 drift fence for the whole engagement: if an analysis doesn't serve a Key
 Question inside Scope, it doesn't get done.
 
@@ -103,8 +104,12 @@ no direct-to-target outreach); budget/hours if relevant. -->
 
 ## Amendments
 
-<!-- Dated notes only; never edit the sections above in place.
-Format: YYYY-MM-DD · what changed · why · who approved.
-State what changed and why. Downstream IMPACT claims ("investment
+<!-- Append dated notes; never rewrite previous amendment history.
+Format: YYYY-MM-DD · old/new wording or criterion · why · who approved.
+After acceptance, update the affected current sections above. When QUESTIONS.md
+exists, follow references/sow-register.md's accepted-amendment and invalidation
+contract, retain Q-id/criterion references, and reconcile affected existing
+planning/state artifacts. Taxonomy changes still require librarian supersession.
+Downstream IMPACT claims ("investment
 thesis is unaffected") may only be asserted with a cited basis (name
 the analysis or finding); otherwise write "impact to be assessed". -->

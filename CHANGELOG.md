@@ -5,6 +5,10 @@ Version corresponds to `"version"` in `.claude-plugin/plugin.json`.
 
 ## [Unreleased]
 
+- Preserve user files and unresolved backups during CLI install, update and
+  uninstall. Reject invalid ownership manifests and linked destinations before
+  changing files; remove only unchanged owned files unless explicitly forced.
+
 ## [0.2.8] - 2026-10-10 — Cowork planning proposals
 
 Candidate for review; native acceptance and npm publication remain separate.

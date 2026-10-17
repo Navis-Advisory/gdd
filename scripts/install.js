@@ -49,6 +49,122 @@ function sha256(content) {
   return crypto.createHash('sha256').update(content).digest('hex');
 }
 
+// Inspect the selected config root and every destination component without
+// following links (including Windows junctions and dangling links). Ancestors
+// above the explicitly selected root may be OS aliases such as macOS /tmp.
+// Recheck before each operation; this is not an OS sandbox against concurrent
+// filesystem replacement by another process.
+function safeEntry(configDir, target, kind = 'file') {
+  const rel = path.relative(configDir, target);
+  if (path.isAbsolute(rel) || rel === '..' || rel.startsWith(`..${path.sep}`)) {
+    throw new Error(`refusing path outside config directory: ${target}`);
+  }
+  const parts = rel ? rel.split(path.sep) : [];
+  let current = configDir;
+  for (let i = 0; i <= parts.length; i += 1) {
+    if (i) current = path.join(current, parts[i - 1]);
+    let stat;
+    try { stat = fs.lstatSync(current); }
+    catch (e) { if (e.code === 'ENOENT') return null; throw e; }
+    if (stat.isSymbolicLink()) throw new Error(`refusing linked/redirected destination: ${current}`);
+    const directory = i < parts.length || kind === 'directory';
+    if (directory ? !stat.isDirectory() : !stat.isFile()) {
+      throw new Error(`refusing unexpected destination type: ${current}`);
+    }
+    if (!directory && stat.nlink > 1) throw new Error(`refusing multiply linked file: ${current}`);
+    if (i === parts.length) return stat;
+  }
+}
+
+function checkInstallRoots(configDir, runtime) {
+  for (const rel of ['gdd-core', 'agents', runtime.command_layout === 'skills' ? 'skills' : 'commands/gdd']) {
+    safeEntry(configDir, path.join(configDir, rel), 'directory');
+  }
+}
+
+function manifestRelativePath(rel) {
+  if (typeof rel !== 'string') throw new Error('file paths must be strings');
+  const parts = rel.split(/[\\/]/);
+  // Windows trims trailing dots/spaces; reject aliases of traversal segments.
+  if (parts.some((p) => !p || p === '.' || p === '..' || /[:\0]/.test(p) || /[. ]$/.test(p))) {
+    throw new Error('refusing invalid or outside path');
+  }
+  const normalized = parts.join('/');
+  if (!/^(gdd-core\/.+|commands\/gdd\/.+|skills\/gdd-[^/]+\/.+|agents\/gdd-[^/]+\.(md|toml))$/.test(normalized)) {
+    throw new Error('refusing file outside GDD-owned namespaces');
+  }
+  return path.join(...parts);
+}
+
+function loadManifest(configDir, runtime) {
+  const manifestPath = path.join(configDir, 'gdd-core', MANIFEST_NAME);
+  if (!safeEntry(configDir, manifestPath)) return null;
+  try {
+    const m = readJson(manifestPath);
+    if (!m || m.name !== PKG.name || m.runtime !== runtime.runtime_name ||
+        typeof m.version !== 'string' || typeof m.config_dir !== 'string' ||
+        path.relative(configDir, path.resolve(m.config_dir)) !== '' || !Array.isArray(m.files) ||
+        !m.hashes || typeof m.hashes !== 'object' || Array.isArray(m.hashes)) {
+      throw new Error('wrong identity, config root or structure');
+    }
+    m.files = m.files.map(manifestRelativePath);
+    const keys = m.files.map((p) => process.platform === 'win32' ? p.toLowerCase() : p);
+    if (new Set(keys).size !== keys.length) throw new Error('duplicate file paths');
+    const hashes = {};
+    for (const [rel, hash] of Object.entries(m.hashes)) {
+      const normalized = manifestRelativePath(rel);
+      if (!m.files.includes(normalized) || Object.hasOwn(hashes, normalized) ||
+          typeof hash !== 'string' || !/^[a-f0-9]{64}$/.test(hash)) throw new Error('invalid file hash');
+      hashes[normalized] = hash;
+    }
+    m.hashes = hashes;
+    return m;
+  } catch (e) {
+    throw new Error(`${MANIFEST_NAME} is corrupt or invalid (${e.message}); no changes made. Restore a valid manifest before retrying.`);
+  }
+}
+
+function checkWrite(content, destPath, ctx) {
+  if (!safeEntry(ctx.configDir, destPath)) return;
+  const rel = path.relative(ctx.configDir, destPath);
+  if (!ctx.owned.has(rel) && !ctx.force) {
+    throw new Error(`refusing pre-existing unowned file ${rel}; use --force only to explicitly replace it`);
+  }
+  const diskHash = sha256(fs.readFileSync(destPath));
+  if (ctx.update && ctx.owned.has(rel) && diskHash !== ctx.priorHashes[rel] && diskHash !== sha256(content)) {
+    const backupPath = path.join(ctx.configDir, 'gdd-patches', rel);
+    if (safeEntry(ctx.configDir, backupPath) && sha256(fs.readFileSync(backupPath)) !== diskHash) {
+      throw new Error(`unresolved backup already exists at ${backupPath}; preserve or reconcile it before updating again`);
+    }
+  }
+}
+
+// Remove only empty directories reached through known installed files. Never
+// recursively remove a namespace: it may also contain unowned user files.
+function pruneEmptyDirectories(configDir, files) {
+  const dirs = new Set();
+  for (const rel of files) {
+    let dir = path.dirname(path.join(configDir, rel));
+    while (dir !== configDir && !['agents', 'commands', 'skills'].includes(path.relative(configDir, dir))) {
+      dirs.add(dir);
+      dir = path.dirname(dir);
+    }
+  }
+  for (const dir of [...dirs].sort((a, b) => b.length - a.length)) {
+    if (!safeEntry(configDir, dir, 'directory')) continue;
+    try { fs.rmdirSync(dir); }
+    catch (e) { if (!['ENOTEMPTY', 'EEXIST', 'ENOENT'].includes(e.code)) throw e; }
+  }
+}
+
+function saveManifest(configDir, manifest) {
+  const manifestPath = path.join(configDir, 'gdd-core', MANIFEST_NAME);
+  safeEntry(configDir, manifestPath);
+  fs.mkdirSync(path.dirname(manifestPath), { recursive: true });
+  safeEntry(configDir, manifestPath);
+  fs.writeFileSync(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`);
+}
+
 function extractFrontmatterAndBody(content) {
   if (!content.startsWith('---')) return { frontmatter: null, body: content };
   const end = content.indexOf('---', 3);
@@ -110,10 +226,15 @@ function convertAgentToCodexToml(content) {
 // baseline nor the incoming content is a local modification — skip it
 // unless --force, so a reinstall never silently clobbers user edits.
 function writeContent(content, destPath, ctx) {
+  if (ctx.planning) {
+    ctx.plan.push({ content, destPath });
+    return;
+  }
+  checkWrite(content, destPath, ctx);
   const rel = path.relative(ctx.configDir, destPath);
   const newHash = sha256(content);
   const prior = ctx.priorHashes[rel];
-  if (prior && fs.existsSync(destPath)) {
+  if (ctx.owned.has(rel) && fs.existsSync(destPath)) {
     const diskHash = sha256(fs.readFileSync(destPath));
     if (diskHash !== prior && diskHash !== newHash) {
       // Locally modified since last install. Three dispositions:
@@ -125,7 +246,9 @@ function writeContent(content, destPath, ctx) {
         const backupPath = path.join(ctx.configDir, 'gdd-patches', rel);
         if (!ctx.dryRun) {
           fs.mkdirSync(path.dirname(backupPath), { recursive: true });
-          fs.copyFileSync(destPath, backupPath);
+          if (!safeEntry(ctx.configDir, backupPath)) {
+            fs.copyFileSync(destPath, backupPath, fs.constants.COPYFILE_EXCL);
+          }
         }
         process.stdout.write(`  ${ctx.dryRun ? 'would back up' : 'backed up'} local ${rel} -> gdd-patches/${rel}\n`);
         ctx.backedUp.push(rel);
@@ -137,15 +260,13 @@ function writeContent(content, destPath, ctx) {
         );
         ctx.skipped.push(rel);
         ctx.written.push(destPath);
-        ctx.hashes[rel] = prior; // keep the last-GDD-written baseline
+        if (prior) ctx.hashes[rel] = prior; // keep the last-GDD-written baseline
         return;
       }
       // --force with no --update falls through to overwrite.
     }
   } else if (!prior && fs.existsSync(destPath)) {
-    // First install (no GDD baseline) colliding with a pre-existing file: we
-    // overwrite to establish the baseline, but say so — the user has no
-    // manifest that would otherwise flag the clobber.
+    // Only an explicit --force can replace an unowned collision.
     const diskHash = sha256(fs.readFileSync(destPath));
     if (diskHash !== newHash) {
       process.stdout.write(`  ${ctx.dryRun ? 'would overwrite' : 'overwrite'} pre-existing ${rel} (no prior GDD install)\n`);
@@ -155,6 +276,7 @@ function writeContent(content, destPath, ctx) {
     process.stdout.write(`  would write ${destPath}\n`);
   } else {
     fs.mkdirSync(path.dirname(destPath), { recursive: true });
+    safeEntry(ctx.configDir, destPath);
     fs.writeFileSync(destPath, content);
   }
   ctx.written.push(destPath);
@@ -178,9 +300,9 @@ Scope:
 
 Options:
   -c, --config-dir <path>  override the destination config dir entirely
-  -u, --uninstall          remove a previous install (reads the manifest)
-  -f, --force              overwrite locally modified GDD files on reinstall
-                           (default: warn and leave them in place)
+  -u, --uninstall          remove unchanged owned files; keep local edits
+  -f, --force              replace unowned collisions / local edits, or remove
+                           modified owned files during pruning or uninstall
       --update             reinstall in place, backing up locally modified
                            files to gdd-patches/ first (used by /gdd:update)
   -n, --dry-run            print what would happen without writing
@@ -285,17 +407,14 @@ function install(runtime, configDir, opts) {
   const written = [];
   // Prior manifest (if reinstalling) supplies the per-file hash baseline
   // that lets writeContent detect and protect local modifications.
-  const priorManifestPath = path.join(installDir, MANIFEST_NAME);
-  let priorManifest = null;
-  if (fs.existsSync(priorManifestPath)) {
-    try {
-      priorManifest = readJson(priorManifestPath);
-    } catch (_e) {
-      priorManifest = null;
-    }
-  }
+  checkInstallRoots(configDir, runtime);
+  const priorManifest = loadManifest(configDir, runtime);
   const priorHashes = (priorManifest && priorManifest.hashes) || {};
-  const ctx = { configDir, dryRun, force, update: opts.update, priorHashes, written, skipped: [], backedUp: [], hashes: {} };
+  const ctx = {
+    configDir, dryRun, force, update: opts.update, priorHashes, written,
+    owned: new Set(priorManifest?.files || []), planning: true, plan: [],
+    skipped: [], backedUp: [], hashes: { ...priorHashes },
+  };
 
   // Provenance the update path (/gdd:update) replays to reinstall in place.
   const provenance = {
@@ -304,8 +423,7 @@ function install(runtime, configDir, opts) {
     config_dir_override: opts.configDir || null,
   };
 
-  let installError = null;
-  try {
+  {
     // Command surface. Nested layout gives /gdd:<name> on Claude Code; "skills"
     // (Codex) converts each command into a SKILL.md directory with
     // its @-include resolved to real content, since Codex does not auto-inline
@@ -361,71 +479,54 @@ function install(runtime, configDir, opts) {
       projectFile(f, path.join(installDir, rel), ctx, runtime);
     }
 
-    if (!dryRun) {
-      writeContent(`${VERSION}\n`, path.join(installDir, 'VERSION'), ctx);
+    writeContent(`${VERSION}\n`, path.join(installDir, 'VERSION'), ctx);
+  }
+
+  // Prepare all content and check all destinations before the first mutation.
+  // A late collision, redirected subtree or unresolved backup must not leave a
+  // half-updated installation. The operation helpers recheck their own paths.
+  for (const rel of ctx.owned) safeEntry(configDir, path.join(configDir, rel));
+  for (const { content, destPath } of ctx.plan) checkWrite(content, destPath, ctx);
+  ctx.planning = false;
+  const manifestRel = path.join('gdd-core', MANIFEST_NAME);
+  const retained = new Set(ctx.owned);
+  const nowShipped = new Set(ctx.plan.map(({ destPath }) => path.relative(configDir, destPath)).concat(manifestRel));
+  const pruned = [];
+  let installError;
+  try {
+    for (const { content, destPath } of ctx.plan) writeContent(content, destPath, ctx);
+    for (const rel of ctx.owned) {
+      if (nowShipped.has(rel)) continue;
+      const target = path.join(configDir, rel);
+      if (safeEntry(configDir, target)) {
+        if (!force && (!priorHashes[rel] || sha256(fs.readFileSync(target)) !== priorHashes[rel])) {
+          process.stdout.write(`  preserve ${rel}: retired file has local changes or no known baseline\n`);
+          continue;
+        }
+        if (dryRun) process.stdout.write(`  would prune ${rel} (no longer shipped)\n`);
+        else fs.rmSync(target);
+        pruned.push(rel);
+      }
+      retained.delete(rel);
+      delete ctx.hashes[rel];
     }
   } catch (e) {
     installError = e;
-  } finally {
-    // Write the manifest even on a half-failed install, so `--uninstall` can
-    // clean up whatever was written. It lists itself in files[] — it is an
-    // installed file, and integrity tooling diffing manifest vs disk must come
-    // out even.
-    if (!dryRun) {
-      const manifestRel = path.join('gdd-core', MANIFEST_NAME);
-      const manifest = {
-        name: PKG.name,
-        version: VERSION,
-        runtime: runtime.runtime_name,
-        installed_at: new Date().toISOString(),
-        config_dir: configDir,
-        install: provenance,
-        partial: installError ? true : undefined,
-        files: written.map((p) => path.relative(configDir, p)).concat([manifestRel]),
-        hashes: ctx.hashes,
-      };
-      fs.mkdirSync(installDir, { recursive: true });
-      fs.writeFileSync(path.join(installDir, MANIFEST_NAME), `${JSON.stringify(manifest, null, 2)}\n`);
-    }
   }
-  if (installError) {
-    fail(`install failed after writing ${written.length} file(s): ${installError.message}\n` +
-      `A manifest was written; run with --uninstall to clean up the partial install.`);
+  if (!dryRun) {
+    // Retain prior ownership as well as completed writes if an I/O error occurs;
+    // a partial retry must not forget files that it never reached.
+    saveManifest(configDir, {
+      name: PKG.name, version: VERSION, runtime: runtime.runtime_name,
+      installed_at: new Date().toISOString(), config_dir: configDir, install: provenance,
+      partial: installError ? true : undefined,
+      files: [...new Set([...retained, ...written.map((p) => path.relative(configDir, p)), manifestRel])],
+      hashes: ctx.hashes,
+    });
   }
+  if (installError) throw new Error(`install stopped: ${installError.message}; ownership retained for retry`);
 
-  // Reinstall pruning: any file the PRIOR manifest listed that this install no
-  // longer ships is a stale GDD-owned file — delete it (contained to configDir,
-  // like uninstall). Skips gdd-patches/ (user backups) implicitly: those are
-  // never manifest-listed.
-  const pruned = [];
-  if (priorManifest && Array.isArray(priorManifest.files)) {
-    // VERSION and the manifest are always (re)written on a real install; count
-    // them as shipped so a dry-run doesn't report them as prunable (dry-run
-    // skips actually writing VERSION).
-    const nowShipped = new Set(
-      written
-        .map((p) => path.relative(configDir, p))
-        .concat([path.join('gdd-core', MANIFEST_NAME), path.join('gdd-core', 'VERSION')])
-    );
-    const configRoot = path.resolve(configDir) + path.sep;
-    for (const rel of priorManifest.files) {
-      if (nowShipped.has(rel)) continue;
-      const target = path.resolve(path.join(configDir, rel));
-      if (target !== path.resolve(configDir) && !target.startsWith(configRoot)) continue;
-      if (!fs.existsSync(target)) continue;
-      if (dryRun) {
-        process.stdout.write(`  would prune ${rel} (no longer shipped)\n`);
-      } else {
-        fs.rmSync(target);
-      }
-      pruned.push(rel);
-    }
-  }
-
-  // On a real install `written` already includes VERSION and we add 1 for the
-  // manifest (written directly, not via writeContent). A dry-run writes neither,
-  // so report what a real install *would* write: + VERSION + manifest.
-  const count = written.length + (dryRun ? 2 : 1);
+  const count = written.length + 1; // includes VERSION, plus the manifest
   const skippedNote = ctx.skipped.length
     ? `${ctx.skipped.length} locally modified file(s) left in place; re-run with --force to overwrite.\n`
     : '';
@@ -442,53 +543,38 @@ function install(runtime, configDir, opts) {
   );
 }
 
-function uninstall(runtime, configDir, dryRun) {
+function uninstall(runtime, configDir, opts) {
+  const { dryRun, force } = opts;
+  checkInstallRoots(configDir, runtime);
   const manifestPath = path.join(configDir, 'gdd-core', MANIFEST_NAME);
-  if (!fs.existsSync(manifestPath)) {
-    fail(`no ${MANIFEST_NAME} found under ${configDir}: nothing to uninstall.`);
-  }
-  let manifest;
-  try {
-    manifest = readJson(manifestPath);
-  } catch (_e) {
-    fail(`${MANIFEST_NAME} under ${configDir} is corrupt and cannot be read; remove ${path.join(configDir, 'gdd-core')} by hand.`);
-  }
-  const targets = manifest.files.map((rel) => path.join(configDir, rel)).concat([manifestPath]);
-  // Containment: a resolved target must stay under configDir. A tampered or
-  // corrupt manifest with a traversal entry (../../x) must never let uninstall
-  // delete outside its own install tree — warn and skip instead.
-  const configRoot = path.resolve(configDir) + path.sep;
-  for (const p of targets) {
-    const resolved = path.resolve(p);
-    if (resolved !== path.resolve(configDir) && !resolved.startsWith(configRoot)) {
-      process.stderr.write(`  skip ${p}: resolves outside ${configDir}, refusing to delete\n`);
-      continue;
-    }
-    if (!fs.existsSync(p)) continue;
-    if (dryRun) process.stdout.write(`  would remove ${p}\n`);
-    else fs.rmSync(p);
+  const manifest = loadManifest(configDir, runtime);
+  if (!manifest) throw new Error(`no ${MANIFEST_NAME} found under ${configDir}: nothing to uninstall.`);
+  const manifestRel = path.relative(configDir, manifestPath);
+  const files = manifest.files.filter((rel) => rel !== manifestRel);
+  for (const rel of files) safeEntry(configDir, path.join(configDir, rel));
+  const kept = [];
+  for (const rel of files) {
+    const target = path.join(configDir, rel);
+    if (!safeEntry(configDir, target)) continue;
+    if (!force && (!manifest.hashes[rel] || sha256(fs.readFileSync(target)) !== manifest.hashes[rel])) {
+      kept.push(rel);
+      process.stdout.write(`  preserve ${rel}: locally modified or no known baseline\n`);
+    } else if (dryRun) process.stdout.write(`  would remove ${target}\n`);
+    else fs.rmSync(target);
   }
   if (!dryRun) {
-    // Prune now-empty directories we own outright.
-    for (const dir of [
-      path.join(configDir, 'gdd-core'),
-      path.join(configDir, 'commands', 'gdd'),
-    ]) {
-      fs.rmSync(dir, { recursive: true, force: true });
+    if (kept.length) {
+      manifest.files = [...kept, manifestRel];
+      manifest.hashes = Object.fromEntries(kept.filter((rel) => manifest.hashes[rel]).map((rel) => [rel, manifest.hashes[rel]]));
+      saveManifest(configDir, manifest);
+    } else {
+      safeEntry(configDir, manifestPath);
+      fs.rmSync(manifestPath);
     }
-    // Prune per-skill directories (skills/gdd-<name>/) left empty after
-    // their SKILL.md was removed. Never touch skills/ itself — it may hold
-    // skills installed by something other than GDD.
-    const skillsDir = path.join(configDir, 'skills');
-    if (fs.existsSync(skillsDir)) {
-      for (const entry of fs.readdirSync(skillsDir, { withFileTypes: true })) {
-        if (!entry.isDirectory() || !entry.name.startsWith('gdd-')) continue;
-        const dir = path.join(skillsDir, entry.name);
-        if (fs.readdirSync(dir).length === 0) fs.rmdirSync(dir);
-      }
-    }
+    pruneEmptyDirectories(configDir, [...files, manifestRel]);
   }
-  process.stdout.write(`${dryRun ? '[dry-run] ' : ''}GDD removed from ${configDir}.\n`);
+  process.stdout.write(`${dryRun ? '[dry-run] ' : ''}GDD uninstall: ${kept.length} modified file(s) preserved in ${configDir}.\n`);
+  if (kept.length) process.stdout.write('Ownership manifest retained; use --uninstall --force only to explicitly remove these edits.\n');
 }
 
 function main() {
@@ -503,8 +589,9 @@ function main() {
   }
   const runtime = opts.runtime || CATALOG.runtimes.find((r) => r.runtime_name === 'claude-code');
   const configDir = resolveConfigDir(runtime, opts.scope, opts.configDir);
-  if (opts.uninstall) uninstall(runtime, configDir, opts.dryRun);
+  if (opts.uninstall) uninstall(runtime, configDir, opts);
   else install(runtime, configDir, opts);
 }
 
-main();
+try { main(); }
+catch (e) { fail(e.message); }

@@ -2,6 +2,7 @@
 // CLI-behavior tests for the installer: version flag, uninstall containment,
 // manifest robustness. Complements the per-runtime surface smoke tests.
 import { spawnSync } from 'node:child_process';
+import crypto from 'node:crypto';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
@@ -96,7 +97,7 @@ for (const flag of ['--version', '-v']) {
   }
 }
 
-// --- P2: first-install collision over a pre-existing file warns ---
+// A first install must not assume ownership of a pre-existing user file.
 {
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'gdd-collide-'));
   try {
@@ -105,7 +106,8 @@ for (const flag of ['--version', '-v']) {
     fs.mkdirSync(path.dirname(collide), { recursive: true });
     fs.writeFileSync(collide, 'pre-existing content that differs\n');
     const r = run(['--claude', '--config-dir', configDir]);
-    check('first-install collision warns', /overwrite pre-existing/i.test(r.stdout));
+    check('first-install collision refuses and explains', r.code === 1 && /pre-existing/i.test(r.stderr));
+    check('first-install collision preserves content', fs.readFileSync(collide, 'utf8') === 'pre-existing content that differs\n');
   } finally {
     fs.rmSync(tmp, { recursive: true, force: true });
   }
@@ -160,7 +162,7 @@ for (const flag of ['--antigravity', '--antigravity-cli']) {
     const manifestPath = path.join(configDir, 'gdd-core', 'gdd-file-manifest.json');
     const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
     manifest.files.push('gdd-core/references/OLD-REMOVED.md');
-    manifest.hashes['gdd-core/references/OLD-REMOVED.md'] = 'x';
+    manifest.hashes['gdd-core/references/OLD-REMOVED.md'] = crypto.createHash('sha256').update('from an older version\n').digest('hex');
     fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 2));
     const r = run(['--claude', '--config-dir', configDir]);
     check('stale file pruned on reinstall', !fs.existsSync(stale));
